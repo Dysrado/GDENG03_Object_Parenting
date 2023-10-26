@@ -1,6 +1,0 @@
-﻿  Toolbar.cpp
-C:\Users\Kevin\Documents\Project\GameEngine\GameEngine\GDENG03-Engine\Matrix4x4.h(104,44): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Kevin\Documents\Project\GameEngine\GameEngine\GDENG03-Engine\Matrix4x4.h(105,44): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Kevin\Documents\Project\GameEngine\GameEngine\GDENG03-Engine\Matrix4x4.h(106,44): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Kevin\Documents\Project\GameEngine\GameEngine\GDENG03-Engine\Matrix4x4.h(107,44): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  GDENG03-Engine.vcxproj -> C:\Users\Kevin\Documents\Project\GameEngine\GameEngine\Debug\GDENG03-Engine.exe
