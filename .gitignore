@@ -34,6 +34,9 @@ bld/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
+.Debug/
+.GDENG03_Object_Parenting/GDENG03-Engine/Debug/
+.GDENG03_Object_Parenting/GDENG03-Engine/x64/
 
 # Fortran module files
 *.mod
