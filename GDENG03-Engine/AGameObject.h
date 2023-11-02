@@ -43,12 +43,14 @@ public:
 
 	virtual void IncrementRot(float offset);
 
+	void addParent(AGameObject* reference);
 
 	string RetrieveName();
 	string RetrieveObjName();
 	void setEnabled(bool flag);
 	bool IsEnabled();
 
+	Matrix4x4 getLocalMatrix();
 	
 private:
 	string name;
@@ -62,6 +64,8 @@ private:
 protected:
 	Matrix4x4 localMatrix;
 	string typeName;
+
+	AGameObject* parent;
 
 };
 

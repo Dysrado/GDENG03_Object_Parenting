@@ -119,12 +119,12 @@ void Cube::update(float deltaTime)
 	//Vector3D currentScale = Vector3D().lerp(scale1, scale2, delta);
 	//Vector3D currentTranslate = Vector3D().lerp(translate1, translate2, delta);
 
-	
+	localMatrix.setIdentity();
 	cc.m_world.setIdentity();
 	temp.setIdentity();
 	temp.setScale(this->getLocalScale());
 	cc.m_world *= temp;
-
+	localMatrix = cc.m_world;
 
 	//Animation Scale
 	/*Matrix4x4 Scaling;
@@ -154,6 +154,8 @@ void Cube::update(float deltaTime)
 	temp.setRotationZ(this->getLocalRotation().m_z);
 	Rot *= temp;
 	cc.m_world *= Rot;
+	localMatrix = cc.m_world;
+
 
 
 	////Animation Rotation
@@ -172,6 +174,7 @@ void Cube::update(float deltaTime)
 	temp.setIdentity();
 	temp.setTranslation(this->getLocalPosition());
 	cc.m_world *= temp;
+	localMatrix = cc.m_world;
 
 	//Translation animation
 	/*Matrix4x4 Translate;
@@ -182,6 +185,13 @@ void Cube::update(float deltaTime)
 	Translate *= temp;
 	cc.m_world *= Translate;*/
 
+	// If Parent Exists, then Follow Parent Transform
+	if (parent != nullptr) 
+	{
+		cc.m_world *= parent->getLocalMatrix();
+		//cc.m_world.getScale().debugPrint();
+	}
+	
 	cc.m_view = SceneCameraHandler::getInstance()->getSceneCameraViewMatrix();
 
 }

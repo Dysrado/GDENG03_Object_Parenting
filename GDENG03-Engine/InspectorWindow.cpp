@@ -67,9 +67,9 @@ void InspectorWindow::drawUI()
 			selectedObject->setEnabled(isEnable);
 		};
 
-		ImGui::InputFloat3("Position", t);
-		ImGui::InputFloat3("Rotation", r);
-		ImGui::InputFloat3("Scale", s);
+		ImGui::DragFloat3("Position", t, 0.1f);
+		ImGui::DragFloat3("Rotation", r, 0.01f);
+		ImGui::DragFloat3("Scale", s, 0.1f);
 
 		selectedObject->setPosition(t[0], t[1], t[2]);
 		selectedObject->setRotation(r[0], r[1], r[2]);

@@ -6,6 +6,7 @@ AGameObject::AGameObject(string name)
 	this->localPosition = Vector3D::zeros();
 	this->localRotation = Vector3D::zeros();
 	this->localScale = Vector3D(1.0f, 1.0f, 1.0f);
+	this->parent = nullptr;
 }
 
 AGameObject::~AGameObject()
@@ -61,6 +62,13 @@ void AGameObject::IncrementRot(float offset)
 {
 }
 
+void AGameObject::addParent(AGameObject* reference)
+{
+	this->parent = reference;
+	std::cout << "Added child " << name << " to " << this->parent->name << std::endl;
+}
+
+
 string AGameObject::RetrieveName()
 {
 	return this->typeName;
@@ -79,4 +87,9 @@ void AGameObject::setEnabled(bool flag)
 bool AGameObject::IsEnabled()
 {
 	return this->isEnabled;
+}
+
+Matrix4x4 AGameObject::getLocalMatrix()
+{
+	return localMatrix;
 }

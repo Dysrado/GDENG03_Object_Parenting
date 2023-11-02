@@ -43,6 +43,14 @@ void Toolbar::drawUI()
 				GraphicsEngine::get()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shader_byte_code, &size_shader);
 				GameObjectManager::getInstance()->createObject(GameObjectManager::CUBE, shader_byte_code, size_shader);
 				GraphicsEngine::get()->releaseCompiledShader();
+
+				// Remove this once the UI for Parenting a Game object is implemented
+				if (GameObjectManager::getInstance()->getSelectedObject() != nullptr)
+				{
+					int numOfObjs = GameObjectManager::getInstance()->getAllObjects().size();
+					GameObjectManager::getInstance()->getAllObjects()[numOfObjs - 1]->addParent(GameObjectManager::getInstance()->getSelectedObject());
+				}
+				// End Remove here
 			}
 			if (ImGui::MenuItem("Create Sphere"))
 			{
@@ -59,6 +67,14 @@ void Toolbar::drawUI()
 				GraphicsEngine::get()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shader_byte_code, &size_shader);
 				GameObjectManager::getInstance()->createObject(GameObjectManager::PLANE, shader_byte_code, size_shader);
 				GraphicsEngine::get()->releaseCompiledShader();
+
+				// Remove this once the UI for Parenting a Game object is implemented
+				if (GameObjectManager::getInstance()->getSelectedObject() != nullptr)
+				{
+					int numOfObjs = GameObjectManager::getInstance()->getAllObjects().size();
+					GameObjectManager::getInstance()->getAllObjects()[numOfObjs - 1]->addParent(GameObjectManager::getInstance()->getSelectedObject());
+				}
+				// End Remove here
 			}
 			if (ImGui::BeginMenu("Create Light"))
 			{

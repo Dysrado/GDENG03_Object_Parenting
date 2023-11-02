@@ -60,10 +60,12 @@ void Quads::update(float deltaTime)
 
 
 	//Start of Converting Model to World view matrix
+	localMatrix.setIdentity();
 	cc.m_world.setIdentity();
 	temp.setIdentity();
 	temp.setScale(this->getLocalScale());
 	cc.m_world *= temp;
+	localMatrix = cc.m_world;
 
 
 
@@ -83,6 +85,7 @@ void Quads::update(float deltaTime)
 	temp.setRotationZ(this->getLocalRotation().m_z);
 	Rot *= temp;
 	cc.m_world *= Rot;
+	localMatrix = cc.m_world;
 
 
 	
@@ -90,8 +93,14 @@ void Quads::update(float deltaTime)
 	temp.setIdentity();
 	temp.setTranslation(this->getLocalPosition());
 	cc.m_world *= temp;
+	localMatrix = cc.m_world;
 
-
+	// If Parent Exists, then Follow Parent Transform
+	if (parent != nullptr)
+	{
+		cc.m_world *= parent->getLocalMatrix();
+		//cc.m_world.getScale().debugPrint();
+	}
 
 	cc.m_view = SceneCameraHandler::getInstance()->getSceneCameraViewMatrix();
 }

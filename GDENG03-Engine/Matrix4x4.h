@@ -143,6 +143,10 @@ public:
 	{
 		return Vector3D(m_mat[3][0], m_mat[3][1], m_mat[3][2]);
 	}
+	Vector3D getScale()
+	{
+		return Vector3D(m_mat[0][0], m_mat[1][1], m_mat[2][2]);
+	}
 
 	void setPerspectiveFovLH(float fov, float aspect, float znear, float zfar)
 	{
