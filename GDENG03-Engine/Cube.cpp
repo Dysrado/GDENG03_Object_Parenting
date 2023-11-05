@@ -188,9 +188,14 @@ void Cube::update(float deltaTime)
 	// If Parent Exists, then Follow Parent Transform
 	if (parent != nullptr) 
 	{
-		cc.m_world *= parent->getLocalMatrix();
+		cc.m_world *= parent->getLocalMatrix(); //Fundamental problem
 		//cc.m_world.getScale().debugPrint();
 	}
+
+	/*for(AGameObject* children : childrenList)
+	{
+		
+	}*/
 	
 	cc.m_view = SceneCameraHandler::getInstance()->getSceneCameraViewMatrix();
 

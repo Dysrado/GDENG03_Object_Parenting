@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <vector>
 
 #include "Matrix4x4.h"
 #include "Vector3D.h"
@@ -43,7 +44,8 @@ public:
 
 	virtual void IncrementRot(float offset);
 
-	void addParent(AGameObject* reference);
+	void SetParent(AGameObject* reference);
+	void AttachChild(AGameObject* reference);
 
 	string RetrieveName();
 	string RetrieveObjName();
@@ -66,6 +68,8 @@ protected:
 	string typeName;
 
 	AGameObject* parent;
+	vector<AGameObject*> childrenList;
+
 
 };
 

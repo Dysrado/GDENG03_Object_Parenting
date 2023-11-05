@@ -62,10 +62,17 @@ void AGameObject::IncrementRot(float offset)
 {
 }
 
-void AGameObject::addParent(AGameObject* reference)
+void AGameObject::SetParent(AGameObject* reference)
 {
 	this->parent = reference;
-	std::cout << "Added child " << name << " to " << this->parent->name << std::endl;
+	std::cout << "Added Parent " << name << " to " << this->parent->name << std::endl;
+}
+
+void AGameObject::AttachChild(AGameObject* reference)
+{
+	childrenList.push_back(reference);
+	reference->SetParent(this);
+	
 }
 
 
@@ -91,5 +98,11 @@ bool AGameObject::IsEnabled()
 
 Matrix4x4 AGameObject::getLocalMatrix()
 {
-	return localMatrix;
+	if(parent == nullptr)
+	{
+		return localMatrix;
+	}
+	
+	return localMatrix.multiplyTo(parent->getLocalMatrix());
+		
 }

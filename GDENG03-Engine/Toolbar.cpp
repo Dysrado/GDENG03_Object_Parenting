@@ -45,10 +45,18 @@ void Toolbar::drawUI()
 				GraphicsEngine::get()->releaseCompiledShader();
 
 				// Remove this once the UI for Parenting a Game object is implemented
+				/*if (GameObjectManager::getInstance()->getSelectedObject() != nullptr)
+				{
+					int numOfObjs = GameObjectManager::getInstance()->getAllObjects().size();
+					GameObjectManager::getInstance()->getAllObjects()[numOfObjs - 1]->SetParent(GameObjectManager::getInstance()->getSelectedObject());
+				}*/
+
+
 				if (GameObjectManager::getInstance()->getSelectedObject() != nullptr)
 				{
 					int numOfObjs = GameObjectManager::getInstance()->getAllObjects().size();
-					GameObjectManager::getInstance()->getAllObjects()[numOfObjs - 1]->addParent(GameObjectManager::getInstance()->getSelectedObject());
+
+					GameObjectManager::getInstance()->getSelectedObject()->AttachChild(GameObjectManager::getInstance()->getAllObjects()[numOfObjs - 1]);
 				}
 				// End Remove here
 			}
@@ -72,7 +80,7 @@ void Toolbar::drawUI()
 				if (GameObjectManager::getInstance()->getSelectedObject() != nullptr)
 				{
 					int numOfObjs = GameObjectManager::getInstance()->getAllObjects().size();
-					GameObjectManager::getInstance()->getAllObjects()[numOfObjs - 1]->addParent(GameObjectManager::getInstance()->getSelectedObject());
+					GameObjectManager::getInstance()->getAllObjects()[numOfObjs - 1]->SetParent(GameObjectManager::getInstance()->getSelectedObject());
 				}
 				// End Remove here
 			}
