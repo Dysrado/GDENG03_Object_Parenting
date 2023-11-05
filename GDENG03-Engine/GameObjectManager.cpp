@@ -89,14 +89,34 @@ void GameObjectManager::createObject(PrimitiveType type, void* shaderByteCode, s
 	{
 		case PrimitiveType::CUBE:
 		{
-			Cube* cube = new Cube("Cube", shaderByteCode, sizeShader);
+			string objName = "Cube";
+			if (cubeCount != 0)
+			{
+				objName.append(" (");
+				objName.append(std::to_string(cubeCount));
+				objName.append(") ");
+			}
+
+			Cube* cube = new Cube(objName, shaderByteCode, sizeShader);
 			addObject((AGameObject*)cube);
+
+			cubeCount++;
 		}
 		break;
 		case PrimitiveType::PLANE:
 		{
-			Quads* quads = new Quads("Plane", shaderByteCode, sizeShader);
+			string objName = "Plane";
+			if (planeCount != 0)
+			{
+				objName.append(" (");
+				objName.append(std::to_string(planeCount));
+				objName.append(") ");
+			}
+
+			Quads* quads = new Quads(objName, shaderByteCode, sizeShader);
 			addObject((AGameObject*)quads);
+
+			planeCount++;
 		}
 		break;
 

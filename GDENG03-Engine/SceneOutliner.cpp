@@ -36,7 +36,7 @@ void SceneOutliner::drawUI()
 	for(AGameObject* aObject : list)
 	{
 		id++;
-		String name = aObject->RetrieveName();
+		String name = aObject->RetrieveObjName(); // trying RetrieveObjName over RetriveName
 		name.append("##"); name.append(to_string(id)); //id for gameobject
 		if(ImGui::Button(name.c_str(), ImVec2(xButtonSize, yButtonSize)))
 		{

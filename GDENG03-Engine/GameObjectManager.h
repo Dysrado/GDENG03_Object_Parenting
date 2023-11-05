@@ -52,9 +52,8 @@ private:
 	List aList;
 	AGameObject* selectedObject = nullptr;
 
-
-	
-
-
+	// Object counts
+	int cubeCount = 0;
+	int planeCount = 0;
 };
 

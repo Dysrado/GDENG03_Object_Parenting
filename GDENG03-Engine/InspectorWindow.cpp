@@ -40,7 +40,7 @@ void InspectorWindow::drawUI()
 	else
 	{
 		String text = "Object Selected: ";
-		text.append(selectedObject->RetrieveName());
+		text.append(selectedObject->RetrieveObjName()); // trying obj name over name
 		bool isEnable = selectedObject->IsEnabled();
 		float t[3] = {
 			selectedObject->getLocalPosition().m_x,
