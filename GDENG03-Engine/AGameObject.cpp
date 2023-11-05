@@ -75,6 +75,19 @@ void AGameObject::AttachChild(AGameObject* reference)
 	
 }
 
+bool AGameObject::HasParent()
+{
+	if (parent == nullptr)
+		return false;
+
+	return true;
+}
+
+std::vector<AGameObject*> AGameObject::RetrieveAllChildren()
+{
+	return childrenList;
+}
+
 
 string AGameObject::RetrieveName()
 {

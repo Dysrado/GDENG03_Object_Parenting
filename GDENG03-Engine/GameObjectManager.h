@@ -43,7 +43,9 @@ public:
 	void createObject(PrimitiveType type, void* shaderByteCode, size_t sizeShader);
 	void deleteObject(AGameObject* gameObject);
 	void setSelectedObject(AGameObject* gameObject);
+
 	AGameObject* getSelectedObject();
+	List retrieveBaseParentObject();
 
 private:
 	static GameObjectManager* sharedInstance;

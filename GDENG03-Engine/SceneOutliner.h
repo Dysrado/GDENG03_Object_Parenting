@@ -1,4 +1,5 @@
 #pragma once
+#include "AGameObject.h"
 #include "UINames.h"
 
 class SceneOutliner : public AUIScreen
@@ -9,6 +10,7 @@ public:
 
 	void drawUI() override;
 
-
+private:
+	void DrawtreeNode(int *id, AGameObject* aObject);
 };
 

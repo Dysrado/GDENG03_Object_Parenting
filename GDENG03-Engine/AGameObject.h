@@ -46,6 +46,8 @@ public:
 
 	void SetParent(AGameObject* reference);
 	void AttachChild(AGameObject* reference);
+	bool HasParent();
+	std::vector<AGameObject* > RetrieveAllChildren();
 
 	string RetrieveName();
 	string RetrieveObjName();

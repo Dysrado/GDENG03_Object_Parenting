@@ -184,3 +184,18 @@ AGameObject* GameObjectManager::getSelectedObject()
 {
 	return selectedObject;
 }
+
+GameObjectManager::List GameObjectManager::retrieveBaseParentObject()
+{
+	GameObjectManager::List allParentObject;
+
+	for(AGameObject* object : aList)
+	{
+		if (!object->HasParent())
+			allParentObject.push_back(object);
+	}
+
+	return allParentObject;
+}
+
+
