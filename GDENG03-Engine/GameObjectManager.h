@@ -42,9 +42,11 @@ public:
 	void addObject(AGameObject* gameObject);
 	void createObject(PrimitiveType type, void* shaderByteCode, size_t sizeShader);
 	void deleteObject(AGameObject* gameObject);
-	void setSelectedObject(AGameObject* gameObject);
 
-	AGameObject* getSelectedObject();
+	void setSelectedObject(AGameObject* gameObject);
+	void addToSelectedObject(AGameObject* gameObject);
+
+	//AGameObject* getSelectedObject();
 	List retrieveBaseParentObject();
 
 private:
@@ -53,6 +55,7 @@ private:
 	HashTable aTable;
 	List aList;
 	AGameObject* selectedObject = nullptr;
+	
 
 	// Object counts
 	int cubeCount = 0;

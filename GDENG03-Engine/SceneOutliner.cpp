@@ -3,6 +3,10 @@
 #include "GameObjectManager.h"
 #include "UIManager.h"
 
+static ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_FramePadding |
+ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
+static int selection_mask = (1 << 2);
+
 SceneOutliner::SceneOutliner(const String name) : AUIScreen(name)
 {
 }
@@ -27,12 +31,13 @@ void SceneOutliner::drawUI()
 	//Window Specificatioon
 	ImGui::SetWindowSize( ImVec2(xLength, yLength));
 	ImGui::SetWindowPos(ImVec2(xPos, yPos));
-	int id = 0, i = 0;
-	static int selection_mask = (1 << 2);
+	int id = 0, i = 1;
 	int node_clicked = -1;
 
 	//TODO for Engine Replication: Check button -> clickable text w/ drop down
 	//Display: Through Tree
+	
+
 	std::vector<AGameObject*> aParentList = GameObjectManager::getInstance()->retrieveBaseParentObject();
 	for (AGameObject* aObject : aParentList)
 	{
@@ -40,10 +45,14 @@ void SceneOutliner::drawUI()
 		id++;
 		String name = aObject->RetrieveObjName();      // trying RetrieveObjName over RetriveName
 		name.append("##"); name.append(to_string(id)); //id for gameobject
+
+		ImGuiTreeNodeFlags node_flags = base_flags;
+		const bool is_selected = (selection_mask & (1 << i)) != 0;
+		if (is_selected)
+			node_flags |= ImGuiTreeNodeFlags_Selected;
 		
-		bool treeNodeOpen = ImGui::TreeNodeEx(name.c_str(),
-			ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_FramePadding |
-			ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth, aObject->RetrieveObjName().c_str(), i);
+		bool treeNodeOpen = ImGui::TreeNodeEx(name.c_str(), node_flags, aObject->RetrieveObjName().c_str(), i);
+
 		if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
 		{
 			GameObjectManager::getInstance()->setSelectedObject(aObject);
@@ -69,6 +78,8 @@ void SceneOutliner::drawUI()
 			selection_mask = (1 << node_clicked);           // Click to single-select
 	}
 
+
+
 	////Display:through Button
 	//std::vector<AGameObject* >list = GameObjectManager::getInstance()->getAllObjects();
 	//for(AGameObject* aObject : list)
@@ -89,20 +100,27 @@ void SceneOutliner::drawUI()
 
 void SceneOutliner::DrawtreeNode(int *id, AGameObject* aObject)
 {
-	static int selection_mask = (1 << 2);
-	int node_clicked = -1, i = 0;
+
+	int node_clicked = -1, i = 1;
 	std::vector<AGameObject*> aChildList = aObject->RetrieveAllChildren();
 	for (AGameObject* aObject : aChildList)
 	{
 		id++;
 		i++;
 
+		
 		String name = aObject->RetrieveObjName();      // trying RetrieveObjName over RetriveName
 		name.append("##"); name.append(to_string(*id)); //id for gameobject
 
-		bool treeNodeOpen = ImGui::TreeNodeEx(name.c_str(),
-			ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_FramePadding |
-			ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth, aObject->RetrieveObjName().c_str(), i);
+		ImGuiTreeNodeFlags node_flags = base_flags;
+		const bool is_selected = (selection_mask & (1 << i)) != 0;
+		if (is_selected)
+			node_flags |= ImGuiTreeNodeFlags_Selected;
+
+
+		bool treeNodeOpen = ImGui::TreeNodeEx(name.c_str(), node_flags, 
+			aObject->RetrieveObjName().c_str(), i);
+
 
 		if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
 		{
