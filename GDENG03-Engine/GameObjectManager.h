@@ -44,10 +44,10 @@ public:
 	void deleteObject(AGameObject* gameObject);
 
 	void setSelectedObject(AGameObject* gameObject);
-	void addToSelectedObject(AGameObject* gameObject);
 
 	AGameObject* getSelectedObject();
 	List retrieveBaseParentObject();
+	List getSelectedObjectsList();
 
 	bool IsLinkingEnabled();
 	void SetLinkingEnabled(bool flag);
@@ -58,7 +58,7 @@ private:
 	HashTable aTable;
 	List aList;
 	AGameObject* selectedObject = nullptr;
-	
+	List selectedObjectsList;
 
 	// Object counts
 	int cubeCount = 0;

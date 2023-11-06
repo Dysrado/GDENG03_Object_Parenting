@@ -178,6 +178,17 @@ void GameObjectManager::setSelectedObject(AGameObject* gameObject)
 		Key.append(std::to_string(i));
 	}
 	selectedObject = aTable[Key];
+
+	// For multiple selection
+	bool isDuplicate = false;
+	for(int i = 0; i < selectedObjectsList.size(); i++)			// check if object is already selected
+	{
+		if (selectedObjectsList[i]->RetrieveObjName() == gameObject->RetrieveObjName())
+			isDuplicate = true;
+	}
+
+	if(!isDuplicate)
+	selectedObjectsList.push_back(selectedObject);
 }
 
 AGameObject* GameObjectManager::getSelectedObject()
@@ -196,6 +207,11 @@ GameObjectManager::List GameObjectManager::retrieveBaseParentObject()
 	}
 
 	return allParentObject;
+}
+
+GameObjectManager::List GameObjectManager::getSelectedObjectsList()
+{
+	return selectedObjectsList;
 }
 
 bool GameObjectManager::IsLinkingEnabled()
