@@ -15,7 +15,7 @@ Toolbar::~Toolbar()
 
 void Toolbar::drawUI()
 {
-	//ImGui::ShowDemoWindow(); // Show demo window! :)
+	ImGui::ShowDemoWindow(); // Show demo window! :)
 
 	
 	if (ImGui::BeginMainMenuBar()) {
