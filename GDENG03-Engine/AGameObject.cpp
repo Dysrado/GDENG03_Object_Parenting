@@ -68,11 +68,34 @@ void AGameObject::SetParent(AGameObject* reference)
 	std::cout << "Added Parent " << name << " to " << this->parent->name << std::endl;
 }
 
+void AGameObject::RemoveParent(AGameObject* reference)
+{
+	this->parent->RemoveChild(reference);
+	this->parent = nullptr;
+}
+
 void AGameObject::AttachChild(AGameObject* reference)
 {
 	childrenList.push_back(reference);
 	reference->SetParent(this);
 	
+}
+
+void AGameObject::RemoveChild(AGameObject* reference)
+{
+	if (std::find(childrenList.begin(), childrenList.end(), reference) != childrenList.end()) {
+		// Found the item
+	}
+
+	for(int i = 0; i < childrenList.size();  i++)
+	{
+		if (childrenList[i] == reference)
+		{
+			childrenList.erase(childrenList.begin() + i);
+			break;
+		}
+	}
+
 }
 
 bool AGameObject::HasParent()

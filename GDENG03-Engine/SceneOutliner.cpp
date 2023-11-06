@@ -55,6 +55,18 @@ void SceneOutliner::drawUI()
 
 		if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
 		{
+			if (GameObjectManager::getInstance()->IsLinkingEnabled())
+			{
+				//Case 1: If a children still has attachment to its parent
+				if (GameObjectManager::getInstance()->getSelectedObject()->HasParent())
+					GameObjectManager::getInstance()->getSelectedObject()->
+					RemoveParent(GameObjectManager::getInstance()->getSelectedObject());
+
+				
+				//Case 2: if a children has no attachment to its parent
+				aObject->AttachChild(GameObjectManager::getInstance()->getSelectedObject());
+				GameObjectManager::getInstance()->SetLinkingEnabled(false);
+			}
 			GameObjectManager::getInstance()->setSelectedObject(aObject);
 			node_clicked = i;
 		}
@@ -124,6 +136,17 @@ void SceneOutliner::DrawtreeNode(int *id, AGameObject* aObject)
 
 		if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
 		{
+			if(GameObjectManager::getInstance()->IsLinkingEnabled())
+			{
+				//Case 3: If a children still has attachment to its parent
+				if (GameObjectManager::getInstance()->getSelectedObject()->HasParent())
+					GameObjectManager::getInstance()->getSelectedObject()->
+						RemoveParent(GameObjectManager::getInstance()->getSelectedObject());
+
+				//Case 2: if a children has no attachment to its parent
+				aObject->AttachChild(GameObjectManager::getInstance()->getSelectedObject());
+				GameObjectManager::getInstance()->SetLinkingEnabled(false);
+			}
 			GameObjectManager::getInstance()->setSelectedObject(aObject);
 			node_clicked = i;
 		}

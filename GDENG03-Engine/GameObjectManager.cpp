@@ -198,4 +198,16 @@ GameObjectManager::List GameObjectManager::retrieveBaseParentObject()
 	return allParentObject;
 }
 
+bool GameObjectManager::IsLinkingEnabled()
+{
+	return isLinkEnable;
+}
+
+void GameObjectManager::SetLinkingEnabled(bool flag)
+{
+	isLinkEnable = flag;
+}
+
+
+
 

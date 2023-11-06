@@ -76,9 +76,30 @@ void InspectorWindow::drawUI()
 		selectedObject->setScale(s[0], s[1], s[2]);
 
 		ImGui::Text("Parent Name: %s", selectedObject->RetrieveParentName().c_str());
+
+
+		//Button Status
+		bool status = GameObjectManager::getInstance()->IsLinkingEnabled();
+		if (ImGui::Button("Link"))
+		{
+			status = true;
+			GameObjectManager::getInstance()->SetLinkingEnabled(status);
+		}
+			
+
+		if (status == true)
+		{
+			ImGui::SameLine();
+			ImGui::Text("Pick GameObject");
+		}
 		
 
-		
+		if (selectedObject->HasParent())
+		{
+			if (ImGui::Button("Unlink"))
+				GameObjectManager::getInstance()->getSelectedObject()->
+				RemoveParent(GameObjectManager::getInstance()->getSelectedObject());
+		}
 	}
 	ImGui::End();
 }

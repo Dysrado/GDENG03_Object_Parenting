@@ -49,6 +49,9 @@ public:
 	AGameObject* getSelectedObject();
 	List retrieveBaseParentObject();
 
+	bool IsLinkingEnabled();
+	void SetLinkingEnabled(bool flag);
+
 private:
 	static GameObjectManager* sharedInstance;
 
@@ -60,5 +63,9 @@ private:
 	// Object counts
 	int cubeCount = 0;
 	int planeCount = 0;
+
+	//Object Parenting
+	bool isLinkEnable = false;
+	
 };
 

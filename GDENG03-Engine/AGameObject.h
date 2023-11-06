@@ -45,7 +45,9 @@ public:
 	virtual void IncrementRot(float offset);
 
 	void SetParent(AGameObject* reference);
+	void RemoveParent(AGameObject* reference);
 	void AttachChild(AGameObject* reference);
+	void RemoveChild(AGameObject* reference);
 	bool HasParent();
 	std::vector<AGameObject* > RetrieveAllChildren();
 
@@ -56,6 +58,9 @@ public:
 	bool IsEnabled();
 
 	Matrix4x4 getLocalMatrix();
+
+	//placeholder function - cant think of an optimized way of deleting
+	bool isSameGameObject(AGameObject* reference);
 	
 private:
 	string name;
