@@ -75,6 +75,9 @@ void InspectorWindow::drawUI()
 		selectedObject->setRotation(r[0], r[1], r[2]);
 		selectedObject->setScale(s[0], s[1], s[2]);
 
+		ImGui::Text("Parent Name: %s", selectedObject->RetrieveParentName().c_str());
+		
+
 		
 	}
 	ImGui::End();

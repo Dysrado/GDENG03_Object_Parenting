@@ -99,6 +99,15 @@ string AGameObject::RetrieveObjName()
 	return this->name;
 }
 
+string AGameObject::RetrieveParentName()
+{
+	if (parent == nullptr) {
+		return "NULL";
+	}
+
+	return parent->RetrieveObjName();
+}
+
 void AGameObject::setEnabled(bool flag)
 {
 	isEnabled = flag;

@@ -51,6 +51,7 @@ public:
 
 	string RetrieveName();
 	string RetrieveObjName();
+	string RetrieveParentName();
 	void setEnabled(bool flag);
 	bool IsEnabled();
 

@@ -46,7 +46,7 @@ public:
 	void setSelectedObject(AGameObject* gameObject);
 	void addToSelectedObject(AGameObject* gameObject);
 
-	//AGameObject* getSelectedObject();
+	AGameObject* getSelectedObject();
 	List retrieveBaseParentObject();
 
 private:
