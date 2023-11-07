@@ -33,14 +33,17 @@ public:
 	void setPosition(float x, float y, float z);
 	void setPosition(Vector3D pos);
 	Vector3D getLocalPosition();
+	Vector3D getParentLocalPosition();
 
 	void setScale(float x, float y, float z);
 	void setScale(Vector3D scale);
 	Vector3D getLocalScale();
+	Vector3D getParentLocalScale();
 
 	void setRotation(float x, float y, float z);
 	void setRotation(Vector3D rot);
 	Vector3D getLocalRotation();
+	Vector3D getParentLocalRotation();
 
 	virtual void IncrementRot(float offset);
 
