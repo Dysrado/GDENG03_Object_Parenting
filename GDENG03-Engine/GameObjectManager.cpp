@@ -167,7 +167,7 @@ void GameObjectManager::deleteObject(AGameObject* gameObject)
 	//}
 }
 
-void GameObjectManager::setSelectedObject(AGameObject* gameObject)
+void GameObjectManager::setSelectedObject(AGameObject* gameObject, bool isMultiselect)
 {
 	String Key = gameObject->RetrieveName();
 	int i = 0;
@@ -179,6 +179,10 @@ void GameObjectManager::setSelectedObject(AGameObject* gameObject)
 	}
 	selectedObject = aTable[Key];
 
+
+	if (!isMultiselect)
+		selectedObjectsList.clear();
+
 	// For multiple selection
 	bool isDuplicate = false;
 	for(int i = 0; i < selectedObjectsList.size(); i++)			// check if object is already selected
@@ -188,7 +192,18 @@ void GameObjectManager::setSelectedObject(AGameObject* gameObject)
 	}
 
 	if(!isDuplicate)
-	selectedObjectsList.push_back(selectedObject);
+		selectedObjectsList.push_back(selectedObject);
+}
+
+bool GameObjectManager::isSelectedOnObjectList(AGameObject* game_object)
+{
+	for(AGameObject* AObject : selectedObjectsList)
+	{
+		if (AObject == game_object)
+			return true;
+	}
+
+	return false;
 }
 
 AGameObject* GameObjectManager::getSelectedObject()

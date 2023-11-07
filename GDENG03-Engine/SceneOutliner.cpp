@@ -47,8 +47,8 @@ void SceneOutliner::drawUI()
 		name.append("##"); name.append(to_string(id)); //id for gameobject
 
 		ImGuiTreeNodeFlags node_flags = base_flags;
-		const bool is_selected = (selection_mask & (1 << i)) != 0;
-		if (is_selected)
+
+		if (GameObjectManager::getInstance()->isSelectedOnObjectList(aObject))
 			node_flags |= ImGuiTreeNodeFlags_Selected;
 		
 		bool treeNodeOpen = ImGui::TreeNodeEx(name.c_str(), node_flags, aObject->RetrieveObjName().c_str(), i);
@@ -67,7 +67,12 @@ void SceneOutliner::drawUI()
 				aObject->AttachChild(GameObjectManager::getInstance()->getSelectedObject());
 				GameObjectManager::getInstance()->SetLinkingEnabled(false);
 			}
-			GameObjectManager::getInstance()->setSelectedObject(aObject);
+
+			//Multi-Selecting
+			if (ImGui::GetIO().KeyCtrl)
+				GameObjectManager::getInstance()->setSelectedObject(aObject, true);
+			else
+				GameObjectManager::getInstance()->setSelectedObject(aObject, false);
 			node_clicked = i;
 		}
 			
@@ -80,15 +85,15 @@ void SceneOutliner::drawUI()
 		i++;
 	}
 
-	if (node_clicked != -1)
-	{
-		// Update selection state
-		// (process outside of tree loop to avoid visual inconsistencies during the clicking frame)
-		if (ImGui::GetIO().KeyCtrl)
-			selection_mask ^= (1 << node_clicked);          // CTRL+click to toggle
-		else //if (!(selection_mask & (1 << node_clicked))) // Depending on selection behavior you want, may want to preserve selection when clicking on item that is part of the selection
-			selection_mask = (1 << node_clicked);           // Click to single-select
-	}
+	//if (node_clicked != -1)
+	//{
+	//	// Update selection state
+	//	// (process outside of tree loop to avoid visual inconsistencies during the clicking frame)
+	//	if (ImGui::GetIO().KeyCtrl)
+	//		selection_mask ^= (1 << node_clicked);          // CTRL+click to toggle
+	//	else //if (!(selection_mask & (1 << node_clicked))) // Depending on selection behavior you want, may want to preserve selection when clicking on item that is part of the selection
+	//		selection_mask = (1 << node_clicked);           // Click to single-select
+	//}
 
 
 
@@ -125,8 +130,8 @@ void SceneOutliner::DrawtreeNode(int *id, AGameObject* aObject)
 		name.append("##"); name.append(to_string(*id)); //id for gameobject
 
 		ImGuiTreeNodeFlags node_flags = base_flags;
-		const bool is_selected = (selection_mask & (1 << i)) != 0;
-		if (is_selected)
+		
+		if (GameObjectManager::getInstance()->isSelectedOnObjectList(aObject))
 			node_flags |= ImGuiTreeNodeFlags_Selected;
 
 
@@ -147,7 +152,11 @@ void SceneOutliner::DrawtreeNode(int *id, AGameObject* aObject)
 				aObject->AttachChild(GameObjectManager::getInstance()->getSelectedObject());
 				GameObjectManager::getInstance()->SetLinkingEnabled(false);
 			}
-			GameObjectManager::getInstance()->setSelectedObject(aObject);
+			//Multi-Selecting
+			if (ImGui::GetIO().KeyCtrl)
+				GameObjectManager::getInstance()->setSelectedObject(aObject, true);
+			else
+				GameObjectManager::getInstance()->setSelectedObject(aObject, false);
 			node_clicked = i;
 		}
 

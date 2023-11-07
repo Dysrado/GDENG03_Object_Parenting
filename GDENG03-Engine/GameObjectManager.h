@@ -43,7 +43,8 @@ public:
 	void createObject(PrimitiveType type, void* shaderByteCode, size_t sizeShader);
 	void deleteObject(AGameObject* gameObject);
 
-	void setSelectedObject(AGameObject* gameObject);
+	void setSelectedObject(AGameObject* gameObject, bool isMultiSelect);
+	bool isSelectedOnObjectList(AGameObject* game_object);
 
 	AGameObject* getSelectedObject();
 	List retrieveBaseParentObject();
