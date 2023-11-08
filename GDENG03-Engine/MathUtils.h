@@ -4,4 +4,5 @@ class MathUtils
 public:
 	static float randomFloat(float a, float b);
 	static int randomInt(int a, int b);
+	static float extractScaleTransform(float x, float y, float z);
 };

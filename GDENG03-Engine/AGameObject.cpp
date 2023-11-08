@@ -6,6 +6,7 @@ AGameObject::AGameObject(string name)
 	this->localPosition = Vector3D::zeros();
 	this->localRotation = Vector3D::zeros();
 	this->localScale = Vector3D(1.0f, 1.0f, 1.0f);
+	this->localMatrix.setIdentity();
 	this->parent = nullptr;
 }
 
@@ -69,11 +70,6 @@ Vector3D AGameObject::getParentLocalScale()
 		return Vector3D((parentLocalScale.m_x - 1.0f) + localScale.m_x,
 			(parentLocalScale.m_y - 1.0f) + localScale.m_y,
 			(parentLocalScale.m_z - 1.0f) + localScale.m_z);
-
-		/*return Vector3D((parentLocalScale.m_x) * localScale.m_x,
-			(parentLocalScale.m_y ) * localScale.m_y,
-			(parentLocalScale.m_z ) * localScale.m_z
-		);*/
 	}
 
 	return getLocalScale();
@@ -145,12 +141,6 @@ void AGameObject::RemoveParent(AGameObject* reference)
 		(parentLocalScale.m_z - 1.0f) + localScale.m_z
 	);
 
-	/*this->localScale = Vector3D(
-		(parentLocalScale.m_x) * localScale.m_x,
-		(parentLocalScale.m_y) * localScale.m_y,
-		(parentLocalScale.m_z) * localScale.m_z
-	);*/
-
 	//Rotation
 	this->localRotation = Vector3D(
 		parentLocalRotation.m_x + localRotation.m_x,
@@ -159,18 +149,7 @@ void AGameObject::RemoveParent(AGameObject* reference)
 	);
 
 	this->localMatrix *= parent->getLocalMatrix() ;
-	/*this->localPosition = Vector3D(localMatrix.m_mat[3][0]+localPosition.m_x, 
-		localMatrix.m_mat[3][1] + localPosition.m_y,
-		localMatrix.m_mat[3][2] + localPosition.m_z);*/
 
-	/*this->localPosition = Vector3D(localMatrix.m_mat[3][0],
-		localMatrix.m_mat[3][1],
-		localMatrix.m_mat[3][2]);
-
-
-	this->localScale = Vector3D(localMatrix.m_mat[0][0] + localScale.m_x,
-		localMatrix.m_mat[1][1]+ localScale.m_y,
-		localMatrix.m_mat[2][2]+ localScale.m_z);*/
 
 	this->parent->RemoveChild(reference);
 	this->parent = nullptr;
@@ -249,4 +228,51 @@ Matrix4x4 AGameObject::getLocalMatrix()
 	
 	return localMatrix.multiplyTo(parent->getLocalMatrix());
 		
+}
+
+// This function is meant for retrieving the finalMatrixTransformation including self
+Matrix4x4 AGameObject::computeLocalMatrix()
+{
+	Matrix4x4 finalMatrix;
+	Matrix4x4 temp;
+
+
+	finalMatrix.setIdentity();
+	temp.setIdentity();
+
+	//Scaling
+	temp.setScale(this->getLocalScale());
+	finalMatrix *= temp;
+
+
+	//Initial Rotation
+	Matrix4x4 Rot;
+	Rot.setIdentity();
+
+	temp.setIdentity();
+	temp.setRotationX(this->getLocalRotation().m_x);
+	Rot *= temp;
+
+	temp.setIdentity();
+	temp.setRotationY(this->getLocalRotation().m_y);
+	Rot *= temp;
+
+	temp.setIdentity();
+	temp.setRotationZ(this->getLocalRotation().m_z);
+
+	Rot *= temp;
+	finalMatrix *= Rot;
+
+	//Translation
+	temp.setIdentity();
+	temp.setTranslation(this->getLocalPosition());
+	finalMatrix *= temp;
+
+	// If Parent Exists, then Follow Parent Transform
+	if (parent != nullptr)
+	{
+		finalMatrix *= parent->getLocalMatrix(); //Fundamental problem
+	}
+
+	return finalMatrix;
 }

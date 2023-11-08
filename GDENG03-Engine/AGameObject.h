@@ -61,6 +61,7 @@ public:
 	bool IsEnabled();
 
 	Matrix4x4 getLocalMatrix();
+	Matrix4x4 computeLocalMatrix();
 
 	//placeholder function - cant think of an optimized way of deleting
 	bool isSameGameObject(AGameObject* reference);
