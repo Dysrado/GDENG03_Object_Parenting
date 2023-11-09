@@ -123,9 +123,19 @@ void AGameObject::RemoveParent(AGameObject* reference)
 	//2) Scale
 	//3) Rotation
 
+	if (reference->parent == nullptr)
+	{
+		std::cout << "Object " << reference->name << " has no parent!\n";
+	}
+
 	Vector3D parentLocalPosition = parent->getParentLocalPosition();
 	Vector3D parentLocalScale = parent->getParentLocalScale();
 	Vector3D parentLocalRotation = parent->getParentLocalRotation();
+	Matrix4x4 parentMatrix = reference->getLocalMatrix();
+
+	parentMatrix.inverse();
+
+	this->localMatrix *= parentMatrix;
 
 	//Translation
 	this->localPosition = Vector3D(
@@ -147,8 +157,6 @@ void AGameObject::RemoveParent(AGameObject* reference)
 		parentLocalRotation.m_y + localRotation.m_y,
 		parentLocalRotation.m_z + localRotation.m_z
 	);
-
-	this->localMatrix *= parent->getLocalMatrix() ;
 
 
 	this->parent->RemoveChild(reference);
