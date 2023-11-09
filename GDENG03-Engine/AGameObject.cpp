@@ -221,36 +221,29 @@ void AGameObject::SetParent(AGameObject* reference)
 	}
 
 	//Case 3
+
+	//Step 1: Get Previous Parent Transform
+	Matrix4x4 prevParentMatrix = parent->computeWorldMatrix();
+
+	//Step 2: Remove Child and Get its Own Matrix
 	parent->RemoveChild(this);
 	this->RemoveParent(parent);
-	this->parent = reference;
-	
-	//Position Parent Transform
-	//Matrix4x4 FinalMatrix = parent->computeWorldMatrix();
-
-	/*this->localPosition = Vector3D(
-		FinalMatrix.m_mat[3][0] - localPosition.m_x,
-		FinalMatrix.m_mat[3][1] - localPosition.m_y,
-		FinalMatrix.m_mat[3][2] - localPosition.m_z)*/;
-
-	//Vector3D parentPosition = parent->getParentLocalPosition();
-	//this->localPosition = Vector3D(
-	//	localPosition.m_x + parentPosition.m_x,
-	//	localPosition.m_y + parentPosition.m_y,
-	//	localPosition.m_z + parentPosition.m_z
-	//);
 	Matrix4x4 ownWorldMatrix = this->computeWorldMatrix();
+
+	//Step 3: Get The attaching parent world Matrix 
+	this->parent = reference;
 	Matrix4x4 FinalMatrix = parent->computeWorldMatrix();
-
-	this->localPosition = Vector3D(
-		ownWorldMatrix.m_mat[3][0] + FinalMatrix.m_mat[3][0],
-		ownWorldMatrix.m_mat[3][1] + FinalMatrix.m_mat[3][1],
-		ownWorldMatrix.m_mat[3][2] + FinalMatrix.m_mat[3][2]
-	);
-
-
-	//Scale Parent Transform
+	
+	
+	
+	//Scale Transformation
 	Vector3D parentScale = parent->getParentLocalScale();
+
+	parentScale = Vector3D(
+		MathUtils::extractScaleTransform(FinalMatrix.m_mat[0][0], FinalMatrix.m_mat[0][1], FinalMatrix.m_mat[0][2]),
+		MathUtils::extractScaleTransform(FinalMatrix.m_mat[1][0], FinalMatrix.m_mat[1][1], FinalMatrix.m_mat[1][2]),
+		MathUtils::extractScaleTransform(FinalMatrix.m_mat[2][0], FinalMatrix.m_mat[2][1], FinalMatrix.m_mat[2][2])
+	);
 
 	temp.setIdentity();
 	temp.setScale(localScale);
@@ -260,7 +253,14 @@ void AGameObject::SetParent(AGameObject* reference)
 		localScale.m_y / parentScale.m_y,
 		localScale.m_z / parentScale.m_z
 	);
-	
+
+
+	// Position Scale
+	this->localPosition = Vector3D(
+		ownWorldMatrix.m_mat[3][0] - FinalMatrix.m_mat[3][0],
+		ownWorldMatrix.m_mat[3][1] - FinalMatrix.m_mat[3][1],
+		ownWorldMatrix.m_mat[3][2] - FinalMatrix.m_mat[3][2]
+	);
 	
 	std::cout << "Added Parent " << name << " to " << this->parent->name << std::endl;
 }
@@ -347,6 +347,22 @@ bool AGameObject::HasParent()
 		return false;
 
 	return true;
+}
+
+bool AGameObject::containSameParent(AGameObject* reference)
+{
+	if(parent != nullptr)
+	{
+		//check if the same or check its root parent
+		bool same = parent->containSameParent(reference) || reference == parent;
+
+		if (same)
+			return same;
+		else
+			return false;
+	}
+
+	return false;
 }
 
 std::vector<AGameObject*> AGameObject::RetrieveAllChildren()

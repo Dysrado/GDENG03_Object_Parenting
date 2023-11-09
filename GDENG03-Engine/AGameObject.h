@@ -52,6 +52,7 @@ public:
 	void AttachChild(AGameObject* reference);
 	void RemoveChild(AGameObject* reference);
 	bool HasParent();
+	bool containSameParent(AGameObject* reference);
 	std::vector<AGameObject* > RetrieveAllChildren();
 
 	string RetrieveName();

@@ -1,6 +1,7 @@
 #include "UIManager.h"
 
 #include "EngineProfiler.h"
+#include "GameObjectManager.h"
 #include "InspectorWindow.h"
 #include "SceneOutliner.h"
 
@@ -47,6 +48,11 @@ void UIManager::drawAllUI()
 		this->uiList[i]->drawUI();
 	}
 
+	//Disabling Button Click
+	if (ImGui::GetIO().MouseClicked[1]) //Right Clicking
+	{
+		GameObjectManager::getInstance()->clearSelectedObjectList();
+	}
 
 
 	ImGui::Render();

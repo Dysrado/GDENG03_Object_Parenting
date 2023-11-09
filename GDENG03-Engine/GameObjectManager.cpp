@@ -131,16 +131,7 @@ void GameObjectManager::createObject(PrimitiveType type, void* shaderByteCode, s
 
 void GameObjectManager::deleteObject(AGameObject* gameObject)
 {
-	/*for (auto it = aList.begin(); it != aList.end();)
-	{
-		if (it->first % 2 != 0)
-			it = c.erase(it);
-		else
-			++it;
-	}*/
-
 	
-
 	//First Method
 	for(int i = 0; i < aList.size(); i++)
 	{
@@ -154,17 +145,12 @@ void GameObjectManager::deleteObject(AGameObject* gameObject)
 		}
 	}
 
-	
+}
 
-	
-	//for (AGameObject* aObject : aList)
-	//{
-	//	if (aObject == gameObject)
-	//	{
-	//		//Potential Issue for the way how it destroye
-	//		aList.erase(aObject);
-	//	}
-	//}
+void GameObjectManager::clearSelectedObjectList()
+{
+	selectedObject = nullptr;
+	selectedObjectsList.clear();
 }
 
 void GameObjectManager::setSelectedObject(AGameObject* gameObject, bool isMultiselect)
