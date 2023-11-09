@@ -188,7 +188,13 @@ void Cube::update(float deltaTime)
 	// If Parent Exists, then Follow Parent Transform
 	if (parent != nullptr) 
 	{
-		cc.m_world *= parent->getLocalMatrix(); //Fundamental problem
+		Matrix4x4 worldMat;
+		worldMat = parent->getLocalMatrix();
+		worldMat.inverse();
+		worldMat *= this->getLocalMatrix();
+
+		cc.m_world = worldMat; 
+		//cc.m_world *= parent->getLocalMatrix(); //Fundamental problem
 		//cc.m_world.getScale().debugPrint();
 	}
 
