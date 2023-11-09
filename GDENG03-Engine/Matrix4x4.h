@@ -126,6 +126,21 @@ public:
 		setMatrix(out);
 	}
 
+	bool operator ==(const Matrix4x4& matrix)
+	{
+		Matrix4x4 out;
+		for (int i = 0; i < 4; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				if (matrix.m_mat[i][j] != m_mat[i][j])
+					return false;
+			}
+		}
+
+		return true;
+	}
+
 	Matrix4x4 multiplyTo(Matrix4x4 matrix)
 	{
 		Matrix4x4 out;
@@ -181,6 +196,16 @@ public:
 		m_mat[1][1] = 2.0f / height;
 		m_mat[2][2] = 1.0f / (far_plane - near_plane);
 		m_mat[3][2] = -(near_plane / (far_plane - near_plane));
+	}
+
+	void debugPrint()
+	{
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				std::cout << this->m_mat[i][j] << " ";
+			}
+			std::cout << "\n";
+		}
 	}
 
 	~Matrix4x4()

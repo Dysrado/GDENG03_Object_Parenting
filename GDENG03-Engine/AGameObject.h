@@ -62,6 +62,7 @@ public:
 
 	Matrix4x4 getLocalMatrix();
 	Matrix4x4 computeLocalMatrix();
+	Matrix4x4 computeWorldMatrix();
 
 	//placeholder function - cant think of an optimized way of deleting
 	bool isSameGameObject(AGameObject* reference);
