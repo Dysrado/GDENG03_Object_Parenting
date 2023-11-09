@@ -128,36 +128,37 @@ void AGameObject::RemoveParent(AGameObject* reference)
 		std::cout << "Object " << reference->name << " has no parent!\n";
 	}
 
-	Vector3D parentLocalPosition = parent->getParentLocalPosition();
-	Vector3D parentLocalScale = parent->getParentLocalScale();
-	Vector3D parentLocalRotation = parent->getParentLocalRotation();
+	//Vector3D parentLocalPosition = parent->getParentLocalPosition();
+	//Vector3D parentLocalScale = parent->getParentLocalScale();
+	//Vector3D parentLocalRotation = parent->getParentLocalRotation();
+	//
+
+	////Translation
+	//this->localPosition = Vector3D(
+	//	parentLocalPosition.m_x + localPosition.m_x,
+	//	parentLocalPosition.m_y + localPosition.m_y,
+	//	parentLocalPosition.m_z + localPosition.m_z
+	//);
+
+	////Scale
+	//this->localScale = Vector3D(
+	//	(parentLocalScale.m_x - 1.0f) + localScale.m_x,
+	//	(parentLocalScale.m_y - 1.0f) + localScale.m_y,
+	//	(parentLocalScale.m_z - 1.0f) + localScale.m_z
+	//);
+
+	////Rotation
+	//this->localRotation = Vector3D(
+	//	parentLocalRotation.m_x + localRotation.m_x,
+	//	parentLocalRotation.m_y + localRotation.m_y,
+	//	parentLocalRotation.m_z + localRotation.m_z
+	//);
+
 	Matrix4x4 parentMatrix = reference->getLocalMatrix();
 
 	parentMatrix.inverse();
 
 	this->localMatrix *= parentMatrix;
-
-	//Translation
-	this->localPosition = Vector3D(
-		parentLocalPosition.m_x + localPosition.m_x,
-		parentLocalPosition.m_y + localPosition.m_y,
-		parentLocalPosition.m_z + localPosition.m_z
-	);
-
-	//Scale
-	this->localScale = Vector3D(
-		(parentLocalScale.m_x - 1.0f) + localScale.m_x,
-		(parentLocalScale.m_y - 1.0f) + localScale.m_y,
-		(parentLocalScale.m_z - 1.0f) + localScale.m_z
-	);
-
-	//Rotation
-	this->localRotation = Vector3D(
-		parentLocalRotation.m_x + localRotation.m_x,
-		parentLocalRotation.m_y + localRotation.m_y,
-		parentLocalRotation.m_z + localRotation.m_z
-	);
-
 
 	this->parent->RemoveChild(reference);
 	this->parent = nullptr;
