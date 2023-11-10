@@ -76,7 +76,7 @@ void InspectorWindow::drawUI()
 
 			if (ImGui::Checkbox("Enabled", &isEnable))
 			{
-				selectedObject->setEnabled(isEnable);
+				UpdateChildrenEnableFlag(selectedObjectsList, isEnable);
 			};
 
 			ImGui::DragFloat3("Position", t, 0.1f);
@@ -140,7 +140,7 @@ void InspectorWindow::drawUI()
 		text.append("---");
 
 		// In Unity, this is represented by --, but since this is a bool, default true is fine
-		bool isEnable = true; 
+		bool isEnable = selectedObjectsList[0]->IsEnabled();
 
 		// In Unity, this is represented by --, but since this is a int, using 0 is fine
 		float t[3] = {
@@ -163,10 +163,15 @@ void InspectorWindow::drawUI()
 
 		if (ImGui::Checkbox("Enabled", &isEnable))
 		{
+			UpdateChildrenEnableFlag(selectedObjectsList, isEnable);
+			/*
 			for(int i = 0; i < selectedObjectsList.size(); i++)
 			{
+				int childrenCount = selectedObjectsList[i]->RetrieveAllChildren().size();
+
 				selectedObjectsList[i]->setEnabled(isEnable);
 			}
+			*/
 		};
 
 		ImGui::DragFloat3("Position", t, 0.1f);
@@ -185,4 +190,19 @@ void InspectorWindow::drawUI()
 	}
 
 	ImGui::End();
+}
+
+void InspectorWindow::UpdateChildrenEnableFlag(GameObjectManager::List selectedObjectsList, bool isEnable)
+{
+	for (int i = 0; i < selectedObjectsList.size(); i++)
+	{
+		int childrenCount = selectedObjectsList[i]->RetrieveAllChildren().size();
+		if(childrenCount > 0)
+		{
+			UpdateChildrenEnableFlag(selectedObjectsList[i]->RetrieveAllChildren(), isEnable);
+		}
+
+		selectedObjectsList[i]->setEnabled(isEnable);
+	}
+
 }

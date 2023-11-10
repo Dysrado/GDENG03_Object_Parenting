@@ -1,4 +1,5 @@
 #pragma once
+#include "GameObjectManager.h"
 #include "UINames.h"
 
 class InspectorWindow: public AUIScreen
@@ -8,5 +9,8 @@ public:
 	~InspectorWindow();
 
 	void drawUI() override;
+
+private:
+	void UpdateChildrenEnableFlag(GameObjectManager::List selectedObjectsList, bool isEnable);
 };
 
