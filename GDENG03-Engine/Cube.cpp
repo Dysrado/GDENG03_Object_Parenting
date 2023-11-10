@@ -11,22 +11,7 @@
 Cube::Cube(string name, void* shaderByteCode, size_t sizeShader): AGameObject(name)
 {
 	typeName = "Cube";
-	//TODO: White Version of the Shaders
-	//Vertex cubeList[] =
-	//{
-	//	//X - Y - Z
-	//	//FRONT FACE
-	//	{Vector3D(-0.5f,-0.5f,-0.5f),    Vector3D(1,1,0.95f),  Vector3D(1,0.95f,1)},
-	//	{Vector3D(-0.5f,0.5f,-0.5f),    Vector3D(1,0.95f,1), Vector3D(1,0.95f,1) },
-	//	{ Vector3D(0.5f,0.5f,-0.5f),   Vector3D(1,1,0.95f),  Vector3D(1,1,0.95f) },
-	//	{ Vector3D(0.5f,-0.5f,-0.5f),    Vector3D(1,0.95f,1),Vector3D(1,0.95f,1) },
-
-	//	//BACK FACE
-	//	{ Vector3D(0.5f,-0.5f,0.5f),    Vector3D(1,1,0.95f),  Vector3D(1,0.95f,1) },
-	//	{ Vector3D(0.5f,0.5f,0.5f),    Vector3D(1,0.95f,1),Vector3D(1,0.95f,1) },
-	//	{ Vector3D(-0.5f,0.5f,0.5f),  Vector3D(1,1,0.95f),  Vector3D(1,0.95f,1) },
-	//	{ Vector3D(-0.5f,-0.5f,0.5f),    Vector3D(1,0.95f,1),Vector3D(1,0.95f,1) }
-	//};
+	
 
 
 
@@ -49,22 +34,7 @@ Cube::Cube(string name, void* shaderByteCode, size_t sizeShader): AGameObject(na
 	};
 
 
-	//TODO: Custom Version of the Shaders Blue to Red
-	//Vertex cubeList[] =
-	//{
-	//	//X - Y - Z
-	//	//FRONT FACE
-	//	{Vector3D(-0.5f,-0.5f,-0.5f),    Vector3D(0,0,1),  Vector3D(1,0,0)},
-	//	{Vector3D(-0.5f,0.5f,-0.5f),     Vector3D(0,0,1),  Vector3D(1,0,0) },
-	//	{ Vector3D(0.5f,0.5f,-0.5f),    Vector3D(0,0,1),  Vector3D(1,0,0) },
-	//	{ Vector3D(0.5f,-0.5f,-0.5f),    Vector3D(0,0,1),  Vector3D(1,0,0) },
-
-	//	//BACK FACE
-	//	{ Vector3D(0.5f,-0.5f,0.5f),    Vector3D(0,0,1),  Vector3D(1,0,0) },
-	//	{ Vector3D(0.5f,0.5f,0.5f),    Vector3D(0,0,1),  Vector3D(1,0,0) },
-	//	{ Vector3D(-0.5f,0.5f,0.5f),   Vector3D(0,0,1),  Vector3D(1,0,0) },
-	//	{ Vector3D(-0.5f,-0.5f,0.5f),     Vector3D(0,0,1),  Vector3D(1,0,0) }
-	//};
+	
 
 	unsigned int index_list[] =
 	{
@@ -116,8 +86,7 @@ void Cube::update(float deltaTime)
 
 	cc.m_time = (m_rot_x)*this->speed * 100.0f;
 
-	//Vector3D currentScale = Vector3D().lerp(scale1, scale2, delta);
-	//Vector3D currentTranslate = Vector3D().lerp(translate1, translate2, delta);
+	
 
 	localMatrix.setIdentity();
 	cc.m_world.setIdentity();
@@ -126,15 +95,7 @@ void Cube::update(float deltaTime)
 	cc.m_world *= temp;
 	localMatrix = cc.m_world;
 
-	//Animation Scale
-	/*Matrix4x4 Scaling;
-	Scaling.setIdentity();
-
-	temp.setIdentity();
-	temp.setScale(currentScale);
-	Scaling *= temp;
-
-	cc.m_world *= Scaling;*/
+	
 
 
 
@@ -158,50 +119,22 @@ void Cube::update(float deltaTime)
 
 
 
-	////Animation Rotation
-	//temp.setIdentity();
-	//temp.setRotationZ(m_rot_z * speed);
-	//cc.m_world *= temp;
-
-	//temp.setIdentity();
-	//temp.setRotationY(m_rot_y * speed);
-	//cc.m_world *= temp;
-
-	//temp.setIdentity();
-	//temp.setRotationX(m_rot_x * speed);
-	//cc.m_world *= temp;
+	
 
 	temp.setIdentity();
 	temp.setTranslation(this->getLocalPosition());
 	cc.m_world *= temp;
 	localMatrix = cc.m_world;
 
-	//Translation animation
-	/*Matrix4x4 Translate;
-	Translate.setIdentity();
-
-	temp.setIdentity();
-	temp.setTranslation(currentTranslate);
-	Translate *= temp;
-	cc.m_world *= Translate;*/
+	
 
 	// If Parent Exists, then Follow Parent Transform
 	if (parent != nullptr) 
 	{
-		Matrix4x4 worldMat;
-		worldMat = parent->getLocalMatrix();
-		worldMat.inverse();
-		worldMat *= this->getLocalMatrix();
-
-		cc.m_world = worldMat; 
-		//cc.m_world *= parent->getLocalMatrix(); //Fundamental problem
-		//cc.m_world.getScale().debugPrint();
+		
+		cc.m_world *= parent->getLocalMatrix(); 
 	}
 
-	/*for(AGameObject* children : childrenList)
-	{
-		
-	}*/
 	
 	cc.m_view = SceneCameraHandler::getInstance()->getSceneCameraViewMatrix();
 
@@ -212,13 +145,7 @@ void Cube::draw(int width, int height, VertexShader* vertexShader, PixelShader* 
 
 
 	cc.m_proj.setPerspectiveFovLH(1.57f, ((float)width / (float)height), 0.1f, 100.0f);
-	/*cc.m_proj.setOrthoLH
-	(
-		(width) / 300.0f,
-		(height) / 300.0f,
-		-4.0f,
-		4.0f
-	);*/
+	
 
 	constantBuffer->update(GraphicsEngine::get()->getImmediateDeviceContext(), &cc);
 

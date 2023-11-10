@@ -21,18 +21,6 @@
 
 
 
-//__declspec(align(16))
-//
-//struct constant
-//{
-//	Matrix4x4 m_world;
-//	Matrix4x4 m_view;
-//	Matrix4x4 m_proj;
-//	unsigned int m_time;
-//};
-
-//This is a test push
-
 AppWindow::AppWindow()
 {
 }
@@ -65,9 +53,6 @@ void AppWindow::onCreate()
 	GraphicsEngine::get()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shader_byte_code, &size_shader);
 	m_vs = GraphicsEngine::get()->createVertexShader(shader_byte_code, size_shader);
 
-	//TODO: Draw create here
-	//onCubeCreate(shader_byte_code, size_shader);
-	//TODO: STOP DRAWING
 
 	
 	
@@ -85,17 +70,7 @@ void AppWindow::onCreate()
 	UIManager::initialize(m_hwnd);
 	GameObjectManager::initialize();
 
-	//// Setup Dear ImGui context
-	//IMGUI_CHECKVERSION();
-	//ImGui::CreateContext();
-	//ImGuiIO& io = ImGui::GetIO();
-	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-	////io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // IF using Docking Branch
-
-	//// Setup Platform/Renderer backends
-	//ImGui_ImplWin32_Init(m_hwnd);
-	//ImGui_ImplDX11_Init(GraphicsEngine::get()->getDirectD3D11Device(), GraphicsEngine::get()->getImmediateDeviceContext()->getDeviceContext());
+	
 }
 
 void AppWindow::onUpdate()
@@ -104,16 +79,7 @@ void AppWindow::onUpdate()
 	Window::onUpdate();
 	InputSystem::getInstance()->update();
 
-	//// (Your code process and dispatch Win32 messages)
-	//// Start the Dear ImGui frame
-	//ImGui_ImplDX11_NewFrame();
-	//ImGui_ImplWin32_NewFrame();
-	//ImGui::NewFrame();
-	//
-	//
-	////this->onImGUICreate();
-	////if(isDemoActive)
-	////	ImGui::ShowDemoWindow(); // Show demo window! :)
+	
 
 
 	//CLEAR THE RENDER TARGET 
@@ -128,30 +94,7 @@ void AppWindow::onUpdate()
 	GameObjectManager::getInstance()->updateAll();
 	GameObjectManager::getInstance()->renderAll(rc.right - rc.left, rc.bottom - rc.top, m_vs, m_ps);
 
-	////Other Primitive
-	//for (AGameObject* gameobject : GameObjectList)
-	//{
-	//	//TODO: Animation for input press
-	//	/*if (isWPress)
-	//		gameobject->IncrePmentRot(m_delta_time);
-	//	else if (isSPress)
-	//		gameobject->IncrementRot(-m_delta_time);*/
-	//	if(isAnimationActive)
-	//		gameobject->IncrementRot(m_delta_time);
-	//	gameobject->update(m_delta_time);
-	//}
-
-	//for (AGameObject* gameobject : GameObjectList)
-	//{
-	//	gameobject->draw(rc.right - rc.left, rc.bottom - rc.top, m_vs, m_ps);
-	//}
-
-	//// Rendering
- //   // (Your code clears your framebuffer, renders your other stuff etc.)
-	//ImGui::Render();
-	//ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-	//// (Your code calls swapchain's Present() function)
-	///
+	
 
 	UIManager::getInstance()->drawAllUI();
 
@@ -162,9 +105,7 @@ void AppWindow::onUpdate()
 void AppWindow::onDestroy()
 {
 	Window::onDestroy();
-	//m_vb->release();
-	//m_ib->release(); 
-	//m_cb->release();
+	
 	m_swap_chain->release();
 	m_vs->release();
 	m_ps->release();
@@ -183,12 +124,7 @@ void AppWindow::onDestroy()
 
 void AppWindow::onKeyDown(int key)
 {
-	//Sir Neil Template
-	/*cout << "onkeydown:\n";
-	if (InputSystem::getInstance()->isKeyDown('W'))
-	{
-		cout << "W pressed\n";
-	}*/
+	
 
 	if (key == 'W')
 	{
@@ -205,11 +141,7 @@ void AppWindow::onKeyDown(int key)
 
 void AppWindow::onKeyUp(int key)
 {
-	/*cout << "onkeyup:\n";
-	if (InputSystem::getInstance()->isKeyUp('W'))
-	{
-		cout << "W released\n";
-	}*/
+	
 
 	if (key == 'W')
 		isWPress = false;
@@ -220,8 +152,7 @@ void AppWindow::onKeyUp(int key)
 
 void AppWindow::onMouseMove(const Point deltaPos)
 {
-	//Sir Neil Template
-	/*cout << " mouse moved: " << deltaPos.getX() << ", " << deltaPos.getY() << "\n";*/
+	
 
 	int width = (this->getClientWindowRect().right - this->getClientWindowRect().left);
 	int height = (this->getClientWindowRect().bottom - this->getClientWindowRect().top);
@@ -231,9 +162,7 @@ void AppWindow::onMouseMove(const Point deltaPos)
 		m_rot_x += (deltaPos.getY()) * m_delta_time * 0.3f;
 		m_rot_y += (deltaPos.getX()) * m_delta_time * 0.3f;
 
-		//Template
-		/*m_rot_x += (deltaPos.getX() - (height / 2.0f)) * m_delta_time * 0.001f;
-		m_rot_y += (deltaPos.getY() - (width / 2.0f)) * m_delta_time * 0.001f;*/
+		
 
 	}
 
@@ -264,74 +193,13 @@ void AppWindow::onRightMouseUp(const Point deltaPos)
 
 void AppWindow::update()
 {
-	//constant cc;
-	//cc.m_time = ::GetTickCount();
-
-	//m_delta_pos += m_delta_time / 10.0f;
-	//if (m_delta_pos > 1.0f)
-	//	m_delta_pos = 0;
-
-
-	//Matrix4x4 temp;
-
-	//m_delta_scale += m_delta_time / 0.55f;
-
-	//
-
-	//cc.m_world.setIdentity();
-
-	//Matrix4x4 world_cam;
-	//world_cam.setIdentity();
-
-	//temp.setIdentity();
-	//temp.setRotationX(m_rot_x);
-	//world_cam *= temp;
-
-	//temp.setIdentity();
-	//temp.setRotationY(m_rot_y);
-	//world_cam *= temp;
-
-
-	//Vector3D new_pos = m_world_cam.getTranslation() + world_cam.getZDirection() * (m_forward * 0.1f);
-
-	//new_pos = new_pos + world_cam.getXDirection() * (m_rightward * 0.1f);
-
-	//world_cam.setTranslation(new_pos);
-
-	//m_world_cam = world_cam;
-
-
-	//world_cam.inverse();
-
-
-
-
-	//cc.m_view = world_cam;
-	///*cc.m_proj.setOrthoLH
-	//(
-	//	(this->getClientWindowRect().right - this->getClientWindowRect().left)/300.0f,
-	//	(this->getClientWindowRect().bottom - this->getClientWindowRect().top)/300.0f,
-	//	-4.0f,
-	//	4.0f
-	//);*/
-
-	//int width = (this->getClientWindowRect().right - this->getClientWindowRect().left);
-	//int height = (this->getClientWindowRect().bottom - this->getClientWindowRect().top);
-
-
-	//cc.m_proj.setPerspectiveFovLH(1.57f, ((float)width / (float)height), 0.1f, 100.0f);
-
-
-	//m_cb->update(GraphicsEngine::get()->getImmediateDeviceContext(), &cc);
+	
 }
 
 void AppWindow::onImGUICreate()
 {
 	
-	/*if (ImGui::Button("Save"))
-		MySaveFunction();
-	ImGui::InputText("string", buf, IM_ARRAYSIZE(buf));
-	ImGui::SliderFloat("float", &f, 0.0f, 1.0f);*/
+	
 
 
 	static float f = 0.0f;
@@ -343,11 +211,9 @@ void AppWindow::onImGUICreate()
 	ImGui::Checkbox("Show Demo Window", &isDemoActive);       // Edit bools storing our window open/close state
 	
 
-	//ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
 	ImGui::ColorEdit3("clear color", (float*)&bgColor);       // Edit 3 floats representing a color
 
 
-	//TODO Everytime a button is presed change its Text to Resume Animation or Pause Animation
 	if (ImGui::Button(animationIndicator.c_str()))                              // Buttons return true when clicked (most widgets return true when edited/activated)
 	{
 		if (animationIndicator == "Pause Animation")
@@ -374,60 +240,6 @@ void AppWindow::onImGUIUnityTemplate()
 }
 
 
-void AppWindow::onCubeCreate(void* shader_byte_code, size_t size_shader)
-{
-	//Single Random Instance of the object
-	/*Cube* Copy = new Cube("1", shader_byte_code, size_shader);
-	Copy->setPosition(Vector3D(MathUtils::randomFloat(-1.0f, 1.0f),
-		MathUtils::randomFloat(-1.0f, 1.0f),
-		MathUtils::randomFloat(0.0f, 10.0f )));
-	Copy->setAnimSpeed(3.0f);
-	GameObjectList.push_back(Copy);*/
-
-	////Non Random Instance
-	//Cube* First = new Cube("1", shader_byte_code, size_shader);
-	//First->setPosition(Vector3D(-1.5f,1.0f,-3.0f));
-	//First->setAnimSpeed(20.0f);
-	//GameObjectList.push_back(First);
-
-	//Cube* Second = new Cube("1", shader_byte_code, size_shader);
-	//Second->setPosition(Vector3D(0, 1.0f, 0));
-	//Second->setAnimSpeed(20.0f);
-	//GameObjectList.push_back(Second);
-
-	//Cube* Third = new Cube("1", shader_byte_code, size_shader);
-	//Third->setPosition(Vector3D(2.6f, 1.0f, 2.0f));
-	//Third->setAnimSpeed(20.0f);
-	//GameObjectList.push_back(Third);
-
-	//Quads* Plane = new Quads("2", shader_byte_code, size_shader);
-	//Plane->setPosition(Vector3D(0, 0, 0));
-	////Plane->setRotation(90.0f, 0, 0);
-	//Plane->setScale(Vector3D(10.0f, 10.0f, 10.0f));
-	//GameObjectList.push_back(Plane);
-	//
-	
-	
-
-	////TODO: Multiple Random Instancing of Cubes
-	for (int i = 0; i < 50; i++)
-	{
-		Cube* Copy = new Cube("1", shader_byte_code, size_shader);
-		Copy->setPosition(Vector3D(MathUtils::randomFloat(-0.9f, 0.9f),
-			MathUtils::randomFloat(-0.9f, 0.9f),
-			MathUtils::randomFloat(-0.9f, 0.9f)));
-		Copy->setScale(Vector3D(0.25f, 0.25f, 0.25f));
-		Copy->setRotation(Vector3D(MathUtils::randomFloat(-180, 180),
-			MathUtils::randomFloat(-180, 180),
-			MathUtils::randomFloat(-180, 180)));
-
-		float speed = MathUtils::randomFloat(-0.01f, 0.95f) * 10.0f;
-
-		Copy->setAnimSpeed(speed);
-		GameObjectList.push_back(Copy);
-	}
-
-}
 
 
 

@@ -37,7 +37,6 @@ public:
 // Assignment Based Solution
 	float lerp(float min, float max, float f);
 	//Part 2: Cube
-	void onCubeCreate(void* shader_byte_code, size_t size_shader);
 
 
 	// Inherited via InputListener

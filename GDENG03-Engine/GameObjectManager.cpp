@@ -78,7 +78,6 @@ void GameObjectManager::addObject(AGameObject* gameObject)
 		Key = gameObject->RetrieveName();
 		Key.append(std::to_string(i));
 	}
-	//std::pair<String, AGameObject*> pair(Key, gameObject);
 	aTable[Key] = gameObject;
 	aList.push_back(gameObject);
 }
@@ -137,8 +136,7 @@ void GameObjectManager::deleteObject(AGameObject* gameObject)
 	{
 		if(aList[i] == gameObject)
 		{
-			//Potential Issue for the way how it destroyed
-			//aTable.erase(pair);
+			
 			delete(aList[i]);
 			aList.shrink_to_fit();
 			break;

@@ -15,7 +15,6 @@ Toolbar::~Toolbar()
 
 void Toolbar::drawUI()
 {
-	ImGui::ShowDemoWindow(); // Show demo window! :)
 
 	
 	if (ImGui::BeginMainMenuBar()) {
@@ -44,12 +43,7 @@ void Toolbar::drawUI()
 				GameObjectManager::getInstance()->createObject(GameObjectManager::CUBE, shader_byte_code, size_shader);
 				GraphicsEngine::get()->releaseCompiledShader();
 
-				// Remove this once the UI for Parenting a Game object is implemented
-				/*if (GameObjectManager::getInstance()->getSelectedObject() != nullptr)
-				{
-					int numOfObjs = GameObjectManager::getInstance()->getAllObjects().size();
-					GameObjectManager::getInstance()->getAllObjects()[numOfObjs - 1]->SetParent(GameObjectManager::getInstance()->getSelectedObject());
-				}*/
+				
 
 
 				if (GameObjectManager::getInstance()->getSelectedObject() != nullptr)
@@ -58,7 +52,7 @@ void Toolbar::drawUI()
 
 					GameObjectManager::getInstance()->getSelectedObject()->AttachChild(GameObjectManager::getInstance()->getAllObjects()[numOfObjs - 1]);
 				}
-				// End Remove here
+				
 			}
 			if (ImGui::MenuItem("Create Sphere"))
 			{
@@ -76,13 +70,11 @@ void Toolbar::drawUI()
 				GameObjectManager::getInstance()->createObject(GameObjectManager::PLANE, shader_byte_code, size_shader);
 				GraphicsEngine::get()->releaseCompiledShader();
 
-				// Remove this once the UI for Parenting a Game object is implemented
 				if (GameObjectManager::getInstance()->getSelectedObject() != nullptr)
 				{
 					int numOfObjs = GameObjectManager::getInstance()->getAllObjects().size();
 					GameObjectManager::getInstance()->getAllObjects()[numOfObjs - 1]->SetParent(GameObjectManager::getInstance()->getSelectedObject());
 				}
-				// End Remove here
 			}
 
 			if (ImGui::BeginMenu("Create Light"))

@@ -38,18 +38,7 @@ Quads::Quads(string name, void* shaderByteCode, size_t sizeShader) : AGameObject
 
 void Quads::update(float deltaTime)
 {
-	/*cc.m_time = ::GetTickCount();
-
-		m_delta_pos += m_delta_time / 10.0f;
-		if (m_delta_pos > 1.0f)
-			m_delta_pos = 0;*/
-
-			//Engine Time Conversion
-			//cc.m_time = deltaTime / 0.55f;
-
-			/*m_delta_pos += EngineTime::getDeltaTime() / 10.0f;
-			if (m_delta_pos > 1.0f)
-				m_delta_pos = 0;*/
+	
 
 	Matrix4x4 temp;
 

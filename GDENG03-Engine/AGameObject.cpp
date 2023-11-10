@@ -47,15 +47,7 @@ Vector3D AGameObject::getParentLocalPosition()
 
 	return getLocalPosition();
 
-	/*if (object.parent) {
-		glm::mat4 parentWorldTransform = object.parent->localTransform * UpdateWorldTransform(*object.parent);
-		object.localTransform = glm::translate(glm::mat4(1.0), object.translation);
-		return parentWorldTransform * object.localTransform;
-	}
-	else {
-		object.localTransform = glm::translate(glm::mat4(1.0), object.translation);
-		return object.localTransform;
-	}*/
+	
 }
 
 void AGameObject::setScale(float x, float y, float z)
@@ -177,16 +169,7 @@ void AGameObject::SetParent(AGameObject* reference)
 		
 
 		
-		//Matrix4x4 FinalMatrix = parent->computeWorldMatrix();
-		//Option 1:
-
-		//this->localPosition = Vector3D(
-		//	localPosition.m_x - FinalMatrix.m_mat[3][0],
-		//	localPosition.m_y - FinalMatrix.m_mat[3][1],
-		//	localPosition.m_z - FinalMatrix.m_mat[3][2]
-		//);
-
-		//Option 1:
+		
 		cout << "Child No Parent" << endl;
 		
 		ownWorldMatrix.debugPrint();
@@ -202,18 +185,7 @@ void AGameObject::SetParent(AGameObject* reference)
 			 ownWorldMatrix.m_mat[3][2] - FinalMatrix.m_mat[3][2]
 		);
 
-		//std::cout << "A World Position %s, % "
-
-
-
-		////Option 2:
-		//Vector3D parentPosition = parent->getParentLocalPosition();
-		//this->localPosition = Vector3D(
-		//	localPosition.m_x + parentPosition.m_x,
-		//	localPosition.m_y + parentPosition.m_y,
-		//	localPosition.m_z + parentPosition.m_z
-		//	);
-
+		
 
 
 		cout << "Case 2:" << endl;
@@ -281,20 +253,9 @@ void AGameObject::RemoveParent(AGameObject* reference)
 	//Scale
 	this->localScale = this->getParentLocalScale();
 
-	/*this->localScale = Vector3D(
-		MathUtils::extractScaleTransform(FinalMatrix.m_mat[0][0], FinalMatrix.m_mat[0][1], FinalMatrix.m_mat[0][2]),
-		MathUtils::extractScaleTransform(FinalMatrix.m_mat[1][0], FinalMatrix.m_mat[1][1], FinalMatrix.m_mat[1][2]),
-		MathUtils::extractScaleTransform(FinalMatrix.m_mat[2][0], FinalMatrix.m_mat[2][1], FinalMatrix.m_mat[2][2])
-	);*/
+	
 
-	//Rotation
-	/*this->localRotation = Vector3D(
-		parentLocalRotation.m_x + localRotation.m_x,
-		parentLocalRotation.m_y + localRotation.m_y,
-		parentLocalRotation.m_z + localRotation.m_z
-	);*/
-
-	//Compuation Experiment For Rotation
+	//Computation Experiment For Rotation
 
 	//Matrix4x4 posMat;
 	//posMat.setTranslation(localPosition);
