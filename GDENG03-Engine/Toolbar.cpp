@@ -84,6 +84,7 @@ void Toolbar::drawUI()
 				}
 				// End Remove here
 			}
+
 			if (ImGui::BeginMenu("Create Light"))
 			{
 				if (ImGui::MenuItem("Point Light")) {}
