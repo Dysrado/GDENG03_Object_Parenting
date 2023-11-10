@@ -73,7 +73,7 @@ void Toolbar::drawUI()
 				if (GameObjectManager::getInstance()->getSelectedObject() != nullptr)
 				{
 					int numOfObjs = GameObjectManager::getInstance()->getAllObjects().size();
-					GameObjectManager::getInstance()->getAllObjects()[numOfObjs - 1]->SetParent(GameObjectManager::getInstance()->getSelectedObject());
+					GameObjectManager::getInstance()->getSelectedObject()->AttachChild(GameObjectManager::getInstance()->getAllObjects()[numOfObjs - 1]);
 				}
 			}
 
