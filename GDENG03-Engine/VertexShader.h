@@ -10,6 +10,7 @@ class VertexShader
 public:
 	VertexShader();
 	void release();
+	ID3D11VertexShader* getShader();
 	~VertexShader();
 private:
 	bool init(const void* shader_byte_code, size_t byte_code_size);

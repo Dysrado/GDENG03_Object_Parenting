@@ -21,6 +21,9 @@
 #include "MathUtils.h"
 #include "PhysicsSystem.h"
 
+// Shaders
+#include "ShaderLibrary.h"
+#include "TextureManager.h"
 
 //__declspec(align(16))
 //
@@ -46,13 +49,14 @@ void AppWindow::onCreate()
 	 
 	//Creating Windows and Background
 	Window::onCreate();
-	
+	GraphicsEngine::get()->init();
+	ShaderLibrary::initialize();
+	TextureManager::initialize();
 	InputSystem::initialize();
 	InputSystem::getInstance()->addListener(this);
 	InputSystem::getInstance()->showCursor(true);
 
 	
-	GraphicsEngine::get()->init();
 	m_swap_chain = GraphicsEngine::get()->createSwapChain();
 	
 	RECT rc = this->getClientWindowRect();
@@ -61,8 +65,8 @@ void AppWindow::onCreate()
 	size_t size_shader = 0;
 
 	//Vertex Shader
-	GraphicsEngine::get()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shader_byte_code, &size_shader);
-	m_vs = GraphicsEngine::get()->createVertexShader(shader_byte_code, size_shader);
+	/*GraphicsEngine::get()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shader_byte_code, &size_shader);
+	m_vs = GraphicsEngine::get()->createVertexShader(shader_byte_code, size_shader);*/
 
 	//TODO: Draw create here
 	//onCubeCreate(shader_byte_code, size_shader);
@@ -70,11 +74,11 @@ void AppWindow::onCreate()
 
 	
 	
-	GraphicsEngine::get()->releaseCompiledShader();
+	/*GraphicsEngine::get()->releaseCompiledShader();
 
 	GraphicsEngine::get()->compilePixelShader(L"PixelShader.hlsl", "psmain", &shader_byte_code, &size_shader);
 	m_ps = GraphicsEngine::get()->createPixelShader(shader_byte_code, size_shader);
-	GraphicsEngine::get()->releaseCompiledShader();
+	GraphicsEngine::get()->releaseCompiledShader();*/
 
 	m_swap_chain->init(this->m_hwnd, rc.right - rc.left, rc.bottom - rc.top);
 
@@ -94,8 +98,6 @@ void AppWindow::onUpdate()
 	Window::onUpdate();
 	InputSystem::getInstance()->update();
 
-	
-
 
 	//CLEAR THE RENDER TARGET 
 	GraphicsEngine::get()->getImmediateDeviceContext()->clearRenderTargetColor(this->m_swap_chain,
@@ -110,7 +112,7 @@ void AppWindow::onUpdate()
 
 	SceneCameraHandler::getInstance()->update();
 	GameObjectManager::getInstance()->updateAll();
-	GameObjectManager::getInstance()->renderAll(rc.right - rc.left, rc.bottom - rc.top, m_vs, m_ps);
+	GameObjectManager::getInstance()->renderAll(rc.right - rc.left, rc.bottom - rc.top);
 
 	
 
@@ -126,6 +128,8 @@ void AppWindow::onDestroy()
 	//m_vb->release();
 	//m_ib->release(); 
 	//m_cb->release();
+	ShaderLibrary::destroy();
+	TextureManager::destroy();
 	m_swap_chain->release();
 	m_vs->release();
 	m_ps->release();
@@ -373,7 +377,7 @@ void AppWindow::onCubeCreate(void* shader_byte_code, size_t size_shader)
 	////TODO: Multiple Random Instancing of Cubes
 	for (int i = 0; i < 50; i++)
 	{
-		Cube* Copy = new Cube("1", shader_byte_code, size_shader);
+		Cube* Copy = new Cube("1");
 		Copy->setPosition(Vector3D(MathUtils::randomFloat(-0.9f, 0.9f),
 			MathUtils::randomFloat(-0.9f, 0.9f),
 			MathUtils::randomFloat(-0.9f, 0.9f)));

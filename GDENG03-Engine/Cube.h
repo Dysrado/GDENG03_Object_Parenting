@@ -9,12 +9,12 @@ class ConstantBuffer;
 class Cube : public AGameObject
 {
 public:
-	Cube(string name, void* shaderByteCode, size_t sizeShader);
+	Cube(string name);
 	~Cube();
 
 
 	void update(float deltaTime) override;
-	void draw(int width, int height, VertexShader* vertexShader, PixelShader* pixelShader) override;
+	void draw(int width, int height) override;
 	void setAnimSpeed(float speed);
 
 	void IncrementRot(float offsetIncrease) override;

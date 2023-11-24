@@ -74,8 +74,8 @@
     <LibraryPath>C:\Users\Kevin\Documents\Project\Unity\Github\GameEngine\GDENG03-Engine\Lib\reactphysics3D;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\Kevin\Documents\Project\Unity\Github\GameEngine\GDENG03-Engine\imgui;C:\Users\Kevin\Documents\Project\Unity\Github\GameEngine\GDENG03-Engine\Lib\reactphysics3D\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Kevin\Documents\Project\Unity\Github\GameEngine\GDENG03-Engine\Lib\reactphysics3D;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(LocalDebuggerWorkingDirectory)\imgui;$(LocalDebuggerWorkingDirectory)\Lib\reactphysics3D\include;$(LocalDebuggerWorkingDirectory)\Lib\DirectXTex;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LocalDebuggerWorkingDirectory)\Lib\reactphysics3D;$(LocalDebuggerWorkingDirectory)\Lib\DirectXTex;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -114,12 +114,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;NOMINMAX;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(LocalDebuggerWorkingDirectory)\Lib\DirectXTex\Include;$(LocalDebuggerWorkingDirectory)\Lib\reactphysics3d\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;reactphysics3d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;reactphysics3d.lib;DirectXTex.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -171,11 +172,19 @@
     <ClCompile Include="PixelShader.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="Quads.cpp" />
+    <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="SceneCameraHandler.cpp" />
     <ClCompile Include="SceneOutliner.cpp" />
+    <ClCompile Include="ShaderLibrary.cpp" />
     <ClCompile Include="SwapChain.cpp" />
+    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="TexturedCube.cpp" />
+    <ClCompile Include="TexturedVertexBuffer.cpp" />
+    <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="Toolbar.cpp" />
     <ClCompile Include="UIManager.cpp" />
+    <ClCompile Include="Vector2D.cpp" />
     <ClCompile Include="Vector3D.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="VertexShader.cpp" />
@@ -216,12 +225,22 @@
     <ClInclude Include="PixelShader.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Quads.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="SceneCameraHandler.h" />
     <ClInclude Include="SceneOutliner.h" />
+    <ClInclude Include="ShaderLibrary.h" />
     <ClInclude Include="SwapChain.h" />
+    <ClInclude Include="Texture.h" />
+    <ClInclude Include="TexturedCube.h" />
+    <ClInclude Include="TexturedVertexBuffer.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="TextureManager.h" />
     <ClInclude Include="Toolbar.h" />
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="UINames.h" />
+    <ClInclude Include="Vector2D.h" />
     <ClInclude Include="Vector3D.h" />
     <ClInclude Include="Vector4D.h" />
     <ClInclude Include="VertexBuffer.h" />
@@ -235,6 +254,12 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="TexturedPixelShader.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="TexturedVertexShader.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="VertexShader.hlsl">

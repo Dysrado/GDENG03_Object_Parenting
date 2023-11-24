@@ -1,11 +1,5 @@
 #include "GraphicsEngine.h"
-#include "SwapChain.h"
-#include "DeviceContext.h"
-#include "VertexBuffer.h"
-#include "IndexBuffer.h"
-#include "ConstantBuffer.h"
-#include "VertexShader.h"
-#include "PixelShader.h"
+
 
 #include <d3dcompiler.h>
 
@@ -96,6 +90,11 @@ ID3D11Device* GraphicsEngine::getDirectD3D11Device()
 VertexBuffer* GraphicsEngine::createVertexBuffer()
 {
 	return new VertexBuffer();
+}
+
+TexturedVertexBuffer* GraphicsEngine::createTexturedBuffer()
+{
+	return new TexturedVertexBuffer();;
 }
 
 IndexBuffer* GraphicsEngine::createIndexBuffer()

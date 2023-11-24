@@ -7,14 +7,14 @@ class VertexBuffer
 {
 public:
 	VertexBuffer();
-	bool load(void* list_vertices, UINT size_vertex, UINT size_list, void* shader_byte_code, size_t size_byte_shader);
+	virtual bool load(void* list_vertices, UINT size_vertex, UINT size_list, void* shader_byte_code, size_t size_byte_shader);
 	UINT getSizeVertexList();
 	bool release();
 	~VertexBuffer();
-private:
+protected:
 	UINT m_size_vertex;
 	UINT m_size_list;
-private:
+protected:
 	ID3D11Buffer* m_buffer;
 	ID3D11InputLayout* m_layout;
 private:
