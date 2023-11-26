@@ -25,3 +25,8 @@ bool VertexShader::init(const void* shader_byte_code, size_t byte_code_size)
 VertexShader::~VertexShader()
 {
 }
+
+ID3D11VertexShader* VertexShader::getShader()
+{
+	return m_vs;
+}

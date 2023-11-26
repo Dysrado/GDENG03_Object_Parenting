@@ -11,6 +11,7 @@
 //Components
 #include "PhysicsComponent.h"
 #include "PhysicsSystem.h"
+#include "TexturedCube.h"
 
 
 GameObjectManager* GameObjectManager::sharedInstance = nullptr;
@@ -63,13 +64,12 @@ void GameObjectManager::updateAll()
 	}
 }
 
-void GameObjectManager::renderAll(int viewportWidth, int viewportHeight, VertexShader* vertexShader,
-	PixelShader* pixels_shader)
+void GameObjectManager::renderAll(int viewportWidth, int viewportHeight)
 {
 	for (AGameObject* gameobject : aList)
 	{
 		if(gameobject->IsEnabled())
-			gameobject->draw(viewportHeight, viewportWidth, vertexShader, pixels_shader);
+			gameobject->draw(viewportHeight, viewportWidth);
 	}
 }
 
@@ -88,7 +88,7 @@ void GameObjectManager::addObject(AGameObject* gameObject)
 	aList.push_back(gameObject);
 }
 
-void GameObjectManager::createObject(PrimitiveType type, void* shaderByteCode, size_t sizeShader)
+void GameObjectManager::createObject(PrimitiveType type)
 {
 	switch (type)
 	{
@@ -102,12 +102,13 @@ void GameObjectManager::createObject(PrimitiveType type, void* shaderByteCode, s
 				objName.append(") ");
 			}
 
-			Cube* cube = new Cube(objName, shaderByteCode, sizeShader);
+			Cube* cube = new Cube(objName);
 			addObject((AGameObject*)cube);
 
 			cubeCount++;
 		}
 
+		break;
 
 		case PrimitiveType::PHYSICS_CUBE:
 		{
@@ -122,7 +123,7 @@ void GameObjectManager::createObject(PrimitiveType type, void* shaderByteCode, s
 				}
 
 
-				Cube* cube = new Cube("Cube_Physics", shaderByteCode, sizeShader);
+				Cube* cube = new Cube("Cube_Physics");
 				cube->setPosition(0, 5.0f, 0);
 				this->addObject(cube);
 
@@ -143,7 +144,7 @@ void GameObjectManager::createObject(PrimitiveType type, void* shaderByteCode, s
 				objName.append(") ");
 			}
 
-			Quads* quads = new Quads(objName, shaderByteCode, sizeShader);
+			Quads* quads = new Quads(objName);
 			addObject((AGameObject*)quads);
 
 			planeCount++;
@@ -161,7 +162,7 @@ void GameObjectManager::createObject(PrimitiveType type, void* shaderByteCode, s
 				objName.append(") ");
 			}
 
-			PhysicsPlane* plane = new PhysicsPlane(objName, shaderByteCode, sizeShader);
+			PhysicsPlane* plane = new PhysicsPlane(objName);
 			this->addObject(plane);
 
 			// add the Physics Component
@@ -176,6 +177,23 @@ void GameObjectManager::createObject(PrimitiveType type, void* shaderByteCode, s
 		{std::cout << "Choose Sphere" << std::endl;}
 		break;
 
+
+		case PrimitiveType::TEXTURED_CUBE:
+		{
+			string objName = "Textured Cube";
+			if (cubeCount != 0)
+			{
+				objName.append(" (");
+				objName.append(std::to_string(cubeCount));
+				objName.append(") ");
+			}
+
+			TexturedCube* cube = new TexturedCube(objName);
+			addObject((AGameObject*)cube);
+
+			cubeCount++;
+		}
+		break;
 	}
 	
 }

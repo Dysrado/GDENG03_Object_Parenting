@@ -6,7 +6,7 @@
 class PhysicsPlane : public Cube
 {
 public:
-	PhysicsPlane(string name, void* shaderByteCode, size_t sizeShader);
+	PhysicsPlane(string name);
 	~PhysicsPlane();
 
 };

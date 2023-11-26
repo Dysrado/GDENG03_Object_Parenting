@@ -7,8 +7,9 @@
 #include "VertexBuffer.h"
 #include "DeviceContext.h"
 #include "SceneCameraHandler.h"
+#include "ShaderLibrary.h"
 
-Cube::Cube(string name, void* shaderByteCode, size_t sizeShader): AGameObject(name)
+Cube::Cube(string name): AGameObject(name)
 {
 	typeName = "Cube";
 
@@ -28,9 +29,6 @@ Cube::Cube(string name, void* shaderByteCode, size_t sizeShader): AGameObject(na
 		{ Vector3D(-0.5f,0.5f,0.5f),   Vector3D(0,1,1),  Vector3D(0,0.2f,0.2f) },
 		{ Vector3D(-0.5f,-0.5f,0.5f),     Vector3D(0,0,1), Vector3D(0,0.2f,0) }
 	};
-
-
-	
 
 	unsigned int index_list[] =
 	{
@@ -53,6 +51,11 @@ Cube::Cube(string name, void* shaderByteCode, size_t sizeShader): AGameObject(na
 		7,6,1,
 		1,0,7
 	};
+
+	ShaderNames shaderNames;
+	void* shaderByteCode = NULL;
+	size_t sizeShader = 0;
+	ShaderLibrary::getInstance()->requestVertexShaderData(shaderNames.BASE_VERTEX_SHADER_NAME, &shaderByteCode, &sizeShader);
 
 	vertexBuffer = GraphicsEngine::get()->createVertexBuffer();
 	indexBuffer = GraphicsEngine::get()->createIndexBuffer();
@@ -140,8 +143,18 @@ void Cube::update(float deltaTime)
 
 }
 
-void Cube::draw(int width, int height, VertexShader* vertexShader, PixelShader* pixelShader)
+void Cube::draw(int width, int height)
 {
+	GraphicsEngine* graphEngine = GraphicsEngine::get();
+	DeviceContext* deviceContext = graphEngine->getImmediateDeviceContext();
+
+	//set vertex shader and pixel shader for the object
+	ShaderNames shaderNames;
+	deviceContext->setRenderConfig(ShaderLibrary::getInstance()->getVertexShader(
+		shaderNames.BASE_VERTEX_SHADER_NAME), 
+		ShaderLibrary::getInstance()->getPixelShader(shaderNames.BASE_PIXEL_SHADER_NAME)
+	);
+
 	if (this->overrideMatrix)
 	{
 		cc.m_world = localMatrix;
@@ -158,11 +171,15 @@ void Cube::draw(int width, int height, VertexShader* vertexShader, PixelShader* 
 
 	constantBuffer->update(GraphicsEngine::get()->getImmediateDeviceContext(), &cc);
 
-	GraphicsEngine::get()->getImmediateDeviceContext()->setConstantBuffer(vertexShader, constantBuffer);
-	GraphicsEngine::get()->getImmediateDeviceContext()->setConstantBuffer(pixelShader, constantBuffer);
+	/*GraphicsEngine::get()->getImmediateDeviceContext()->setConstantBuffer(vertexShader, constantBuffer);
+	GraphicsEngine::get()->getImmediateDeviceContext()->setConstantBuffer(pixelShader, constantBuffer);*/
 
-	GraphicsEngine::get()->getImmediateDeviceContext()->setVertexShader(vertexShader);
-	GraphicsEngine::get()->getImmediateDeviceContext()->setPixelShader(pixelShader);
+	deviceContext->setConstantBuffer(this->constantBuffer);
+
+	/*GraphicsEngine::get()->getImmediateDeviceContext()->setVertexShader(vertexBuffer);
+	GraphicsEngine::get()->getImmediateDeviceContext()->setPixelShader(pixelShader);*/
+
+
 
 	//SET THE VERTICES OF THE TRIANGLE TO DRAW
 	GraphicsEngine::get()->getImmediateDeviceContext()->setVertexBuffer(vertexBuffer);
