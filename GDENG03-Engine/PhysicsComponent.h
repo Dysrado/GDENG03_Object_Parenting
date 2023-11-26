@@ -17,10 +17,14 @@ public:
 	void perform(float deltaTime) override;
 	RigidBody* getRigidBody();
 
+	Vector3* forceVector;
+
 private:
 	float mass = 10.0f; //in kilograms
 	float timer = 0;
 	bool isSelfCollision = false;
+
 	RigidBody* rigidBody;
 	Collider* collider;
+
 };

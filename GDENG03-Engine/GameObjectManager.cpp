@@ -127,9 +127,12 @@ void GameObjectManager::createObject(PrimitiveType type)
 				cube->setPosition(0, 5.0f, 0);
 				this->addObject(cube);
 
+				
+
 				// add the Physics Component - External Method
-				string componentName = "Physics_Component" + cube->RetrieveName();
+				string componentName = "Physics_Component";
 				PhysicsComponent* component = new PhysicsComponent(componentName, cube, BodyType::DYNAMIC);
+				cube->attachComponent(component);
 			}
 		}
 		break;
@@ -166,8 +169,9 @@ void GameObjectManager::createObject(PrimitiveType type)
 			this->addObject(plane);
 
 			// add the Physics Component
-			string componentName = "Physics_Component" + plane->RetrieveName();
+			string componentName = "Physics_Component";
 			PhysicsComponent* component = new PhysicsComponent(componentName, plane, BodyType::STATIC);
+			plane->attachComponent(component);
 
 		}
 		break;

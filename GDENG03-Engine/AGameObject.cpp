@@ -143,10 +143,8 @@ void AGameObject::SetParent(AGameObject* reference)
 		Matrix4x4 ownWorldMatrix = this->computeWorldMatrix();
 		parent = reference;
 		Matrix4x4 FinalMatrix = parent->computeWorldMatrix();
+
 		//Case 1
-		
-		
-		
 		temp.setIdentity();
 
 		if(ownMatrix == temp) //Identity Check
@@ -192,6 +190,7 @@ void AGameObject::SetParent(AGameObject* reference)
 			 ownWorldMatrix.m_mat[3][2] - FinalMatrix.m_mat[3][2]
 		);
 
+		
 		
 
 
@@ -260,29 +259,6 @@ void AGameObject::RemoveParent(AGameObject* reference)
 	//Scale
 	this->localScale = this->getParentLocalScale();
 
-	
-
-	//Computation Experiment For Rotation
-
-	//Matrix4x4 posMat;
-	//posMat.setTranslation(localPosition);
-	//posMat.inverse();
-
-	//Matrix4x4 scaleMat;
-	//scaleMat.setScale(localScale);
-	//scaleMat.inverse();
-
-	//Matrix4x4 rotMat = posMat.multiplyTo(FinalMatrix.multiplyTo(scaleMat));
-
-	////Matrix4x4 rotMat = scaleMat.multiplyTo(FinalMatrix.multiplyTo(posMat));
-
-	///*this->localRotation = Vector3D(
-	//	rotMat.m_mat[0][3], rotMat.m_mat[1][3], rotMat.m_mat[2][3]
-	//);*/
-
-	//this->localRotation = Vector3D(
-	//	rotMat.m_mat[3][0], rotMat.m_mat[3][1], rotMat.m_mat[3][2]
-	//);
 
 	this->parent->RemoveChild(reference);
 	this->parent = nullptr;
@@ -370,13 +346,25 @@ bool AGameObject::IsEnabled()
 
 Matrix4x4 AGameObject::getLocalMatrix()
 {
-	if(parent == nullptr)
+	return localMatrix;
+	/*if(parent == nullptr)
 	{
-		return localMatrix;
+		
 	}
 	
-	return localMatrix.multiplyTo(parent->getLocalMatrix());
+	return localMatrix.multiplyTo(parent->getLocalMatrix());*/
 		
+}
+
+Matrix4x4 AGameObject::getParentLocalMatrix()
+{
+	if (parent == nullptr)
+	{
+		return computeLocalMatrix();
+	}
+
+	
+	return computeLocalMatrix().multiplyTo(parent->getParentLocalMatrix());
 }
 
 // This function is meant for retrieving the finalMatrixTransformation including self
@@ -460,7 +448,7 @@ Matrix4x4 AGameObject::computeWorldMatrix()
 	// If Parent Exists, then Follow Parent Transform
 	if (parent != nullptr)
 	{
-		finalMatrix *= parent->getLocalMatrix(); //Fundamental problem
+		finalMatrix *= parent->getParentLocalMatrix(); //Fundamental problem
 	}
 
 	return finalMatrix;
@@ -483,7 +471,84 @@ void AGameObject::updateLocalMatrix()
 
 	allMatrix = allMatrix.multiplyTo(scaleMatrix.multiplyTo(rotMatrix));
 	allMatrix = allMatrix.multiplyTo(translationMatrix);
+
+
+	//Addition of Object Parenting
+	if(this->HasParent())
+	{
+		allMatrix = allMatrix.multiplyTo(parent->getParentLocalMatrix());
+	}
 	this->localMatrix = allMatrix;
+}
+
+
+
+void AGameObject::attachComponent(AComponent* component)
+{
+	this->componentList.push_back(component);
+	component->attachOwner(this);
+}
+
+void AGameObject::detachComponent(AComponent* component)
+{
+	int index = -1;
+	for (int i = 0; i < this->componentList.size(); i++) {
+		if (this->componentList[i] == component) {
+			index = i;
+			break;
+		}
+	}
+	if (index != -1) {
+		this->componentList.erase(this->componentList.begin() + index);
+	}
+}
+
+AComponent* AGameObject::findComponentByName(string name)
+{
+	for (int i = 0; i < this->componentList.size(); i++) {
+		if (this->componentList[i]->getName() == name) {
+			return this->componentList[i];
+		}
+	}
+
+	return NULL;
+}
+
+AComponent* AGameObject::findComponentOfType(AComponent::ComponentType type, string name)
+{
+	for (int i = 0; i < this->componentList.size(); i++) {
+		if (this->componentList[i]->getName() == name && this->componentList[i]->getType() == type) {
+			return this->componentList[i];
+		}
+	}
+
+	return NULL;
+}
+
+
+
+AGameObject::ComponentList AGameObject::getComponentsOfType(AComponent::ComponentType type)
+{
+	ComponentList foundList;
+	for (int i = 0; i < this->componentList.size(); i++) {
+		if (this->componentList[i]->getType() == type) {
+			foundList.push_back(this->componentList[i]);
+		}
+	}
+
+	return foundList;
+}
+
+AGameObject::ComponentList AGameObject::getComponentsOfTypeRecursive(AComponent::ComponentType type)
+{
+	ComponentList foundList;
+	for (int i = 0; i < this->componentList.size(); i++) {
+		if (this->componentList[i]->getType() == type) {
+			foundList.push_back(this->componentList[i]);
+		}
+	}
+
+	return foundList;
 }
 
 void AGameObject::recomputeMatrix(float matrix[16])

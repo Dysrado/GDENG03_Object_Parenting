@@ -55,6 +55,8 @@ PhysicsComponent::PhysicsComponent(String name, AGameObject* owner, BodyType typ
 		collider->setCollideWithMaskBits(CATEGORY1 | CATEGORY3);
 		rigidBody->setType(BodyType::STATIC);
 	}
+
+	forceVector = new Vector3(0, 0, 0);
 }
 
 PhysicsComponent::~PhysicsComponent()

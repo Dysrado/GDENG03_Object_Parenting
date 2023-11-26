@@ -46,3 +46,12 @@ AComponent::String AComponent::getName()
 void AComponent::perform(float deltaTime)
 {
 }
+
+void AComponent::SetEnable(bool flag)
+{
+	isEnable = flag;   }
+
+
+bool AComponent::IsEnable()
+{
+    return isEnable;  }

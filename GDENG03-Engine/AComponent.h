@@ -18,8 +18,14 @@ public:
 
 	virtual void perform(float deltaTime) = 0; //performs the associated action.
 
+	//Getter Setter
+	void SetEnable(bool flag);
+	bool IsEnable();
+
 protected:
 	AGameObject* owner;
 	ComponentType type;
 	String name;
+
+	bool isEnable = true;
 };
