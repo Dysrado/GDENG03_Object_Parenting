@@ -74,6 +74,7 @@ Cube::Cube(string name): AGameObject(name)
 
 	constantBuffer = GraphicsEngine::get()->createConstantBuffer();
 	constantBuffer->load(&cc, sizeof(constant));
+	updateLocalMatrix();
 }
 
 Cube::~Cube()
@@ -83,64 +84,6 @@ Cube::~Cube()
 void Cube::update(float deltaTime)
 {
 	this->deltaTime = deltaTime;
-	//Matrix4x4 temp;
-	//
-	//ticks += (deltaTime) * this->speed * 100.0f;
-	//float delta = ((sin((ticks / 500.0f)) + 1.0f) / 2.0f) + 0.01f;
-
-	//cc.m_time = (m_rot_x)*this->speed * 100.0f;
-
-	//
-
-	//localMatrix.setIdentity();
-	//cc.m_world.setIdentity();
-	//temp.setIdentity();
-	//temp.setScale(this->getLocalScale());
-	//cc.m_world *= temp;
-	//localMatrix = cc.m_world;
-
-	//
-
-
-
-	////Initial Rotation
-	//Matrix4x4 Rot;
-	//Rot.setIdentity();
-
-	//temp.setIdentity();
-	//temp.setRotationX(this->getLocalRotation().m_x);
-	//Rot *= temp;
-	//
-	//temp.setIdentity();
-	//temp.setRotationY(this->getLocalRotation().m_y);
-	//Rot *= temp;
-
-	//temp.setIdentity();
-	//temp.setRotationZ(this->getLocalRotation().m_z);
-	//Rot *= temp;
-	//cc.m_world *= Rot;
-	//localMatrix = cc.m_world;
-
-
-
-	//
-
-	//temp.setIdentity();
-	//temp.setTranslation(this->getLocalPosition());
-	//cc.m_world *= temp;
-	//localMatrix = cc.m_world;
-
-	//
-
-	//// If Parent Exists, then Follow Parent Transform
-	//if (parent != nullptr) 
-	//{
-	//	cc.m_world *= parent->getLocalMatrix(); 
-	//}
-
-	//
-	//cc.m_view = SceneCameraHandler::getInstance()->getSceneCameraViewMatrix();
-
 }
 
 void Cube::draw(int width, int height)

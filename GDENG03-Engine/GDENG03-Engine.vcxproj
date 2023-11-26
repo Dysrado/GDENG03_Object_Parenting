@@ -72,7 +72,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ExternalIncludePath>$(ProjectDir)imgui;$(ProjectDir)Lib\reactphysics3D\include;$(ProjectDir)Lib\DirectXTex\Include;$(ExternalIncludePath)</ExternalIncludePath>
-    <LibraryPath>$(ProjectDir)Lib\reactphysics3D;$(ProjectDir)Lib\DirectXTex\bin;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)Lib\reactphysics3D;$(ProjectDir)Lib\DirectXTex\bin;C:\Users\Kevin\Documents\Project\GDENG03_Object_Parenting\GDENG03-Engine\Lib\DirectXTex;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

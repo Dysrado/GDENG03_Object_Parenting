@@ -150,7 +150,7 @@ void TexturedCube::draw(int width, int height)
 	cbData.m_view = cameraMatrix;
 
 	//cbData.projMatrix.setOrthoLH(width / 400.0f, height / 400.0f, -4.0f, 4.0f);
-	float aspectRatio = (float)width / (float)height;
+	float aspectRatio = (float)height / (float)width;
 	cbData.m_proj.setPerspectiveFovLH(1.57f, aspectRatio, 0.1f, 1000.0f);
 
 	this->constantBuffer->update(deviceContext, &cbData);

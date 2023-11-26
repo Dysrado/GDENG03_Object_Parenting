@@ -118,8 +118,8 @@ void AppWindow::onDestroy()
 	Window::onDestroy();
 	
 	m_swap_chain->release();
-	m_vs->release();
-	m_ps->release();
+	/*m_vs->release();
+	m_ps->release();*/
 
 	ImGui_ImplDX11_Shutdown();
     ImGui_ImplWin32_Shutdown();
