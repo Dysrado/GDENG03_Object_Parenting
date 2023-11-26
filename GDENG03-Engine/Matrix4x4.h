@@ -59,6 +59,11 @@ public:
 		m_mat[1][1] = cos(z);
 	}
 
+	float* getFloatArray()
+	{
+		return *this->m_mat;
+	}
+
 
 	float getDeterminant()
 	{
@@ -158,6 +163,10 @@ public:
 	void setMatrix(const Matrix4x4& matrix)
 	{
 		::memcpy(m_mat, matrix.m_mat, sizeof(float) * 16);
+	}
+	void setMatrix(float matrix[4][4])
+	{
+		::memcpy(this->m_mat, matrix, sizeof(float) * 16);
 	}
 
 	Vector3D getZDirection()

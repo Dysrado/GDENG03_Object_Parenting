@@ -58,6 +58,15 @@
     <Filter Include="GameEngine\Interface">
       <UniqueIdentifier>{990f8d10-8a11-45f4-91d5-fd995fda300d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameEngine\ECS">
+      <UniqueIdentifier>{bc5fad58-d8c7-462e-bbb1-faa94ad1918b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\ECS\Physics">
+      <UniqueIdentifier>{30979940-dcf0-4654-adc2-a1355df10d5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\Primitives\PhysicsPrimitive">
+      <UniqueIdentifier>{a5505bad-ef34-4f3f-8527-2ed1c27bd7e5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -167,6 +176,21 @@
     </ClCompile>
     <ClCompile Include="GameObjectManager.cpp">
       <Filter>GameEngine\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="AComponent.cpp">
+      <Filter>GameEngine\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseComponentSystem.cpp">
+      <Filter>GameEngine\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsComponent.cpp">
+      <Filter>GameEngine\ECS\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsSystem.cpp">
+      <Filter>GameEngine\ECS\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsPlane.cpp">
+      <Filter>GameEngine\Primitives\PhysicsPrimitive</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -289,6 +313,21 @@
     </ClInclude>
     <ClInclude Include="GameObjectManager.h">
       <Filter>GameEngine\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="AComponent.h">
+      <Filter>GameEngine\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseComponentSystem.h">
+      <Filter>GameEngine\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsComponent.h">
+      <Filter>GameEngine\ECS\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsSystem.h">
+      <Filter>GameEngine\ECS\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsPlane.h">
+      <Filter>GameEngine\Primitives\PhysicsPrimitive</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

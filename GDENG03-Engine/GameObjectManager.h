@@ -25,7 +25,9 @@ public:
 	enum PrimitiveType
 	{
 		CUBE,
+		PHYSICS_CUBE,
 		PLANE,
+		PHYSICS_PLANE,
 		SPHERE
 	};
 
@@ -65,6 +67,8 @@ private:
 	// Object counts
 	int cubeCount = 0;
 	int planeCount = 0;
+	int pCubeCount = 0;
+	int pPlaneCount = 0;
 
 	//Object Parenting
 	bool isLinkEnable = false;

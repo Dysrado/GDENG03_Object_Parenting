@@ -6,6 +6,12 @@
 //Primitives
 #include "Cube.h"
 #include "Quads.h"
+#include "PhysicsPlane.h"
+
+//Components
+#include "PhysicsComponent.h"
+#include "PhysicsSystem.h"
+
 
 GameObjectManager* GameObjectManager::sharedInstance = nullptr;
 
@@ -101,7 +107,32 @@ void GameObjectManager::createObject(PrimitiveType type, void* shaderByteCode, s
 
 			cubeCount++;
 		}
+
+
+		case PrimitiveType::PHYSICS_CUBE:
+		{
+			for (int i = 0; i < 10; i++)
+			{
+				string objName = "Physics Cube";
+				if (pCubeCount != 0)
+				{
+					objName.append(" (");
+					objName.append(std::to_string(pCubeCount));
+					objName.append(") ");
+				}
+
+
+				Cube* cube = new Cube("Cube_Physics", shaderByteCode, sizeShader);
+				cube->setPosition(0, 5.0f, 0);
+				this->addObject(cube);
+
+				// add the Physics Component - External Method
+				string componentName = "Physics_Component" + cube->RetrieveName();
+				PhysicsComponent* component = new PhysicsComponent(componentName, cube, BodyType::DYNAMIC);
+			}
+		}
 		break;
+		
 		case PrimitiveType::PLANE:
 		{
 			string objName = "Plane";
@@ -118,6 +149,28 @@ void GameObjectManager::createObject(PrimitiveType type, void* shaderByteCode, s
 			planeCount++;
 		}
 		break;
+
+
+		case PrimitiveType::PHYSICS_PLANE:
+		{
+			string objName = "Physics Plane";
+			if (planeCount != 0)
+			{
+				objName.append(" (");
+				objName.append(std::to_string(planeCount));
+				objName.append(") ");
+			}
+
+			PhysicsPlane* plane = new PhysicsPlane(objName, shaderByteCode, sizeShader);
+			this->addObject(plane);
+
+			// add the Physics Component
+			string componentName = "Physics_Component" + plane->RetrieveName();
+			PhysicsComponent* component = new PhysicsComponent(componentName, plane, BodyType::STATIC);
+
+		}
+		break;
+
 
 		case PrimitiveType::SPHERE:
 		{std::cout << "Choose Sphere" << std::endl;}

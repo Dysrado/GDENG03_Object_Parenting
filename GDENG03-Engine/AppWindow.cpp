@@ -16,8 +16,10 @@
 #include "Toolbar.h"
 
 //Helper
+#include "BaseComponentSystem.h"
 #include "GameObjectManager.h"
 #include "MathUtils.h"
+#include "PhysicsSystem.h"
 
 
 
@@ -65,11 +67,12 @@ void AppWindow::onCreate()
 	m_swap_chain->init(this->m_hwnd, rc.right - rc.left, rc.bottom - rc.top);
 
 
-
-	SceneCameraHandler::initialize();
-	UIManager::initialize(m_hwnd);
+	//Initialize the Base System
 	GameObjectManager::initialize();
+	BaseComponentSystem::getInstance()->initialize();
+	SceneCameraHandler::initialize();
 
+	UIManager::initialize(m_hwnd);
 	
 }
 
@@ -90,6 +93,11 @@ void AppWindow::onUpdate()
 	RECT rc = this->getClientWindowRect();
 	GraphicsEngine::get()->getImmediateDeviceContext()->setViewportSize(rc.right - rc.left, rc.bottom - rc.top);
 
+
+	//Components
+	BaseComponentSystem::getInstance()->getPhysicsSystem()->updateAllComponents();
+
+	//GameObject
 	SceneCameraHandler::getInstance()->update();
 	GameObjectManager::getInstance()->updateAll();
 	GameObjectManager::getInstance()->renderAll(rc.right - rc.left, rc.bottom - rc.top, m_vs, m_ps);

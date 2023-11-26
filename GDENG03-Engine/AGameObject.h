@@ -64,6 +64,12 @@ public:
 	Matrix4x4 getLocalMatrix();
 	Matrix4x4 computeLocalMatrix();
 	Matrix4x4 computeWorldMatrix();
+	void updateLocalMatrix();
+
+	// openGL matrix to our matrix implementation
+	void recomputeMatrix(float matrix[16]);
+	// our matrix implementation to openGL matrix
+	float* getPhysicsLocalMatrix();
 
 	//placeholder function - cant think of an optimized way of deleting
 	bool isSameGameObject(AGameObject* reference);
@@ -77,9 +83,11 @@ private:
 	Vector3D localScale;
 	bool isEnabled = true;
 
+
 protected:
 	Matrix4x4 localMatrix;
 	string typeName;
+	bool overrideMatrix = false;
 
 	AGameObject* parent;
 	vector<AGameObject*> childrenList;
