@@ -9,7 +9,7 @@ public:
 	~Camera();
 
 	void update(float deltaTime) override;
-	virtual void draw(int width, int height, VertexShader* vertexShader, PixelShader* pixelShader) override;
+	virtual void draw(int width, int height) override;
 	Matrix4x4 getViewMatrix();
 
 	//Input Listnere

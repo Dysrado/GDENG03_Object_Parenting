@@ -20,7 +20,8 @@
 #include "GameObjectManager.h"
 #include "MathUtils.h"
 #include "PhysicsSystem.h"
-
+#include "TextureManager.h"
+#include "ShaderLibrary.h"
 
 
 AppWindow::AppWindow()
@@ -44,25 +45,27 @@ void AppWindow::onCreate()
 
 	
 	GraphicsEngine::get()->init();
+	TextureManager::initialize();
+	ShaderLibrary::initialize();
 	m_swap_chain = GraphicsEngine::get()->createSwapChain();
 	
 	RECT rc = this->getClientWindowRect();
 
-	void* shader_byte_code = nullptr;
-	size_t size_shader = 0;
+	/*void* shader_byte_code = nullptr;
+	size_t size_shader = 0;*/
 
 	//Vertex Shader
-	GraphicsEngine::get()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shader_byte_code, &size_shader);
-	m_vs = GraphicsEngine::get()->createVertexShader(shader_byte_code, size_shader);
+	//GraphicsEngine::get()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shader_byte_code, &size_shader);
+	//m_vs = GraphicsEngine::get()->createVertexShader(shader_byte_code, size_shader);
 
 
-	
-	
-	GraphicsEngine::get()->releaseCompiledShader();
+	//
+	//
+	//GraphicsEngine::get()->releaseCompiledShader();
 
-	GraphicsEngine::get()->compilePixelShader(L"PixelShader.hlsl", "psmain", &shader_byte_code, &size_shader);
-	m_ps = GraphicsEngine::get()->createPixelShader(shader_byte_code, size_shader);
-	GraphicsEngine::get()->releaseCompiledShader();
+	//GraphicsEngine::get()->compilePixelShader(L"PixelShader.hlsl", "psmain", &shader_byte_code, &size_shader);
+	//m_ps = GraphicsEngine::get()->createPixelShader(shader_byte_code, size_shader);
+	//GraphicsEngine::get()->releaseCompiledShader();
 
 	m_swap_chain->init(this->m_hwnd, rc.right - rc.left, rc.bottom - rc.top);
 
@@ -100,7 +103,7 @@ void AppWindow::onUpdate()
 	//GameObject
 	SceneCameraHandler::getInstance()->update();
 	GameObjectManager::getInstance()->updateAll();
-	GameObjectManager::getInstance()->renderAll(rc.right - rc.left, rc.bottom - rc.top, m_vs, m_ps);
+	GameObjectManager::getInstance()->renderAll(rc.right - rc.left, rc.bottom - rc.top);
 
 	
 
@@ -115,8 +118,8 @@ void AppWindow::onDestroy()
 	Window::onDestroy();
 	
 	m_swap_chain->release();
-	m_vs->release();
-	m_ps->release();
+	/*m_vs->release();
+	m_ps->release();*/
 
 	ImGui_ImplDX11_Shutdown();
     ImGui_ImplWin32_Shutdown();

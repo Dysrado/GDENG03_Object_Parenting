@@ -2,6 +2,7 @@
 #include <vector>
 #include "Vector3D.h"
 #include <d3d11.h>
+#include "TexturedVertexBuffer.h"
 
 class SwapChain;
 class DeviceContext;
@@ -24,9 +25,12 @@ public:
 	SwapChain* createSwapChain();
 	DeviceContext* getImmediateDeviceContext();
 	ID3D11Device* getDirectD3D11Device();
+
 	VertexBuffer* createVertexBuffer();
+	TexturedVertexBuffer* createTexturedBuffer();
 	IndexBuffer* createIndexBuffer();
 	ConstantBuffer* createConstantBuffer();
+
 	VertexShader* createVertexShader(const void* shader_byte_code, size_t byte_code_size);
 	PixelShader* createPixelShader(const void* shader_byte_code, size_t byte_code_size);
 public:

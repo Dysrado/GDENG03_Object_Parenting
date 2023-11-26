@@ -98,6 +98,11 @@ VertexBuffer* GraphicsEngine::createVertexBuffer()
 	return new VertexBuffer();
 }
 
+TexturedVertexBuffer* GraphicsEngine::createTexturedBuffer()
+{
+	return new TexturedVertexBuffer();
+}
+
 IndexBuffer* GraphicsEngine::createIndexBuffer()
 {
 	return new IndexBuffer();

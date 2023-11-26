@@ -7,11 +7,12 @@
 #include "VertexBuffer.h"
 #include "DeviceContext.h"
 #include "SceneCameraHandler.h"
+#include "ShaderLibrary.h"
 
 
 
 
-PhysicsPlane::PhysicsPlane(string name, void* shaderByteCode, size_t sizeShader): Cube(name, shaderByteCode, sizeShader)
+PhysicsPlane::PhysicsPlane(string name): Cube(name)
 {
 	typeName = "Physics Cube";
 	//TODO: White Version of the Shaders
@@ -53,6 +54,10 @@ PhysicsPlane::PhysicsPlane(string name, void* shaderByteCode, size_t sizeShader)
 		7,6,1,
 		1,0,7
 	};
+	ShaderNames shaderNames;
+	void* shaderByteCode = NULL;
+	size_t sizeShader = 0;
+	ShaderLibrary::getInstance()->requestVertexShaderData(shaderNames.BASE_VERTEX_SHADER_NAME, &shaderByteCode, &sizeShader);
 
 	vertexBuffer = GraphicsEngine::get()->createVertexBuffer();
 	indexBuffer = GraphicsEngine::get()->createIndexBuffer();

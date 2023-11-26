@@ -37,52 +37,35 @@ void Toolbar::drawUI()
 		{
 			if (ImGui::MenuItem("Create Sphere"))
 			{
-				void* shader_byte_code = nullptr;
-				size_t size_shader = 0;
-				GraphicsEngine::get()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shader_byte_code, &size_shader);
-				GameObjectManager::getInstance()->createObject(GameObjectManager::SPHERE, shader_byte_code, size_shader);
-				GraphicsEngine::get()->releaseCompiledShader();
+				GameObjectManager::getInstance()->createObject(GameObjectManager::SPHERE);
 			}
 
 			if (ImGui::MenuItem("Create Cube"))
 			{
-				void* shader_byte_code = nullptr;
-				size_t size_shader = 0;
-				GraphicsEngine::get()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shader_byte_code, &size_shader);
-				GameObjectManager::getInstance()->createObject(GameObjectManager::CUBE, shader_byte_code, size_shader);
-				GraphicsEngine::get()->releaseCompiledShader();
+				GameObjectManager::getInstance()->createObject(GameObjectManager::CUBE);
 			}
 
 			if (ImGui::MenuItem("Create Textured Cube"))
 			{
+				GameObjectManager::getInstance()->createObject(GameObjectManager::TEXTURED_CUBE);
+
 			}
 
 			if (ImGui::MenuItem("Create Placeholder Physics Cube"))
 			{
-				void* shader_byte_code = nullptr;
-				size_t size_shader = 0;
-				GraphicsEngine::get()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shader_byte_code, &size_shader);
-				GameObjectManager::getInstance()->createObject(GameObjectManager::PHYSICS_CUBE, shader_byte_code, size_shader);
-				GraphicsEngine::get()->releaseCompiledShader();
+				GameObjectManager::getInstance()->createObject(GameObjectManager::PHYSICS_CUBE);
 			}
 
 			if (ImGui::MenuItem("Create Plane"))
 			{
-				void* shader_byte_code = nullptr;
-				size_t size_shader = 0;
-				GraphicsEngine::get()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shader_byte_code, &size_shader);
-				GameObjectManager::getInstance()->createObject(GameObjectManager::PLANE, shader_byte_code, size_shader);
-				GraphicsEngine::get()->releaseCompiledShader();
+				GameObjectManager::getInstance()->createObject(GameObjectManager::PLANE);
 			}
 
 			if (ImGui::MenuItem("Create Placeholder Physics Plane"))
 			{
-				void* shader_byte_code = nullptr;
-				size_t size_shader = 0;
-				GraphicsEngine::get()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shader_byte_code, &size_shader);
-				GameObjectManager::getInstance()->createObject(GameObjectManager::PHYSICS_PLANE, shader_byte_code, size_shader);
-				GraphicsEngine::get()->releaseCompiledShader();
+				GameObjectManager::getInstance()->createObject(GameObjectManager::PHYSICS_PLANE);
 			}
+
 			if (ImGui::BeginMenu("Create Light"))
 			{
 				if (ImGui::MenuItem("Point Light")) {}

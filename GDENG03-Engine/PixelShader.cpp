@@ -25,3 +25,8 @@ bool PixelShader::init(const void* shader_byte_code, size_t byte_code_size)
 PixelShader::~PixelShader()
 {
 }
+
+ID3D11PixelShader* PixelShader::getShader()
+{
+	return m_ps;
+}

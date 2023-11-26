@@ -28,7 +28,8 @@ public:
 		PHYSICS_CUBE,
 		PLANE,
 		PHYSICS_PLANE,
-		SPHERE
+		SPHERE,
+		TEXTURED_CUBE
 	};
 
 	static GameObjectManager* getInstance();
@@ -40,9 +41,9 @@ public:
 	int activeObjects();
 
 	void updateAll();
-	void renderAll(int viewportWidth, int viewportHeight, VertexShader* vertexShader, PixelShader* pixels_shader);
+	void renderAll(int viewportWidth, int viewportHeight);
 	void addObject(AGameObject* gameObject);
-	void createObject(PrimitiveType type, void* shaderByteCode, size_t sizeShader);
+	void createObject(PrimitiveType type);
 	void deleteObject(AGameObject* gameObject);
 
 	void clearSelectedObjectList();

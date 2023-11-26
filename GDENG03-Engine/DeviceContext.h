@@ -7,7 +7,7 @@ class VertexBuffer;
 class IndexBuffer;
 class VertexShader;
 class PixelShader;
-
+class Texture;
 class DeviceContext
 {
 public:
@@ -17,6 +17,9 @@ public:
 	void setVertexBuffer(VertexBuffer* vertex_buffer);
 	void setIndexBuffer(IndexBuffer* index_buffer);
 
+	void setRenderConfig(VertexShader* vertexShader, PixelShader* pixelShader);
+	void setConstantBuffer(ConstantBuffer* buffer);
+	void setTexture(Texture* texture);
 
 	void drawTriangleList(UINT vertex_count, UINT start_vertex_index);
 	void drawIndexedTriangleList(UINT index_count, UINT start_vertex_index, UINT start_index_location);
