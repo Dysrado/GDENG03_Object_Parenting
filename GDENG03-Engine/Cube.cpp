@@ -79,6 +79,9 @@ Cube::Cube(string name): AGameObject(name)
 
 Cube::~Cube()
 {
+	this->vertexBuffer->release();
+	this->indexBuffer->release();
+	AGameObject::~AGameObject();
 }
 
 void Cube::update(float deltaTime)

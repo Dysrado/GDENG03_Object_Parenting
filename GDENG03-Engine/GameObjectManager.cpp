@@ -207,7 +207,7 @@ void GameObjectManager::deleteObject(AGameObject* gameObject)
 {
 	
 	//First Method
-	for(int i = 0; i < aList.size(); i++)
+	/*for(int i = 0; i < aList.size(); i++)
 	{
 		if(aList[i] == gameObject)
 		{
@@ -216,8 +216,28 @@ void GameObjectManager::deleteObject(AGameObject* gameObject)
 			aList.shrink_to_fit();
 			break;
 		}
+	}*/
+
+	// 2nd Method
+	this->aTable.erase(gameObject->name);
+
+	int index = -1;
+	for (int i = 0; i < this->aList.size(); i++) {
+		if (this->aList[i] == gameObject) {
+			index = i;
+			break;
+		}
 	}
 
+	if (index != -1) {
+		this->aList.erase(this->aList.begin() + index);
+	}
+
+	if (gameObject == this->selectedObject)
+		this->selectedObject = nullptr;
+
+	// actual deletion of the pointer causes an issue for some reason
+	//delete gameObject;
 }
 
 void GameObjectManager::clearSelectedObjectList()

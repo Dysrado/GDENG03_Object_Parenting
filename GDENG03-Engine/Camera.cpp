@@ -52,7 +52,7 @@ void Camera::update(float deltaTime)
 		this->setPosition(newPos.m_x, newPos.m_y, newPos.m_z);
 		this->UpdateViewMatrix();
 	}
-	else if (InputSystem::getInstance()->isKeyDown('A')) {
+	if (InputSystem::getInstance()->isKeyDown('A')) {
 		Vector3D direction = localMatrix.getXDirection();
 		Vector3D newPos = Vector3D(
 			x + direction.m_x * deltaTime * -moveSpeed,

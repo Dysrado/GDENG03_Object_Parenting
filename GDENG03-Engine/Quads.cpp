@@ -42,6 +42,12 @@ Quads::Quads(string name) : AGameObject(name)
 	constantBuffer->load(&cc, sizeof(constant));
 }
 
+Quads::~Quads()
+{
+	this->vertexBuffer->release();
+	AGameObject::~AGameObject();
+}
+
 void Quads::update(float deltaTime)
 {
 	

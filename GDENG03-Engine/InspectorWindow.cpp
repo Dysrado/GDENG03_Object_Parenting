@@ -65,6 +65,12 @@ void InspectorWindow::drawUI()
 				UpdateChildrenEnableFlag(selectedObjectsList, isEnable);
 			};
 
+			ImGui::SameLine();
+			if (ImGui::Button("Delete"))
+			{
+				GameObjectManager::getInstance()->deleteObject(selectedObject);
+			}
+
 			//Transform Component
 			UpdateTransformGameObject(selectedObject);
 
