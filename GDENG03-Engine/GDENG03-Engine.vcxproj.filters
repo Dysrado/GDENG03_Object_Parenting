@@ -218,6 +218,12 @@
     <ClCompile Include="TexturedCube.cpp">
       <Filter>GameEngine\Primitives</Filter>
     </ClCompile>
+    <ClCompile Include="ScenePlayOptions.cpp" />
+    <ClCompile Include="EngineBackend.cpp" />
+    <ClCompile Include="EditorAction.cpp" />
+    <ClCompile Include="ActionHistory.cpp" />
+    <ClCompile Include="ActionMemento.cpp" />
+    <ClCompile Include="ActionScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppWindow.h">
@@ -375,6 +381,12 @@
     <ClInclude Include="TexturedCube.h">
       <Filter>GameEngine\Primitives</Filter>
     </ClInclude>
+    <ClInclude Include="ScenePlayOptions.h" />
+    <ClInclude Include="EngineBackend.h" />
+    <ClInclude Include="EditorAction.h" />
+    <ClInclude Include="ActionHistory.h" />
+    <ClInclude Include="ActionMemento.h" />
+    <ClInclude Include="ActionScreen.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PixelShader.hlsl">

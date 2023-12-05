@@ -3,6 +3,7 @@
 #include "GameObjectManager.h"
 #include "PhysicsComponent.h"
 #include "UIManager.h"
+#include "ActionHistory.h"
 
 InspectorWindow::InspectorWindow(const String name) : AUIScreen(name)
 {
@@ -150,13 +151,27 @@ void InspectorWindow::UpdateTransformGameObject(AGameObject* aObject)
 		aObject->getLocalScale().m_z
 	};
 
-	ImGui::DragFloat3("Position", t, 0.1f);
-	ImGui::DragFloat3("Rotation", r, 0.01f);
-	ImGui::DragFloat3("Scale", s, 0.1f);
-
-	aObject->setPosition(t[0], t[1], t[2]);
-	aObject->setRotation(r[0], r[1], r[2]);
-	aObject->setScale(s[0], s[1], s[2]);
+	if (ImGui::DragFloat3("Position", t, 0.1f)) {
+		ActionHistory::getInstance()->startRecordAction(aObject);
+		aObject->setPosition(t[0], t[1], t[2]);
+		aObject->setRotation(r[0], r[1], r[2]);
+		aObject->setScale(s[0], s[1], s[2]);
+		ActionHistory::getInstance()->endRecordAction(aObject);
+	}
+	if (ImGui::DragFloat3("Rotation", r, 0.01f)) {
+		ActionHistory::getInstance()->startRecordAction(aObject);
+		aObject->setPosition(t[0], t[1], t[2]);
+		aObject->setRotation(r[0], r[1], r[2]);
+		aObject->setScale(s[0], s[1], s[2]);
+		ActionHistory::getInstance()->endRecordAction(aObject);
+	}
+	if (ImGui::DragFloat3("Scale", s, 0.1f)) {
+		ActionHistory::getInstance()->startRecordAction(aObject);
+		aObject->setPosition(t[0], t[1], t[2]);
+		aObject->setRotation(r[0], r[1], r[2]);
+		aObject->setScale(s[0], s[1], s[2]);
+		ActionHistory::getInstance()->endRecordAction(aObject);
+	}
 }
 
 void InspectorWindow::UpdateTransformGameObject(GameObjectManager::List selectedObjectsList)

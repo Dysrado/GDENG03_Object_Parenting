@@ -4,6 +4,7 @@
 #include <vector>
 
 
+class EditorAction;
 class Quads;
 //Primitive
 class Cube;
@@ -21,6 +22,8 @@ public:
 	typedef std::string String;
 	typedef std::vector<AGameObject*> List;
 	typedef std::unordered_map<String, AGameObject*> HashTable;
+
+	void applyEditorAction(EditorAction* action);
 
 	enum PrimitiveType
 	{
@@ -56,6 +59,10 @@ public:
 
 	bool IsLinkingEnabled();
 	void SetLinkingEnabled(bool flag);
+
+	void saveEditStates();
+	void restoreEditStates();
+
 
 private:
 	static GameObjectManager* sharedInstance;

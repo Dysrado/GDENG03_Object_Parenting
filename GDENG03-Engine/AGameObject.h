@@ -19,6 +19,7 @@ struct constant
 
 
 using namespace std;
+class EditorAction;
 class VertexShader;
 class PixelShader;
 class GameObjectManager;
@@ -30,6 +31,13 @@ public:
 
 	AGameObject(string name);
 	~AGameObject();
+
+	struct AQuaternion {
+		float w = 0.0f;
+		float x = 0.0f;
+		float y = 0.0f;
+		float z = 0.0f;
+	};
 
 	typedef std::vector<AComponent*> ComponentList;
 
@@ -94,15 +102,21 @@ public:
 	// our matrix implementation to openGL matrix
 	float* getPhysicsLocalMatrix();
 
+	void saveEditState();
+	void restoreEditState();
 	
 	
 private:
 	string name;
 	
+	EditorAction* lastEditState = NULL; //used for storing the state of this object prior to play mode.
+
 
 	Vector3D localRotation;
 	Vector3D localPosition;
 	Vector3D localScale;
+	AQuaternion orientation;
+
 	bool isEnabled = true;
 
 

@@ -4,6 +4,8 @@
 #include "GameObjectManager.h"
 #include "InspectorWindow.h"
 #include "SceneOutliner.h"
+#include "ScenePlayOptions.h"
+#include "ActionScreen.h"
 
 UIManager* UIManager::sharedInstance = nullptr;
 
@@ -82,4 +84,12 @@ void UIManager::OnCreateInterface()
 
 	EngineProfiler* engineProfiler = new EngineProfiler("New");
 	uiList.push_back(engineProfiler);
+
+	ScenePlayOptions* scenePlayOptions = new ScenePlayOptions();
+	uiList.push_back(scenePlayOptions);
+
+	ActionScreen* actionScreen = new ActionScreen();
+	uiList.push_back(actionScreen);
+
+
 }

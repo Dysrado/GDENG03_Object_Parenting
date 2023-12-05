@@ -1,6 +1,7 @@
 #include "AGameObject.h"
 
 #include "MathUtils.h"
+#include "EditorAction.h"
 
 AGameObject::AGameObject(string name)
 {
@@ -354,6 +355,28 @@ Matrix4x4 AGameObject::getLocalMatrix()
 	
 	return localMatrix.multiplyTo(parent->getLocalMatrix());*/
 		
+}
+
+void AGameObject::saveEditState()
+{
+	if (this->lastEditState == NULL) {
+		this->lastEditState = new EditorAction(this);
+	}
+}
+
+void AGameObject::restoreEditState()
+{
+	if (this->lastEditState != NULL) {
+		this->localPosition = this->lastEditState->getStorePos();
+		this->localScale = this->lastEditState->getStoredScale();
+		this->orientation = this->lastEditState->getStoredOrientation();
+		this->localMatrix = this->lastEditState->getStoredMatrix();
+
+		this->lastEditState = NULL;
+	}
+	else {
+		std::cout << "Edit state is null. Cannot restore. \n";
+	}
 }
 
 Matrix4x4 AGameObject::getParentLocalMatrix()

@@ -12,9 +12,23 @@
 #include "PhysicsComponent.h"
 #include "PhysicsSystem.h"
 #include "TexturedCube.h"
+#include "EditorAction.h"
 
 
 GameObjectManager* GameObjectManager::sharedInstance = nullptr;
+
+void GameObjectManager::applyEditorAction(EditorAction* action)
+{
+	AGameObject* object = this->findObjectByName(action->getOwnerName());
+	if (object != NULL) {
+		//re-apply state
+		object->recomputeMatrix(action->getStoredMatrix().getFloatArray());
+		object->setPosition(action->getStorePos());
+		object->setRotation(action->getStoredOrientation().x, action->getStoredOrientation().y, action->getStoredOrientation().z);
+		object->setScale(action->getStoredScale());
+
+	}
+}
 
 GameObjectManager* GameObjectManager::getInstance()
 {
@@ -316,6 +330,20 @@ bool GameObjectManager::IsLinkingEnabled()
 void GameObjectManager::SetLinkingEnabled(bool flag)
 {
 	isLinkEnable = flag;
+}
+
+void GameObjectManager::saveEditStates()
+{
+	for (int i = 0; i < this->aList.size(); i++) {
+		this->aList[i]->saveEditState();
+	}
+}
+
+void GameObjectManager::restoreEditStates()
+{
+	for (int i = 0; i < this->aList.size(); i++) {
+		this->aList[i]->restoreEditState();
+	}
 }
 
 
