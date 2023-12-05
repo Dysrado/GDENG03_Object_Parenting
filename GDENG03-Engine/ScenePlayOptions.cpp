@@ -34,7 +34,8 @@ void ScenePlayOptions::drawUI()
 				{
 					components[i]->getOwner()->detachComponent(components[i]);
 					components[i]->getOwner()->attachComponent(new PhysicsComponent("PhysicsComponent", components[i]->getOwner(), BodyType::DYNAMIC));
-					delete components[i];
+					// Delete Components causes some issues not sure why, but without the delete there becomes a memory leak and the engine lags
+					//delete components[i];
 				}
 				
 			}

@@ -40,6 +40,7 @@ Quads::Quads(string name) : AGameObject(name)
 
 	constantBuffer = GraphicsEngine::get()->createConstantBuffer();
 	constantBuffer->load(&cc, sizeof(constant));
+	objectType = PrimitiveType::PLANE;
 }
 
 Quads::~Quads()

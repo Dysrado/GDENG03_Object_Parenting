@@ -379,6 +379,11 @@ void AGameObject::restoreEditState()
 	}
 }
 
+AGameObject::PrimitiveType AGameObject::getObjectType()
+{
+	return objectType;
+}
+
 Matrix4x4 AGameObject::getParentLocalMatrix()
 {
 	if (parent == nullptr)

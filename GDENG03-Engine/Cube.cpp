@@ -75,6 +75,7 @@ Cube::Cube(string name): AGameObject(name)
 	constantBuffer = GraphicsEngine::get()->createConstantBuffer();
 	constantBuffer->load(&cc, sizeof(constant));
 	updateLocalMatrix();
+	objectType = PrimitiveType::CUBE;
 }
 
 Cube::~Cube()

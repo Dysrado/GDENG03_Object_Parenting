@@ -38,7 +38,15 @@ public:
 		float y = 0.0f;
 		float z = 0.0f;
 	};
-
+	enum PrimitiveType
+	{
+		CUBE,
+		PHYSICS_CUBE,
+		PLANE,
+		PHYSICS_PLANE,
+		SPHERE,
+		TEXTURED_CUBE
+	};
 	typedef std::vector<AComponent*> ComponentList;
 
 
@@ -105,7 +113,7 @@ public:
 	void saveEditState();
 	void restoreEditState();
 	
-	
+	PrimitiveType getObjectType();
 private:
 	string name;
 	
@@ -125,7 +133,7 @@ protected:
 	Matrix4x4 localMatrix;
 	string typeName;
 	bool overrideMatrix = false;
-
+	PrimitiveType objectType;
 	AGameObject* parent;
 	vector<AGameObject*> childrenList;
 	friend class GameObjectManager;

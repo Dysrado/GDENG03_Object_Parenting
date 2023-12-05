@@ -224,6 +224,8 @@
     <ClCompile Include="ActionHistory.cpp" />
     <ClCompile Include="ActionMemento.cpp" />
     <ClCompile Include="ActionScreen.cpp" />
+    <ClCompile Include="SceneReader.cpp" />
+    <ClCompile Include="SceneWriter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppWindow.h">
@@ -387,6 +389,9 @@
     <ClInclude Include="ActionHistory.h" />
     <ClInclude Include="ActionMemento.h" />
     <ClInclude Include="ActionScreen.h" />
+    <ClInclude Include="SceneReader.h" />
+    <ClInclude Include="SceneWriter.h" />
+    <ClInclude Include="StringUtils.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PixelShader.hlsl">

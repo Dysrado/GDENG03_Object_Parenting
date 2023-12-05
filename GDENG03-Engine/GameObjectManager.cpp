@@ -254,6 +254,18 @@ void GameObjectManager::deleteObject(AGameObject* gameObject)
 	//delete gameObject;
 }
 
+void GameObjectManager::deleteAllObjects()
+{
+	for (int i = 0; i < aList.size(); i++)
+	{
+		delete aList[i];
+	}
+
+	selectedObject = nullptr;
+	aList.clear();
+	aTable.clear();
+}
+
 void GameObjectManager::clearSelectedObjectList()
 {
 	selectedObject = nullptr;
@@ -343,6 +355,61 @@ void GameObjectManager::restoreEditStates()
 {
 	for (int i = 0; i < this->aList.size(); i++) {
 		this->aList[i]->restoreEditState();
+	}
+}
+
+void GameObjectManager::createObjectFromFile(std::string objectName, AGameObject::PrimitiveType objectType, Vector3D position, Vector3D rotation, Vector3D scale, float mass, bool isGravityEnabled)
+{
+	if (objectType == AGameObject::PrimitiveType::CUBE) {
+		Cube* cube = new Cube(objectName);
+		cube->setPosition(position);
+		cube->setRotation(rotation);
+		cube->setScale(scale);
+		addObject(cube);
+	}
+
+	else if (objectType == AGameObject::PrimitiveType::PLANE) {
+		Quads* plane = new Quads(objectName);
+		plane->setPosition(position);
+		plane->setRotation(rotation);
+		plane->setScale(scale);
+		addObject(plane);
+	}
+
+	else if (objectType == AGameObject::PrimitiveType::TEXTURED_CUBE) {
+		TexturedCube* cube = new TexturedCube(objectName);
+		cube->setPosition(position);
+		cube->setRotation(rotation);
+		cube->setScale(scale);
+		//cube->getRenderer()->setRenderer(path);
+
+		/*String textureString = path;
+		std::wstring widestr = std::wstring(textureString.begin(), textureString.end());
+		const wchar_t* texturePath = widestr.c_str();
+
+		static_cast<TexturedCube*>(cube)->getRenderer()->setTexture(TextureManager::getInstance()->createTextureFromFile(texturePath));*/
+		addObject(cube);
+	}
+
+	else if (objectType == AGameObject::PrimitiveType::PHYSICS_CUBE) {
+		Cube* cube = new Cube(objectName);
+		cube->setPosition(position);
+		cube->setRotation(rotation);
+		cube->setScale(scale);
+		cube->attachComponent(new PhysicsComponent("Physics_Component", cube, BodyType::DYNAMIC));
+		static_cast<PhysicsComponent*>(cube->findComponentByName("Physics_Component"))->getRigidBody()->setMass(mass);
+		static_cast<PhysicsComponent*>(cube->findComponentByName("Physics_Component"))->getRigidBody()->enableGravity(isGravityEnabled);
+		addObject(cube);
+	}
+
+	else if (objectType == AGameObject::PrimitiveType::PHYSICS_PLANE) {
+		PhysicsPlane* plane = new PhysicsPlane(objectName);
+		plane->setPosition(position);
+		plane->setRotation(rotation);
+		plane->setScale(scale);
+		plane->attachComponent(new PhysicsComponent("Physics_Component", plane, BodyType::KINEMATIC));
+
+		addObject(plane);
 	}
 }
 

@@ -1,0 +1,20 @@
+Physics Cube
+Type:|3|1|10|1|
+Position:|0|-2|0|
+Rotation:|0|0|0|
+Scale:|10|0.1|10|
+Cube
+Type:|0|1|10|1|
+Position:|0|0|0|
+Rotation:|0|0|0|
+Scale:|1|1|1|
+Cube
+Type:|0|0|0|1|
+Position:|2|1.9|-0.2|
+Rotation:|0|0|0|
+Scale:|1|1|1|
+Cube
+Type:|0|1|10|1|
+Position:|0|-1.2|-1.8|
+Rotation:|0|0|0|
+Scale:|1|1|1|

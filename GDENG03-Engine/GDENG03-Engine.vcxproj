@@ -111,7 +111,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_HAS_STD_BYTE=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)/imgui</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(LocalDebuggerWorkingDirectory)\imgui</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -180,6 +180,8 @@
     <ClCompile Include="SceneCameraHandler.cpp" />
     <ClCompile Include="SceneOutliner.cpp" />
     <ClCompile Include="ScenePlayOptions.cpp" />
+    <ClCompile Include="SceneReader.cpp" />
+    <ClCompile Include="SceneWriter.cpp" />
     <ClCompile Include="ShaderLibrary.cpp" />
     <ClCompile Include="SwapChain.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -239,7 +241,10 @@
     <ClInclude Include="SceneCameraHandler.h" />
     <ClInclude Include="SceneOutliner.h" />
     <ClInclude Include="ScenePlayOptions.h" />
+    <ClInclude Include="SceneReader.h" />
+    <ClInclude Include="SceneWriter.h" />
     <ClInclude Include="ShaderLibrary.h" />
+    <ClInclude Include="StringUtils.h" />
     <ClInclude Include="SwapChain.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TexturedCube.h" />

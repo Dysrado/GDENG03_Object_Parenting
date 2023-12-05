@@ -112,7 +112,7 @@ TexturedCube::TexturedCube(std::string name) : Cube(name)
 	DeviceContext* deviceContext = GraphicsEngine::get()->getImmediateDeviceContext();
 	deviceContext->setRenderConfig(ShaderLibrary::getInstance()->getVertexShader(shaderNames.TEXTURED_VERTEX_SHADER_NAME),
 	ShaderLibrary::getInstance()->getPixelShader(shaderNames.TEXTURED_PIXEL_SHADER_NAME));
-
+	objectType = PrimitiveType::TEXTURED_CUBE;
 }
 
 TexturedCube::~TexturedCube()

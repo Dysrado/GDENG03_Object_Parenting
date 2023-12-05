@@ -2,6 +2,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include "AGameObject.h"
 
 
 class EditorAction;
@@ -48,6 +49,7 @@ public:
 	void addObject(AGameObject* gameObject);
 	void createObject(PrimitiveType type);
 	void deleteObject(AGameObject* gameObject);
+	void deleteAllObjects();
 
 	void clearSelectedObjectList();
 	void setSelectedObject(AGameObject* gameObject, bool isMultiSelect);
@@ -63,6 +65,7 @@ public:
 	void saveEditStates();
 	void restoreEditStates();
 
+	void createObjectFromFile(std::string objectName, AGameObject::PrimitiveType objectType, Vector3D position, Vector3D rotation, Vector3D scale, float mass, bool isGravityEnabled);
 
 private:
 	static GameObjectManager* sharedInstance;
