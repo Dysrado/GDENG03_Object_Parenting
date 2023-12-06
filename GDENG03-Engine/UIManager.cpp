@@ -6,9 +6,10 @@
 #include "SceneOutliner.h"
 #include "ScenePlayOptions.h"
 #include "ActionScreen.h"
+#include "MaterialScreen.h"
 
 UIManager* UIManager::sharedInstance = nullptr;
-
+UINames uiNames;
 
 UIManager* UIManager::getInstance()
 {
@@ -47,7 +48,10 @@ void UIManager::drawAllUI()
 
 	for(int i = 0; i < this->uiList.size(); i++)
 	{
-		this->uiList[i]->drawUI();
+		if (uiList[i]->getEnabled())
+		{
+			uiList[i]->drawUI();
+		}
 	}
 
 	//Disabling Button Click
@@ -60,6 +64,26 @@ void UIManager::drawAllUI()
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
+}
+
+void UIManager::setEnabled(String uiName, bool isPopupOpen)
+{
+	for (int i = 0; i < this->uiList.size(); i++) {
+		if (uiList[i]->getName() == uiName)
+		{
+			uiList[i]->setEnabled(isPopupOpen);
+		}
+	}
+}
+
+AUIScreen* UIManager::findUIByName(String uiName)
+{
+	for (int i = 0; i < this->uiList.size(); i++) {
+		if (uiList[i]->getName() == uiName)
+			return uiList[i];
+	}
+
+	return NULL;
 }
 
 UIManager::UIManager(HWND windowHandle)
@@ -91,5 +115,7 @@ void UIManager::OnCreateInterface()
 	ActionScreen* actionScreen = new ActionScreen();
 	uiList.push_back(actionScreen);
 
-
+	MaterialScreen* materialScreen = new MaterialScreen(uiNames.MATERIAL_SCREEN, fileDialog);
+	materialScreen->setEnabled(false);
+	uiList.push_back(materialScreen);
 }

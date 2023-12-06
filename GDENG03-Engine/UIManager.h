@@ -21,12 +21,15 @@ public:
 	static void destroy();
 
 	void drawAllUI();
+	void setEnabled(String uiName, bool isPopupOpen);
 
 	static const int WINDOW_WIDTH = 1024; //Based on Window.cpp
 	static const int WINDOW_HEIGHT = 768;
 
 	//Boilerplate to be remove
-	
+
+	AUIScreen* findUIByName(String uiName);
+
 
 private:
 	UIManager(HWND windowHandle);
@@ -34,6 +37,7 @@ private:
 	UIManager(UIManager const&) {};
 	UIManager& operator=(UIManager const&) {};
 	static UIManager* sharedInstance;
+	ImGui::FileBrowser fileDialog;
 
 	UIList uiList;
 	UITable uiTable;

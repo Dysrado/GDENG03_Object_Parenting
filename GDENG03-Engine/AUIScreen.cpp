@@ -2,10 +2,17 @@
 
 AUIScreen::AUIScreen(String name)
 {
+	this->name = name;
+	isEnabled = true;
 }
 
 AUIScreen::~AUIScreen()
 {
+}
+
+void AUIScreen::setEnabled(bool flag)
+{
+	isEnabled = flag;
 }
 
 AUIScreen::String AUIScreen::getName()
@@ -15,4 +22,9 @@ AUIScreen::String AUIScreen::getName()
 
 void AUIScreen::drawUI()
 {
+}
+
+bool AUIScreen::getEnabled()
+{
+	return isEnabled;
 }

@@ -226,6 +226,12 @@
     <ClCompile Include="ActionScreen.cpp" />
     <ClCompile Include="SceneReader.cpp" />
     <ClCompile Include="SceneWriter.cpp" />
+    <ClCompile Include="ObjectRenderer.cpp">
+      <Filter>GameEngine\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="MaterialScreen.cpp">
+      <Filter>GameEngine\Interface</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppWindow.h">
@@ -392,6 +398,12 @@
     <ClInclude Include="SceneReader.h" />
     <ClInclude Include="SceneWriter.h" />
     <ClInclude Include="StringUtils.h" />
+    <ClInclude Include="ObjectRenderer.h">
+      <Filter>GameEngine\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialScreen.h">
+      <Filter>GameEngine\Interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PixelShader.hlsl">
