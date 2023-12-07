@@ -604,9 +604,9 @@ void AGameObject::recomputeMatrix(float matrix[16])
 
 	Matrix4x4 newMatrix; newMatrix.setIdentity(); newMatrix.setMatrix(matrix4x4);
 	Matrix4x4 scaleMatrix; scaleMatrix.setIdentity(); scaleMatrix.setScale(this->localScale);
-	Matrix4x4 transMatrix; transMatrix.setIdentity(); transMatrix.setTranslation(this->localPosition);
+	//Matrix4x4 transMatrix; transMatrix.setIdentity(); transMatrix.setTranslation(this->localPosition);
 
-	this->localMatrix = scaleMatrix.multiplyTo(transMatrix.multiplyTo(newMatrix));
+	this->localMatrix = scaleMatrix.multiplyTo((newMatrix));
 	this->overrideMatrix = true;
 }
 
@@ -629,6 +629,29 @@ float* AGameObject::getPhysicsLocalMatrix()
 
 	allMatrix = allMatrix.multiplyTo(scaleMatrix.multiplyTo(rotMatrix));
 	allMatrix = allMatrix.multiplyTo(translationMatrix);
+
+	//float* oneDMatrix = MathUtils::convertInto1D(allMatrix);
+
+	return allMatrix.getFloatArray();// allMatrix.getMatrix();
+}
+
+float* AGameObject::getPhysicsNoTranslationLocalMatrix()
+{
+	Matrix4x4 allMatrix; allMatrix.setIdentity();
+
+	Matrix4x4 scaleMatrix; scaleMatrix.setIdentity(); scaleMatrix.setScale(Vector3D(1, 1, 1)); //physics 3D only accepts uniform scale for rigidbody
+	Vector3D rotation = this->getLocalRotation();
+
+
+	Matrix4x4 xMatrix; xMatrix.setIdentity(); xMatrix.setRotationX(rotation.m_x);
+	Matrix4x4 yMatrix; yMatrix.setIdentity(); yMatrix.setRotationY(rotation.m_y);
+	Matrix4x4 zMatrix; zMatrix.setIdentity(); zMatrix.setRotationZ(rotation.m_z);
+
+	//Scale --> Rotate --> Transform as recommended order.
+	Matrix4x4 rotMatrix; rotMatrix.setIdentity();
+	rotMatrix = rotMatrix.multiplyTo(xMatrix.multiplyTo(yMatrix.multiplyTo(zMatrix)));
+
+	allMatrix = allMatrix.multiplyTo(scaleMatrix.multiplyTo(rotMatrix));
 
 	//float* oneDMatrix = MathUtils::convertInto1D(allMatrix);
 

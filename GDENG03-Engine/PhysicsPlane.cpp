@@ -14,7 +14,8 @@
 
 PhysicsPlane::PhysicsPlane(string name): Cube(name)
 {
-	typeName = "Physics Cube";
+	typeName = "Physics Plane";
+
 	//TODO: White Version of the Shaders
 	Vertex cubeList[] =
 	{

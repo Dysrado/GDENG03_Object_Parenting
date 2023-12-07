@@ -137,7 +137,7 @@ void GameObjectManager::createObject(PrimitiveType type)
 				}
 
 
-				Cube* cube = new Cube("Cube_Physics");
+				Cube* cube = new Cube(objName);
 				cube->setPosition(0, 5.0f, 0);
 				this->addObject(cube);
 
@@ -145,8 +145,9 @@ void GameObjectManager::createObject(PrimitiveType type)
 
 				// add the Physics Component - External Method
 				string componentName = "Physics_Component";
-				PhysicsComponent* component = new PhysicsComponent(componentName, cube, BodyType::DYNAMIC);
+				PhysicsComponent* component = new PhysicsComponent(componentName + objName, cube, BodyType::DYNAMIC);
 				cube->attachComponent(component);
+				pCubeCount++;
 			}
 		}
 		break;
@@ -184,7 +185,7 @@ void GameObjectManager::createObject(PrimitiveType type)
 
 			// add the Physics Component
 			string componentName = "Physics_Component";
-			PhysicsComponent* component = new PhysicsComponent(componentName, plane, BodyType::STATIC);
+			PhysicsComponent* component = new PhysicsComponent(componentName + objName, plane, BodyType::STATIC);
 			plane->attachComponent(component);
 
 		}
@@ -396,9 +397,20 @@ void GameObjectManager::createObjectFromFile(std::string objectName, AGameObject
 		cube->setPosition(position);
 		cube->setRotation(rotation);
 		cube->setScale(scale);
-		cube->attachComponent(new PhysicsComponent("Physics_Component", cube, BodyType::DYNAMIC));
-		static_cast<PhysicsComponent*>(cube->findComponentByName("Physics_Component"))->getRigidBody()->setMass(mass);
-		static_cast<PhysicsComponent*>(cube->findComponentByName("Physics_Component"))->getRigidBody()->enableGravity(isGravityEnabled);
+		cube->attachComponent(new PhysicsComponent("Physics_Component" + objectName, cube, BodyType::DYNAMIC));
+
+		//TODO:
+
+		PhysicsComponent* pObject = (PhysicsComponent*)cube->findComponentByName("Physics_Component" + objectName);
+		if (pObject)
+		{
+			pObject->getRigidBody()->setMass(mass);
+			pObject->getRigidBody()->enableGravity(isGravityEnabled);
+		}
+
+		else
+			cout << "p6 does not exist" << endl;
+
 		addObject(cube);
 	}
 
@@ -407,7 +419,9 @@ void GameObjectManager::createObjectFromFile(std::string objectName, AGameObject
 		plane->setPosition(position);
 		plane->setRotation(rotation);
 		plane->setScale(scale);
-		plane->attachComponent(new PhysicsComponent("Physics_Component", plane, BodyType::KINEMATIC));
+
+		//TODO:
+		plane->attachComponent(new PhysicsComponent("Physics_Component" + objectName, plane, BodyType::STATIC));
 
 		addObject(plane);
 	}

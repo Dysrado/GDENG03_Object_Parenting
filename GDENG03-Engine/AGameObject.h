@@ -109,6 +109,7 @@ public:
 	void recomputeMatrix(float matrix[16]);
 	// our matrix implementation to openGL matrix
 	float* getPhysicsLocalMatrix();
+	float* getPhysicsNoTranslationLocalMatrix();
 
 	void saveEditState();
 	void restoreEditState();

@@ -5,6 +5,7 @@
 #include "UIManager.h"
 #include "ActionHistory.h"
 #include "MaterialScreen.h"
+#include "MathUtils.h"
 #include "TexturedCube.h"
 #include "ObjectRenderer.h"
 #include "TextureManager.h"
@@ -147,10 +148,15 @@ void InspectorWindow::UpdateTransformGameObject(AGameObject* aObject)
 		aObject->getLocalPosition().m_y,
 		aObject->getLocalPosition().m_z
 	};
-	float r[3] = {
+
+	Vector3D degreeRotation = MathUtils::convertRadToEuler(
 		aObject->getLocalRotation().m_x,
 		aObject->getLocalRotation().m_y,
-		aObject->getLocalRotation().m_z
+		aObject->getLocalRotation().m_z);
+	float r[3] = {
+		degreeRotation.m_x,
+		degreeRotation.m_y,
+		degreeRotation.m_z
 	};
 	float s[3] = {
 		aObject->getLocalScale().m_x,
@@ -161,21 +167,31 @@ void InspectorWindow::UpdateTransformGameObject(AGameObject* aObject)
 	if (ImGui::DragFloat3("Position", t, 0.1f)) {
 		ActionHistory::getInstance()->startRecordAction(aObject);
 		aObject->setPosition(t[0], t[1], t[2]);
-		aObject->setRotation(r[0], r[1], r[2]);
+		Vector3D radRotation = MathUtils::convertEulerToRad(
+			r[0], r[1], r[2]);
+
+		aObject->setRotation(radRotation.m_x, radRotation.m_y, radRotation.m_z);
 		aObject->setScale(s[0], s[1], s[2]);
 		ActionHistory::getInstance()->endRecordAction(aObject);
 	}
-	if (ImGui::DragFloat3("Rotation", r, 0.01f)) {
+	if (ImGui::DragFloat3("Rotation", r, 5.0f)) {
 		ActionHistory::getInstance()->startRecordAction(aObject);
 		aObject->setPosition(t[0], t[1], t[2]);
-		aObject->setRotation(r[0], r[1], r[2]);
+
+		Vector3D radRotation = MathUtils::convertEulerToRad(
+			r[0], r[1], r[2]
+		);
+
+		aObject->setRotation(radRotation.m_x, radRotation.m_y, radRotation.m_z);
 		aObject->setScale(s[0], s[1], s[2]);
 		ActionHistory::getInstance()->endRecordAction(aObject);
 	}
 	if (ImGui::DragFloat3("Scale", s, 0.1f)) {
 		ActionHistory::getInstance()->startRecordAction(aObject);
 		aObject->setPosition(t[0], t[1], t[2]);
-		aObject->setRotation(r[0], r[1], r[2]);
+		Vector3D radRotation = MathUtils::convertEulerToRad(
+			r[0], r[1], r[2]);
+		aObject->setRotation(radRotation.m_x, radRotation.m_y, radRotation.m_z);
 		aObject->setScale(s[0], s[1], s[2]);
 		ActionHistory::getInstance()->endRecordAction(aObject);
 	}
@@ -216,14 +232,14 @@ void InspectorWindow::UpdateTransformGameObject(GameObjectManager::List selected
 void InspectorWindow::DisplayRigidBody(AGameObject* aObject)
 {
 	bool isComponentActive = false;
-	PhysicsComponent* pComponent = (PhysicsComponent*)aObject->findComponentByName("Physics_Component");
+	PhysicsComponent* pComponent = (PhysicsComponent*)aObject->findComponentByName("Physics_Component" + aObject->RetrieveName());
 
 	if (pComponent == nullptr)
 	{
 		ImGui::Text("Rigid Body: None");
 		if(ImGui::Button("Add RigidBody"))
 		{
-			PhysicsComponent* component = new PhysicsComponent("Physics_Component", aObject, BodyType::STATIC);
+			PhysicsComponent* component = new PhysicsComponent("Physics_Component" + aObject->RetrieveName(), aObject, BodyType::STATIC);
 			aObject->attachComponent(component);
 		}
 	}

@@ -30,12 +30,29 @@ void ScenePlayOptions::drawUI()
 
 			PhysicsSystem::ComponentList components = BaseComponentSystem::getInstance()->getPhysicsSystem()->getAllComponents();
 			for (int i = 0; i < components.size(); i++) {
-				if (components[i]->getRigidBody()->getType() != BodyType::KINEMATIC) 
+				if (components[i]->getRigidBody()->getType() != BodyType::STATIC) 
 				{
+					//Define Owner
+					AGameObject* aObject = components[i]->getOwner();
+
 					components[i]->getOwner()->detachComponent(components[i]);
-					components[i]->getOwner()->attachComponent(new PhysicsComponent("PhysicsComponent", components[i]->getOwner(), BodyType::DYNAMIC));
+					float mass = components[i]->getRigidBody()->getMass();
+					bool isGravityEnabled = components[i]->getRigidBody()->isGravityEnabled();
+					BaseComponentSystem::getInstance()->getPhysicsSystem()->unregisterComponent(components[i]);
+
+					aObject->attachComponent(new PhysicsComponent("PhysicsComponent" + components[i]->getOwner()->RetrieveObjName(),
+						aObject, BodyType::DYNAMIC));
+					PhysicsComponent* newPObject = (PhysicsComponent*)aObject->findComponentByName("PhysicsComponent" + aObject->RetrieveObjName());
+					newPObject->getRigidBody()->setMass(mass);
+					newPObject->getRigidBody()->enableGravity(isGravityEnabled);
+
+					
+					delete components[i];
+
+
 					// Delete Components causes some issues not sure why, but without the delete there becomes a memory leak and the engine lags
 					//delete components[i];
+
 				}
 				
 			}
