@@ -1,6 +1,7 @@
 #include "AGameObject.h"
 
 #include "MathUtils.h"
+#include "EditorAction.h"
 
 AGameObject::AGameObject(string name)
 {
@@ -14,6 +15,7 @@ AGameObject::AGameObject(string name)
 
 AGameObject::~AGameObject()
 {
+	
 }
 
 void AGameObject::setPosition(float x, float y, float z)
@@ -143,10 +145,8 @@ void AGameObject::SetParent(AGameObject* reference)
 		Matrix4x4 ownWorldMatrix = this->computeWorldMatrix();
 		parent = reference;
 		Matrix4x4 FinalMatrix = parent->computeWorldMatrix();
+
 		//Case 1
-		
-		
-		
 		temp.setIdentity();
 
 		if(ownMatrix == temp) //Identity Check
@@ -192,6 +192,7 @@ void AGameObject::SetParent(AGameObject* reference)
 			 ownWorldMatrix.m_mat[3][2] - FinalMatrix.m_mat[3][2]
 		);
 
+		
 		
 
 
@@ -260,29 +261,6 @@ void AGameObject::RemoveParent(AGameObject* reference)
 	//Scale
 	this->localScale = this->getParentLocalScale();
 
-	
-
-	//Computation Experiment For Rotation
-
-	//Matrix4x4 posMat;
-	//posMat.setTranslation(localPosition);
-	//posMat.inverse();
-
-	//Matrix4x4 scaleMat;
-	//scaleMat.setScale(localScale);
-	//scaleMat.inverse();
-
-	//Matrix4x4 rotMat = posMat.multiplyTo(FinalMatrix.multiplyTo(scaleMat));
-
-	////Matrix4x4 rotMat = scaleMat.multiplyTo(FinalMatrix.multiplyTo(posMat));
-
-	///*this->localRotation = Vector3D(
-	//	rotMat.m_mat[0][3], rotMat.m_mat[1][3], rotMat.m_mat[2][3]
-	//);*/
-
-	//this->localRotation = Vector3D(
-	//	rotMat.m_mat[3][0], rotMat.m_mat[3][1], rotMat.m_mat[3][2]
-	//);
 
 	this->parent->RemoveChild(reference);
 	this->parent = nullptr;
@@ -370,13 +348,52 @@ bool AGameObject::IsEnabled()
 
 Matrix4x4 AGameObject::getLocalMatrix()
 {
-	if(parent == nullptr)
+	return localMatrix;
+	/*if(parent == nullptr)
 	{
-		return localMatrix;
+		
 	}
 	
-	return localMatrix.multiplyTo(parent->getLocalMatrix());
+	return localMatrix.multiplyTo(parent->getLocalMatrix());*/
 		
+}
+
+void AGameObject::saveEditState()
+{
+	if (this->lastEditState == NULL) {
+		this->lastEditState = new EditorAction(this);
+	}
+}
+
+void AGameObject::restoreEditState()
+{
+	if (this->lastEditState != NULL) {
+		this->localPosition = this->lastEditState->getStorePos();
+		this->localScale = this->lastEditState->getStoredScale();
+		this->orientation = this->lastEditState->getStoredOrientation();
+		this->localMatrix = this->lastEditState->getStoredMatrix();
+
+		this->lastEditState = NULL;
+	}
+	else {
+		std::cout << "Edit state is null. Cannot restore. \n";
+	}
+}
+
+AGameObject::PrimitiveType AGameObject::getObjectType()
+{
+	return objectType;
+}
+
+Matrix4x4 AGameObject::getParentLocalMatrix()
+{
+	if (parent == nullptr)
+	{
+		return computeLocalMatrix();
+	}
+
+	
+	return computeLocalMatrix().multiplyTo(parent->getParentLocalMatrix());
 }
 
 // This function is meant for retrieving the finalMatrixTransformation including self
@@ -460,7 +477,7 @@ Matrix4x4 AGameObject::computeWorldMatrix()
 	// If Parent Exists, then Follow Parent Transform
 	if (parent != nullptr)
 	{
-		finalMatrix *= parent->getLocalMatrix(); //Fundamental problem
+		finalMatrix *= parent->getParentLocalMatrix(); //Fundamental problem
 	}
 
 	return finalMatrix;
@@ -483,7 +500,84 @@ void AGameObject::updateLocalMatrix()
 
 	allMatrix = allMatrix.multiplyTo(scaleMatrix.multiplyTo(rotMatrix));
 	allMatrix = allMatrix.multiplyTo(translationMatrix);
+
+
+	//Addition of Object Parenting
+	if(this->HasParent())
+	{
+		allMatrix = allMatrix.multiplyTo(parent->getParentLocalMatrix());
+	}
 	this->localMatrix = allMatrix;
+}
+
+
+
+void AGameObject::attachComponent(AComponent* component)
+{
+	this->componentList.push_back(component);
+	component->attachOwner(this);
+}
+
+void AGameObject::detachComponent(AComponent* component)
+{
+	int index = -1;
+	for (int i = 0; i < this->componentList.size(); i++) {
+		if (this->componentList[i] == component) {
+			index = i;
+			break;
+		}
+	}
+	if (index != -1) {
+		this->componentList.erase(this->componentList.begin() + index);
+	}
+}
+
+AComponent* AGameObject::findComponentByName(string name)
+{
+	for (int i = 0; i < this->componentList.size(); i++) {
+		if (this->componentList[i]->getName() == name) {
+			return this->componentList[i];
+		}
+	}
+
+	return NULL;
+}
+
+AComponent* AGameObject::findComponentOfType(AComponent::ComponentType type, string name)
+{
+	for (int i = 0; i < this->componentList.size(); i++) {
+		if (this->componentList[i]->getName() == name && this->componentList[i]->getType() == type) {
+			return this->componentList[i];
+		}
+	}
+
+	return NULL;
+}
+
+
+
+AGameObject::ComponentList AGameObject::getComponentsOfType(AComponent::ComponentType type)
+{
+	ComponentList foundList;
+	for (int i = 0; i < this->componentList.size(); i++) {
+		if (this->componentList[i]->getType() == type) {
+			foundList.push_back(this->componentList[i]);
+		}
+	}
+
+	return foundList;
+}
+
+AGameObject::ComponentList AGameObject::getComponentsOfTypeRecursive(AComponent::ComponentType type)
+{
+	ComponentList foundList;
+	for (int i = 0; i < this->componentList.size(); i++) {
+		if (this->componentList[i]->getType() == type) {
+			foundList.push_back(this->componentList[i]);
+		}
+	}
+
+	return foundList;
 }
 
 void AGameObject::recomputeMatrix(float matrix[16])
@@ -511,9 +605,9 @@ void AGameObject::recomputeMatrix(float matrix[16])
 
 	Matrix4x4 newMatrix; newMatrix.setIdentity(); newMatrix.setMatrix(matrix4x4);
 	Matrix4x4 scaleMatrix; scaleMatrix.setIdentity(); scaleMatrix.setScale(this->localScale);
-	Matrix4x4 transMatrix; transMatrix.setIdentity(); transMatrix.setTranslation(this->localPosition);
+	//Matrix4x4 transMatrix; transMatrix.setIdentity(); transMatrix.setTranslation(this->localPosition);
 
-	this->localMatrix = scaleMatrix.multiplyTo(transMatrix.multiplyTo(newMatrix));
+	this->localMatrix = scaleMatrix.multiplyTo((newMatrix));
 	this->overrideMatrix = true;
 }
 
@@ -536,6 +630,29 @@ float* AGameObject::getPhysicsLocalMatrix()
 
 	allMatrix = allMatrix.multiplyTo(scaleMatrix.multiplyTo(rotMatrix));
 	allMatrix = allMatrix.multiplyTo(translationMatrix);
+
+	//float* oneDMatrix = MathUtils::convertInto1D(allMatrix);
+
+	return allMatrix.getFloatArray();// allMatrix.getMatrix();
+}
+
+float* AGameObject::getPhysicsNoTranslationLocalMatrix()
+{
+	Matrix4x4 allMatrix; allMatrix.setIdentity();
+
+	Matrix4x4 scaleMatrix; scaleMatrix.setIdentity(); scaleMatrix.setScale(Vector3D(1, 1, 1)); //physics 3D only accepts uniform scale for rigidbody
+	Vector3D rotation = this->getLocalRotation();
+
+
+	Matrix4x4 xMatrix; xMatrix.setIdentity(); xMatrix.setRotationX(rotation.m_x);
+	Matrix4x4 yMatrix; yMatrix.setIdentity(); yMatrix.setRotationY(rotation.m_y);
+	Matrix4x4 zMatrix; zMatrix.setIdentity(); zMatrix.setRotationZ(rotation.m_z);
+
+	//Scale --> Rotate --> Transform as recommended order.
+	Matrix4x4 rotMatrix; rotMatrix.setIdentity();
+	rotMatrix = rotMatrix.multiplyTo(xMatrix.multiplyTo(yMatrix.multiplyTo(zMatrix)));
+
+	allMatrix = allMatrix.multiplyTo(scaleMatrix.multiplyTo(rotMatrix));
 
 	//float* oneDMatrix = MathUtils::convertInto1D(allMatrix);
 

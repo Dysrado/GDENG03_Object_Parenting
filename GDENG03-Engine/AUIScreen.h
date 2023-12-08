@@ -11,10 +11,17 @@ protected:
 	AUIScreen(String name);
 	~AUIScreen();
 
+	void setEnabled(bool flag);
+
 	String getName();
 	virtual void drawUI();
 
+	bool getEnabled();
+
+
 	String name;
+	bool isEnabled;
+
 
 	friend class UIManager;
 };

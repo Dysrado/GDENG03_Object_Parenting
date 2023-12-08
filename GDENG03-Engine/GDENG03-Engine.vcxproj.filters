@@ -73,6 +73,15 @@
     <Filter Include="GameEngine\GraphicsEngine\ResourceManager\TextureManager">
       <UniqueIdentifier>{734d07d1-d336-4a02-bb34-bd395248bc79}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameEngine\Interface\Actions">
+      <UniqueIdentifier>{d40bfa43-346b-4870-832b-dc05d6cacd5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\EngineBackend">
+      <UniqueIdentifier>{de1286c0-08e9-4c8f-a4d8-aacc8e91a07b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\FileManager">
+      <UniqueIdentifier>{383b96ee-9027-4b15-8d6b-4fc12cc7cf20}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -198,7 +207,6 @@
     <ClCompile Include="PhysicsPlane.cpp">
       <Filter>GameEngine\Primitives\PhysicsPrimitive</Filter>
     </ClCompile>
-    <ClCompile Include="TexturedVertexBuffer.cpp" />
     <ClCompile Include="ShaderLibrary.cpp" />
     <ClCompile Include="Resource.cpp">
       <Filter>GameEngine\GraphicsEngine\ResourceManager</Filter>
@@ -217,6 +225,39 @@
     </ClCompile>
     <ClCompile Include="TexturedCube.cpp">
       <Filter>GameEngine\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectRenderer.cpp">
+      <Filter>GameEngine\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="MaterialScreen.cpp">
+      <Filter>GameEngine\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionHistory.cpp">
+      <Filter>GameEngine\Interface\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionMemento.cpp">
+      <Filter>GameEngine\Interface\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionScreen.cpp">
+      <Filter>GameEngine\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorAction.cpp">
+      <Filter>GameEngine\Interface\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineBackend.cpp">
+      <Filter>GameEngine\EngineBackend</Filter>
+    </ClCompile>
+    <ClCompile Include="ScenePlayOptions.cpp">
+      <Filter>GameEngine\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="TexturedVertexBuffer.cpp">
+      <Filter>GameEngine\GraphicsEngine\VertexBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneReader.cpp">
+      <Filter>GameEngine\FileManager</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneWriter.cpp">
+      <Filter>GameEngine\FileManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -355,7 +396,6 @@
     <ClInclude Include="PhysicsPlane.h">
       <Filter>GameEngine\Primitives\PhysicsPrimitive</Filter>
     </ClInclude>
-    <ClInclude Include="TexturedVertexBuffer.h" />
     <ClInclude Include="ShaderLibrary.h" />
     <ClInclude Include="Resource.h">
       <Filter>GameEngine\GraphicsEngine\ResourceManager</Filter>
@@ -374,6 +414,42 @@
     </ClInclude>
     <ClInclude Include="TexturedCube.h">
       <Filter>GameEngine\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectRenderer.h">
+      <Filter>GameEngine\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialScreen.h">
+      <Filter>GameEngine\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionHistory.h">
+      <Filter>GameEngine\Interface\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionMemento.h">
+      <Filter>GameEngine\Interface\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionScreen.h">
+      <Filter>GameEngine\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorAction.h">
+      <Filter>GameEngine\Interface\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineBackend.h">
+      <Filter>GameEngine\EngineBackend</Filter>
+    </ClInclude>
+    <ClInclude Include="ScenePlayOptions.h">
+      <Filter>GameEngine\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="StringUtils.h">
+      <Filter>GameEngine\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="TexturedVertexBuffer.h">
+      <Filter>GameEngine\GraphicsEngine\VertexBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneReader.h">
+      <Filter>GameEngine\FileManager</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneWriter.h">
+      <Filter>GameEngine\FileManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

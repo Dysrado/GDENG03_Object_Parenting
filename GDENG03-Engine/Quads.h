@@ -13,6 +13,7 @@ class Quads: public AGameObject
 public:
 
 	Quads(string name);
+	~Quads();
 	void update(float deltaTime) override;
 	void draw(int width, int height) override;
 	void setAnimSpeed(float speed);

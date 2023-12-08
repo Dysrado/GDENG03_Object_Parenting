@@ -12,9 +12,23 @@
 #include "PhysicsComponent.h"
 #include "PhysicsSystem.h"
 #include "TexturedCube.h"
+#include "EditorAction.h"
 
 
 GameObjectManager* GameObjectManager::sharedInstance = nullptr;
+
+void GameObjectManager::applyEditorAction(EditorAction* action)
+{
+	AGameObject* object = this->findObjectByName(action->getOwnerName());
+	if (object != NULL) {
+		//re-apply state
+		object->recomputeMatrix(action->getStoredMatrix().getFloatArray());
+		object->setPosition(action->getStorePos());
+		object->setRotation(action->getStoredOrientation().x, action->getStoredOrientation().y, action->getStoredOrientation().z);
+		object->setScale(action->getStoredScale());
+
+	}
+}
 
 GameObjectManager* GameObjectManager::getInstance()
 {
@@ -76,12 +90,12 @@ void GameObjectManager::renderAll(int viewportWidth, int viewportHeight)
 void GameObjectManager::addObject(AGameObject* gameObject)
 {
 	
-	String Key = gameObject->RetrieveName();
+	String Key = gameObject->RetrieveObjName();
 	int i = 0;
 	while (aTable[Key] != nullptr)
 	{
 		i++;
-		Key = gameObject->RetrieveName();
+		Key = gameObject->RetrieveObjName();
 		Key.append(std::to_string(i));
 	}
 	aTable[Key] = gameObject;
@@ -112,7 +126,7 @@ void GameObjectManager::createObject(PrimitiveType type)
 
 		case PrimitiveType::PHYSICS_CUBE:
 		{
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < 30; i++)
 			{
 				string objName = "Physics Cube";
 				if (pCubeCount != 0)
@@ -123,13 +137,17 @@ void GameObjectManager::createObject(PrimitiveType type)
 				}
 
 
-				Cube* cube = new Cube("Cube_Physics");
+				Cube* cube = new Cube(objName);
 				cube->setPosition(0, 5.0f, 0);
 				this->addObject(cube);
 
+				
+
 				// add the Physics Component - External Method
-				string componentName = "Physics_Component" + cube->RetrieveName();
-				PhysicsComponent* component = new PhysicsComponent(componentName, cube, BodyType::DYNAMIC);
+				string componentName = "Physics_Component";
+				PhysicsComponent* component = new PhysicsComponent(componentName + objName, cube, BodyType::DYNAMIC);
+				cube->attachComponent(component);
+				pCubeCount++;
 			}
 		}
 		break;
@@ -166,8 +184,9 @@ void GameObjectManager::createObject(PrimitiveType type)
 			this->addObject(plane);
 
 			// add the Physics Component
-			string componentName = "Physics_Component" + plane->RetrieveName();
-			PhysicsComponent* component = new PhysicsComponent(componentName, plane, BodyType::STATIC);
+			string componentName = "Physics_Component";
+			PhysicsComponent* component = new PhysicsComponent(componentName + objName, plane, BodyType::STATIC);
+			plane->attachComponent(component);
 
 		}
 		break;
@@ -203,7 +222,7 @@ void GameObjectManager::deleteObject(AGameObject* gameObject)
 {
 	
 	//First Method
-	for(int i = 0; i < aList.size(); i++)
+	/*for(int i = 0; i < aList.size(); i++)
 	{
 		if(aList[i] == gameObject)
 		{
@@ -212,8 +231,49 @@ void GameObjectManager::deleteObject(AGameObject* gameObject)
 			aList.shrink_to_fit();
 			break;
 		}
+	}*/
+
+	// 2nd Method
+	this->aTable.erase(gameObject->name);
+
+	int index = -1;
+	for (int i = 0; i < this->aList.size(); i++) {
+		if (this->aList[i] == gameObject) {
+			index = i;
+			break;
+		}
 	}
 
+	if (index != -1) {
+		this->aList.erase(this->aList.begin() + index);
+	}
+
+	if (gameObject == this->selectedObject)
+		this->selectedObject = nullptr;
+
+	// actual deletion of the pointer causes an issue for some reason
+	//delete gameObject;
+}
+
+void GameObjectManager::deleteAllObjects()
+{
+	for (int i = 0; i < aList.size(); i++)
+	{
+		AGameObject::ComponentList aComponentList = aList[i]->getComponentsOfType(AComponent::ComponentType::Physics);
+
+		if (aComponentList.size() == 1) {
+			PhysicsComponent* pComponent = (PhysicsComponent*)aComponentList[0];
+			BaseComponentSystem::getInstance()->getPhysicsSystem()->unregisterComponent(pComponent);
+			delete pComponent;
+
+		}
+
+		delete aList[i];
+	}
+
+	selectedObject = nullptr;
+	aList.clear();
+	aTable.clear();
 }
 
 void GameObjectManager::clearSelectedObjectList()
@@ -224,12 +284,12 @@ void GameObjectManager::clearSelectedObjectList()
 
 void GameObjectManager::setSelectedObject(AGameObject* gameObject, bool isMultiselect)
 {
-	String Key = gameObject->RetrieveName();
+	String Key = gameObject->RetrieveObjName();
 	int i = 0;
 	while (aTable[Key] != gameObject)
 	{
 		i++;
-		Key = gameObject->RetrieveName();
+		Key = gameObject->RetrieveObjName();
 		Key.append(std::to_string(i));
 	}
 	selectedObject = aTable[Key];
@@ -292,6 +352,88 @@ bool GameObjectManager::IsLinkingEnabled()
 void GameObjectManager::SetLinkingEnabled(bool flag)
 {
 	isLinkEnable = flag;
+}
+
+void GameObjectManager::saveEditStates()
+{
+	for (int i = 0; i < this->aList.size(); i++) {
+		this->aList[i]->saveEditState();
+	}
+}
+
+void GameObjectManager::restoreEditStates()
+{
+	for (int i = 0; i < this->aList.size(); i++) {
+		this->aList[i]->restoreEditState();
+	}
+}
+
+void GameObjectManager::createObjectFromFile(std::string objectName, AGameObject::PrimitiveType objectType, Vector3D position, Vector3D rotation, Vector3D scale, float mass, bool isGravityEnabled)
+{
+	if (objectType == AGameObject::PrimitiveType::CUBE) {
+		Cube* cube = new Cube(objectName);
+		cube->setPosition(position);
+		cube->setRotation(rotation);
+		cube->setScale(scale);
+		addObject(cube);
+	}
+
+	else if (objectType == AGameObject::PrimitiveType::PLANE) {
+		Quads* plane = new Quads(objectName);
+		plane->setPosition(position);
+		plane->setRotation(rotation);
+		plane->setScale(scale);
+		addObject(plane);
+	}
+
+	else if (objectType == AGameObject::PrimitiveType::TEXTURED_CUBE) {
+		TexturedCube* cube = new TexturedCube(objectName);
+		cube->setPosition(position);
+		cube->setRotation(rotation);
+		cube->setScale(scale);
+		//cube->getRenderer()->setRenderer(path);
+
+		/*String textureString = path;
+		std::wstring widestr = std::wstring(textureString.begin(), textureString.end());
+		const wchar_t* texturePath = widestr.c_str();
+
+		static_cast<TexturedCube*>(cube)->getRenderer()->setTexture(TextureManager::getInstance()->createTextureFromFile(texturePath));*/
+		addObject(cube);
+	}
+
+	else if (objectType == AGameObject::PrimitiveType::PHYSICS_CUBE) {
+		Cube* cube = new Cube(objectName);
+		cube->setPosition(position);
+		cube->setRotation(rotation);
+		cube->setScale(scale);
+		cube->attachComponent(new PhysicsComponent("Physics_Component" + objectName, cube, BodyType::DYNAMIC));
+
+		//TODO:
+
+		PhysicsComponent* pObject = (PhysicsComponent*)cube->findComponentByName("Physics_Component" + objectName);
+		if (pObject)
+		{
+			pObject->getRigidBody()->setMass(mass);
+			pObject->getRigidBody()->enableGravity(isGravityEnabled);
+		}
+
+		else
+			cout << "p6 does not exist" << endl;
+
+		addObject(cube);
+	}
+
+	else if (objectType == AGameObject::PrimitiveType::PHYSICS_PLANE) {
+		PhysicsPlane* plane = new PhysicsPlane(objectName);
+		plane->setPosition(position);
+		plane->setRotation(rotation);
+		plane->setScale(scale);
+
+		//TODO:
+		plane->attachComponent(new PhysicsComponent("Physics_Component" + objectName, plane, BodyType::STATIC));
+
+		addObject(plane);
+	}
 }
 
 

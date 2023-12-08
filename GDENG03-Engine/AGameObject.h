@@ -5,6 +5,7 @@
 #include "Matrix4x4.h"
 #include "Vector3D.h"
 #include "EngineTime.h"
+#include "AComponent.h"
 
 __declspec(align(16))
 
@@ -18,18 +19,42 @@ struct constant
 
 
 using namespace std;
+class EditorAction;
 class VertexShader;
 class PixelShader;
+class GameObjectManager;
 
 class AGameObject
 {
 public:
+
+
 	AGameObject(string name);
 	~AGameObject();
 
+	struct AQuaternion {
+		float w = 0.0f;
+		float x = 0.0f;
+		float y = 0.0f;
+		float z = 0.0f;
+	};
+	enum PrimitiveType
+	{
+		CUBE,
+		PHYSICS_CUBE,
+		PLANE,
+		PHYSICS_PLANE,
+		SPHERE,
+		TEXTURED_CUBE
+	};
+	typedef std::vector<AComponent*> ComponentList;
+
+
+	//Default
 	virtual void update(float deltaTime) = 0;
 	virtual void draw(int width, int height) = 0;
 
+	//Transform
 	void setPosition(float x, float y, float z);
 	void setPosition(Vector3D pos);
 	Vector3D getLocalPosition();
@@ -47,6 +72,7 @@ public:
 
 	virtual void IncrementRot(float offset);
 
+	//Parenting
 	void SetParent(AGameObject* reference);
 	void RemoveParent(AGameObject* reference);
 	void AttachChild(AGameObject* reference);
@@ -62,36 +88,56 @@ public:
 	bool IsEnabled();
 
 	Matrix4x4 getLocalMatrix();
+	Matrix4x4 getParentLocalMatrix();
 	Matrix4x4 computeLocalMatrix();
 	Matrix4x4 computeWorldMatrix();
 	void updateLocalMatrix();
+	//placeholder function - cant think of an optimized way of deleting
+	bool isSameGameObject(AGameObject* reference);
 
+	//ComponentSystem
+	void attachComponent(AComponent* component);
+	void detachComponent(AComponent* component);
+
+	AComponent* findComponentByName(string name);
+	AComponent* findComponentOfType(AComponent::ComponentType type, string name);
+	ComponentList getComponentsOfType(AComponent::ComponentType type);
+	ComponentList getComponentsOfTypeRecursive(AComponent::ComponentType type);
+
+	//Physics
 	// openGL matrix to our matrix implementation
 	void recomputeMatrix(float matrix[16]);
 	// our matrix implementation to openGL matrix
 	float* getPhysicsLocalMatrix();
+	float* getPhysicsNoTranslationLocalMatrix();
 
-	//placeholder function - cant think of an optimized way of deleting
-	bool isSameGameObject(AGameObject* reference);
+	void saveEditState();
+	void restoreEditState();
 	
+	PrimitiveType getObjectType();
 private:
 	string name;
 	
+	EditorAction* lastEditState = NULL; //used for storing the state of this object prior to play mode.
+
 
 	Vector3D localRotation;
 	Vector3D localPosition;
 	Vector3D localScale;
+	AQuaternion orientation;
+
 	bool isEnabled = true;
 
 
 protected:
+	ComponentList componentList;
 	Matrix4x4 localMatrix;
 	string typeName;
 	bool overrideMatrix = false;
-
+	PrimitiveType objectType;
 	AGameObject* parent;
 	vector<AGameObject*> childrenList;
-
+	friend class GameObjectManager;
 
 };
 

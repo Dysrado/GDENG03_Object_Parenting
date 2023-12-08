@@ -2,8 +2,10 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include "AGameObject.h"
 
 
+class EditorAction;
 class Quads;
 //Primitive
 class Cube;
@@ -21,6 +23,8 @@ public:
 	typedef std::string String;
 	typedef std::vector<AGameObject*> List;
 	typedef std::unordered_map<String, AGameObject*> HashTable;
+
+	void applyEditorAction(EditorAction* action);
 
 	enum PrimitiveType
 	{
@@ -45,6 +49,7 @@ public:
 	void addObject(AGameObject* gameObject);
 	void createObject(PrimitiveType type);
 	void deleteObject(AGameObject* gameObject);
+	void deleteAllObjects();
 
 	void clearSelectedObjectList();
 	void setSelectedObject(AGameObject* gameObject, bool isMultiSelect);
@@ -56,6 +61,11 @@ public:
 
 	bool IsLinkingEnabled();
 	void SetLinkingEnabled(bool flag);
+
+	void saveEditStates();
+	void restoreEditStates();
+
+	void createObjectFromFile(std::string objectName, AGameObject::PrimitiveType objectType, Vector3D position, Vector3D rotation, Vector3D scale, float mass, bool isGravityEnabled);
 
 private:
 	static GameObjectManager* sharedInstance;

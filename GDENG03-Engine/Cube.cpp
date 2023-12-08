@@ -75,10 +75,14 @@ Cube::Cube(string name): AGameObject(name)
 	constantBuffer = GraphicsEngine::get()->createConstantBuffer();
 	constantBuffer->load(&cc, sizeof(constant));
 	updateLocalMatrix();
+	objectType = PrimitiveType::CUBE;
 }
 
 Cube::~Cube()
 {
+	this->vertexBuffer->release();
+	this->indexBuffer->release();
+	AGameObject::~AGameObject();
 }
 
 void Cube::update(float deltaTime)

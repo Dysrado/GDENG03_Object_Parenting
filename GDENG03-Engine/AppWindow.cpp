@@ -22,6 +22,8 @@
 #include "PhysicsSystem.h"
 #include "TextureManager.h"
 #include "ShaderLibrary.h"
+#include "EngineBackend.h"
+#include "ActionHistory.h"
 
 
 AppWindow::AppWindow()
@@ -51,22 +53,6 @@ void AppWindow::onCreate()
 	
 	RECT rc = this->getClientWindowRect();
 
-	/*void* shader_byte_code = nullptr;
-	size_t size_shader = 0;*/
-
-	//Vertex Shader
-	//GraphicsEngine::get()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shader_byte_code, &size_shader);
-	//m_vs = GraphicsEngine::get()->createVertexShader(shader_byte_code, size_shader);
-
-
-	//
-	//
-	//GraphicsEngine::get()->releaseCompiledShader();
-
-	//GraphicsEngine::get()->compilePixelShader(L"PixelShader.hlsl", "psmain", &shader_byte_code, &size_shader);
-	//m_ps = GraphicsEngine::get()->createPixelShader(shader_byte_code, size_shader);
-	//GraphicsEngine::get()->releaseCompiledShader();
-
 	m_swap_chain->init(this->m_hwnd, rc.right - rc.left, rc.bottom - rc.top);
 
 
@@ -74,6 +60,8 @@ void AppWindow::onCreate()
 	GameObjectManager::initialize();
 	BaseComponentSystem::getInstance()->initialize();
 	SceneCameraHandler::initialize();
+	EngineBackend::initialize();
+	ActionHistory::initialize();
 
 	UIManager::initialize(m_hwnd);
 	
@@ -81,34 +69,42 @@ void AppWindow::onCreate()
 
 void AppWindow::onUpdate()
 {
-	m_delta_time = EngineTime::getDeltaTime(); // Engine Time Conversion
-	Window::onUpdate();
+	m_delta_time += EngineTime::getDeltaTime() * 1.0f;
+
 	InputSystem::getInstance()->update();
 
-	
+	GraphicsEngine::get()->getImmediateDeviceContext()->clearRenderTargetColor(m_swap_chain, bgColor[0], bgColor[1], bgColor[2], 1);
 
+	RECT rc = getClientWindowRect();
+	int width = rc.right - rc.left;
+	int height = rc.bottom - rc.top;
+	GraphicsEngine::get()->getImmediateDeviceContext()->setViewportSize(width, height);
 
-	//CLEAR THE RENDER TARGET 
-	GraphicsEngine::get()->getImmediateDeviceContext()->clearRenderTargetColor(this->m_swap_chain,
-		bgColor[0], bgColor[1], bgColor[2], 1);
+	// Update rest of the systems
+	EngineBackend* backend = EngineBackend::getInstance();
+	switch (backend->getMode())
+	{
+	case EngineBackend::EditorMode::EDITOR:
+		GameObjectManager::getInstance()->updateAll();
+		break;
 
-	//VIEWPORT
-	RECT rc = this->getClientWindowRect();
-	GraphicsEngine::get()->getImmediateDeviceContext()->setViewportSize(rc.right - rc.left, rc.bottom - rc.top);
+	case EngineBackend::EditorMode::PLAY:
+		BaseComponentSystem::getInstance()->getPhysicsSystem()->updateAllComponents();
+		GameObjectManager::getInstance()->updateAll();
+		break;
 
-
-	//Components
-	BaseComponentSystem::getInstance()->getPhysicsSystem()->updateAllComponents();
-
-	//GameObject
+	case EngineBackend::EditorMode::PAUSED:
+		if (backend->insideFrameStep()) {
+			backend->startFrameStep();
+			BaseComponentSystem::getInstance()->getPhysicsSystem()->updateAllComponents();
+			GameObjectManager::getInstance()->updateAll();
+			backend->endFrameStep();
+		}
+		break;
+	}
+	GameObjectManager::getInstance()->renderAll(width, height);
 	SceneCameraHandler::getInstance()->update();
-	GameObjectManager::getInstance()->updateAll();
-	GameObjectManager::getInstance()->renderAll(rc.right - rc.left, rc.bottom - rc.top);
-
-	
-
 	UIManager::getInstance()->drawAllUI();
-
 	m_swap_chain->present(true);
 
 }
@@ -120,6 +116,8 @@ void AppWindow::onDestroy()
 	m_swap_chain->release();
 	/*m_vs->release();
 	m_ps->release();*/
+	EngineBackend::destroy();
+	ActionHistory::destroy();
 
 	ImGui_ImplDX11_Shutdown();
     ImGui_ImplWin32_Shutdown();
