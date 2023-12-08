@@ -90,12 +90,12 @@ void GameObjectManager::renderAll(int viewportWidth, int viewportHeight)
 void GameObjectManager::addObject(AGameObject* gameObject)
 {
 	
-	String Key = gameObject->RetrieveName();
+	String Key = gameObject->RetrieveObjName();
 	int i = 0;
 	while (aTable[Key] != nullptr)
 	{
 		i++;
-		Key = gameObject->RetrieveName();
+		Key = gameObject->RetrieveObjName();
 		Key.append(std::to_string(i));
 	}
 	aTable[Key] = gameObject;
@@ -275,12 +275,12 @@ void GameObjectManager::clearSelectedObjectList()
 
 void GameObjectManager::setSelectedObject(AGameObject* gameObject, bool isMultiselect)
 {
-	String Key = gameObject->RetrieveName();
+	String Key = gameObject->RetrieveObjName();
 	int i = 0;
 	while (aTable[Key] != gameObject)
 	{
 		i++;
-		Key = gameObject->RetrieveName();
+		Key = gameObject->RetrieveObjName();
 		Key.append(std::to_string(i));
 	}
 	selectedObject = aTable[Key];

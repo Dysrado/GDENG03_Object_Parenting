@@ -40,14 +40,14 @@ void ScenePlayOptions::drawUI()
 					bool isGravityEnabled = components[i]->getRigidBody()->isGravityEnabled();
 					BaseComponentSystem::getInstance()->getPhysicsSystem()->unregisterComponent(components[i]);
 
-					aObject->attachComponent(new PhysicsComponent("PhysicsComponent" + components[i]->getOwner()->RetrieveObjName(),
+					aObject->attachComponent(new PhysicsComponent("Physics_Component" + components[i]->getOwner()->RetrieveObjName(),
 						aObject, BodyType::DYNAMIC));
-					PhysicsComponent* newPObject = (PhysicsComponent*)aObject->findComponentByName("PhysicsComponent" + aObject->RetrieveObjName());
+					PhysicsComponent* newPObject = (PhysicsComponent*)aObject->findComponentByName("Physics_Component" + aObject->RetrieveObjName());
 					newPObject->getRigidBody()->setMass(mass);
 					newPObject->getRigidBody()->enableGravity(isGravityEnabled);
-
-					
 					delete components[i];
+					
+					
 
 
 					// Delete Components causes some issues not sure why, but without the delete there becomes a memory leak and the engine lags

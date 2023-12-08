@@ -4,11 +4,13 @@
 #include "PhysicsComponent.h"
 #include "UIManager.h"
 #include "ActionHistory.h"
+#include "BaseComponentSystem.h"
 #include "MaterialScreen.h"
 #include "MathUtils.h"
 #include "TexturedCube.h"
 #include "ObjectRenderer.h"
 #include "TextureManager.h"
+#include "PhysicsSystem.h"
 
 InspectorWindow::InspectorWindow(const String name) : AUIScreen(name)
 {
@@ -173,6 +175,9 @@ void InspectorWindow::UpdateTransformGameObject(AGameObject* aObject)
 		aObject->setRotation(radRotation.m_x, radRotation.m_y, radRotation.m_z);
 		aObject->setScale(s[0], s[1], s[2]);
 		ActionHistory::getInstance()->endRecordAction(aObject);
+
+		//Update PhysicsComponent
+		this->UpdateRigidBody(aObject);
 	}
 	if (ImGui::DragFloat3("Rotation", r, 5.0f)) {
 		ActionHistory::getInstance()->startRecordAction(aObject);
@@ -185,15 +190,22 @@ void InspectorWindow::UpdateTransformGameObject(AGameObject* aObject)
 		aObject->setRotation(radRotation.m_x, radRotation.m_y, radRotation.m_z);
 		aObject->setScale(s[0], s[1], s[2]);
 		ActionHistory::getInstance()->endRecordAction(aObject);
+
+		//Update PhysicsComponent
+		this->UpdateRigidBody(aObject);
 	}
 	if (ImGui::DragFloat3("Scale", s, 0.1f)) {
 		ActionHistory::getInstance()->startRecordAction(aObject);
 		aObject->setPosition(t[0], t[1], t[2]);
 		Vector3D radRotation = MathUtils::convertEulerToRad(
 			r[0], r[1], r[2]);
+
 		aObject->setRotation(radRotation.m_x, radRotation.m_y, radRotation.m_z);
 		aObject->setScale(s[0], s[1], s[2]);
 		ActionHistory::getInstance()->endRecordAction(aObject);
+
+		//Update PhysicsComponent
+		this->UpdateRigidBody(aObject);
 	}
 }
 
@@ -232,14 +244,21 @@ void InspectorWindow::UpdateTransformGameObject(GameObjectManager::List selected
 void InspectorWindow::DisplayRigidBody(AGameObject* aObject)
 {
 	bool isComponentActive = false;
-	PhysicsComponent* pComponent = (PhysicsComponent*)aObject->findComponentByName("Physics_Component" + aObject->RetrieveName());
+	PhysicsComponent* pComponent = (PhysicsComponent*)aObject->
+	findComponentByName("Physics_Component" + aObject->RetrieveObjName());
 
 	if (pComponent == nullptr)
 	{
 		ImGui::Text("Rigid Body: None");
 		if(ImGui::Button("Add RigidBody"))
 		{
-			PhysicsComponent* component = new PhysicsComponent("Physics_Component" + aObject->RetrieveName(), aObject, BodyType::STATIC);
+			PhysicsComponent* component;
+			if(aObject->getObjectType() == AGameObject::PHYSICS_PLANE)
+				component = new PhysicsComponent("Physics_Component" + aObject->RetrieveObjName(), aObject, BodyType::STATIC);
+
+			else
+				component = new PhysicsComponent("Physics_Component" + aObject->RetrieveObjName(), aObject, BodyType::DYNAMIC);
+
 			aObject->attachComponent(component);
 		}
 	}
@@ -263,6 +282,8 @@ void InspectorWindow::DisplayRigidBody(AGameObject* aObject)
 		if(ImGui::Button("Detach"))
 		{
 			aObject->detachComponent(pComponent);
+			BaseComponentSystem::getInstance()->getPhysicsSystem()->unregisterComponent(pComponent);
+			delete pComponent;
 			return;
 		}
 		ImGui::Checkbox("Is Enabled", &isPEnabled);
@@ -278,7 +299,6 @@ void InspectorWindow::DisplayRigidBody(AGameObject* aObject)
 		if(ImGui::Button("Apply Force"))
 		{
 			//Do Something
-			
 			rigidBody->applyLocalForceAtCenterOfMass(*pComponent->forceVector);
 		}
 
@@ -295,6 +315,32 @@ void InspectorWindow::DisplayRigidBody(AGameObject* aObject)
 	}
 
 	
+}
+
+void InspectorWindow::UpdateRigidBody(AGameObject* aObject)
+{
+	bool isComponentActive = false;
+	PhysicsComponent* pComponent = (PhysicsComponent*)aObject->findComponentByName("Physics_Component" + aObject->RetrieveObjName());
+	if (pComponent != nullptr)
+	{
+		
+		float mass = pComponent->getRigidBody()->getMass();
+		bool isGravityEnabled = pComponent->getRigidBody()->isGravityEnabled();
+		BodyType objType = pComponent->getRigidBody()->getType();
+
+		BaseComponentSystem::getInstance()->getPhysicsSystem()->unregisterComponent(pComponent);
+		pComponent->getOwner()->detachComponent(pComponent);
+		aObject->attachComponent(new PhysicsComponent("Physics_Component" + aObject->RetrieveObjName(),
+			aObject, objType));
+		
+
+		PhysicsComponent* newPObject = (PhysicsComponent*)aObject->findComponentByName("Physics_Component" + aObject->RetrieveObjName());
+		newPObject->getRigidBody()->setMass(mass);
+		newPObject->getRigidBody()->enableGravity(isGravityEnabled);
+		delete pComponent;
+
+	}
+
 }
 
 void InspectorWindow::DisplayMaterials()

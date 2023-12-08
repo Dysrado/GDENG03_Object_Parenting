@@ -3,7 +3,7 @@
 EditorAction::EditorAction(AGameObject* gameObject)
 {
 	//capture object state
-	this->objectName = gameObject->RetrieveName();
+	this->objectName = gameObject->RetrieveObjName();
 	this->localPosition = gameObject->getLocalPosition();
 	this->orientation = {};
 	Vector3D rotation = gameObject->getLocalRotation();

@@ -24,9 +24,6 @@ PhysicsComponent::PhysicsComponent(String name, AGameObject* owner, BodyType typ
 	boxShape = physicsCommon->createBoxShape(Vector3(scale.m_x / 2.0f,
 		scale.m_y / 2.0f, scale.m_z / 2.0f)); //half extentP
 
-	
-
-
 	this->rigidBody = physicsWorld->createRigidBody(transform);
 	Transform noTranslateTransform;
 	noTranslateTransform.setFromOpenGL(this->getOwner()->getPhysicsNoTranslationLocalMatrix());
@@ -49,7 +46,10 @@ PhysicsComponent::PhysicsComponent(String name, AGameObject* owner, BodyType typ
 
 PhysicsComponent::~PhysicsComponent()
 {
-	BaseComponentSystem::getInstance()->getPhysicsSystem()->unregisterComponent(this);
+	//BaseComponentSystem::getInstance()->getPhysicsSystem()->unregisterComponent(this);
+	PhysicsSystem* physicsSystem = BaseComponentSystem::getInstance()->getPhysicsSystem();
+	PhysicsWorld* physicsWorld = physicsSystem->getPhysicsWorld();
+	physicsWorld->destroyRigidBody(this->rigidBody);
 	AComponent::~AComponent();
 }
 
