@@ -1,7 +1,7 @@
 # GameEngine
 Container for the Project in GDENG03
 
-**Commit History Reference:**
+## **Commit History Reference:**
 1) H01 Window - [[4f159d3](https://github.com/KCapss/GameEngine/tree/4f159d3e2301ef4e9999a53e3b4759dbcfe329c0)]
 2) HO2 Triangle [[987475e](https://github.com/KCapss/GameEngine/commit/987475ef468b11af6c1c09514d238bb833e76a17)]
 3) HO3 Quads -  [[987475e](https://github.com/KCapss/GameEngine/tree/987475ef468b11af6c1c09514d238bb833e76a17)]
@@ -30,18 +30,26 @@ Rendering System Reference: Commit History for TestCase **(TC)**
 5) TC5 -  [[e55da7e](https://github.com/KCapss/GameEngine/commit/e55da7e2b870330f4e8b344ae2c6dfbf9edb718c)]
 6) TC6 -  [[b15fbbd](https://github.com/KCapss/GameEngine/commit/b15fbbd73b533be607e05b927b476b6612ce31f8)]
 
-**Engine Features Replication:**
+## GROUP PROJECT
+### Team Members
+ - Kevin Carl Capalar
+ - Ramon Alvaro Jardin
+ - Wayne Michael Pangilinan
+ - John Nathaniel Manucat
+
+### **Engine Features Replication:**
 1) ObjectParenting -  [[38dfecc](https://github.com/KCapss/GameEngine/commit/38dfecc3b6ea386039212b3baefe374f9adec0b8)]
 
-**Engine Scene Editor:**
+### **Engine Scene Editor:**
 1) Scene Editor + Object Parenting - [[ea26487](https://github.com/KCapss/GameEngine/commit/ea26487e2ff64f5bc9f4b46193ea8305f4ada28f)]
 
-_Scene Editor Instruction:_
-- Entry Class Name: main.cpp (located from (projectDir))
+> _Scene Editor Instruction:<br>_ 
+>
+> --- Entry Class Name: main.cpp (located from (projectDir))
 
-Dependencies:
-1) Include Libraries = DirectXTex, imgui, reactPhysics3D
-2) LibFile = DirectXTex.lib, reactPhysics3D
-3) Configuration = x64 Debug
+> Dependencies:
+> 1) Include Libraries = DirectXTex, imgui, reactPhysics3D
+> 2) LibFile = DirectXTex.lib, reactPhysics3D
+> 3) Configuration = x64 Debug
 
 
