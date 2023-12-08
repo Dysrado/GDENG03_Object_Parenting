@@ -259,6 +259,15 @@ void GameObjectManager::deleteAllObjects()
 {
 	for (int i = 0; i < aList.size(); i++)
 	{
+		AGameObject::ComponentList aComponentList = aList[i]->getComponentsOfType(AComponent::ComponentType::Physics);
+
+		if (aComponentList.size() == 1) {
+			PhysicsComponent* pComponent = (PhysicsComponent*)aComponentList[0];
+			BaseComponentSystem::getInstance()->getPhysicsSystem()->unregisterComponent(pComponent);
+			delete pComponent;
+
+		}
+
 		delete aList[i];
 	}
 
