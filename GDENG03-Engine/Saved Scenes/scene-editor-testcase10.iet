@@ -1,0 +1,15 @@
+Physics Plane
+Type:|3|1|10|1|
+Position:|0|-10|0|
+Rotation:|-0|-0|-0|
+Scale:|10|0.1|10|
+Cube
+Type:|0|0|0|1|
+Position:|0|1|3|
+Rotation:|0.785398|0.785398|-0|
+Scale:|1|1|1|
+Cube (1) 
+Type:|0|1|2.5|1|
+Position:|-2|2|1.5|
+Rotation:|-0|-0|-0|
+Scale:|1|2|1.5|

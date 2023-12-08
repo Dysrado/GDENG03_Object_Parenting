@@ -299,7 +299,12 @@ void InspectorWindow::DisplayRigidBody(AGameObject* aObject)
 		if(ImGui::Button("Apply Force"))
 		{
 			//Do Something
-			rigidBody->applyLocalForceAtCenterOfMass(*pComponent->forceVector);
+			Vector3 finalForce;
+			finalForce.x = (pComponent->forceVector->x / mass);
+			finalForce.y = (pComponent->forceVector->y / mass);
+			finalForce.z = (pComponent->forceVector->z / mass);
+			rigidBody->setLinearVelocity(finalForce);
+			
 		}
 
 

@@ -37,11 +37,11 @@ void SceneWriter::writeToFile()
 		String hasRigidbody = "0";
 		bool isGravityEnabled = true;
 
-		if (allObjects[i]->findComponentByName("Physics_Component")) 
+		if (allObjects[i]->findComponentByName("Physics_Component" + allObjects[i]->RetrieveObjName()))
 		{
-			mass = static_cast<PhysicsComponent*>(allObjects[i]->findComponentByName("Physics_Component"))->getRigidBody()->getMass();
+			mass = static_cast<PhysicsComponent*>(allObjects[i]->findComponentByName("Physics_Component" + allObjects[i]->RetrieveObjName()))->getRigidBody()->getMass();
 			hasRigidbody = "1";
-			isGravityEnabled = static_cast<PhysicsComponent*>(allObjects[i]->findComponentByName("Physics_Component"))->getRigidBody()->isGravityEnabled();
+			isGravityEnabled = static_cast<PhysicsComponent*>(allObjects[i]->findComponentByName("Physics_Component" + allObjects[i]->RetrieveObjName()))->getRigidBody()->isGravityEnabled();
 		}
 
 

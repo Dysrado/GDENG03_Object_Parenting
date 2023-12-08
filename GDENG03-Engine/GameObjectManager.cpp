@@ -126,7 +126,7 @@ void GameObjectManager::createObject(PrimitiveType type)
 
 		case PrimitiveType::PHYSICS_CUBE:
 		{
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < 30; i++)
 			{
 				string objName = "Physics Cube";
 				if (pCubeCount != 0)

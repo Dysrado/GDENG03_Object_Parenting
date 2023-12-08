@@ -15,6 +15,7 @@ AGameObject::AGameObject(string name)
 
 AGameObject::~AGameObject()
 {
+	
 }
 
 void AGameObject::setPosition(float x, float y, float z)
